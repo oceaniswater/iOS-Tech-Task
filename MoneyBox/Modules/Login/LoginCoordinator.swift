@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class AuthCoordinator : Coordinator {
+class LoginCoordinator : Coordinator {
     
     weak var parentCoordinator: Coordinator?
     
@@ -25,26 +25,19 @@ class AuthCoordinator : Coordinator {
         goToLoginPage()
     }
     
-    let storyboard = UIStoryboard.init(name: "Login", bundle: .main)
-
+    func childDidFinish(_ child: any Coordinator) {
+        children.removeLast()
+    }
+    
     deinit {
         print("AuthCoordinator Deinit")
     }
 }
 
-extension AuthCoordinator : LoginNavigation {
-//    func goToHome() {
-//        // Get the app coordinator
-//        let appC = parentCoordinator as! AppCoordinator
-//        // And go to home!
-//        appC.goToHome()
-//        // Remember to clean up
-//        parentCoordinator?.childDidFinish(self)
-//    }
-    
+extension LoginCoordinator : LoginNavigation {
     func goToLoginPage(){
         // Instantiate LoginViewController
-        let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        let loginViewController = LoginViewController()
         // Instantiate LoginViewModel and set the coordinator
         let loginViewModel = LoginViewModel.init(nav: self)
         // Set the ViewModel to ViewController
@@ -54,6 +47,11 @@ extension AuthCoordinator : LoginNavigation {
     }
     
     func goToAccountsScreen(){
-        
+        // Get the app coordinator
+        let appC = parentCoordinator as! AppCoordinator
+        // And go to home!
+        appC.goToAccounts()
+        // Remember to clean up
+        parentCoordinator?.childDidFinish(self)
     }
 }

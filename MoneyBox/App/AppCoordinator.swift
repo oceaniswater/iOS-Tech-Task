@@ -7,12 +7,13 @@
 
 import UIKit
 
-protocol Coordinator : AnyObject {
+protocol Coordinator: AnyObject {
     var parentCoordinator: Coordinator? { get set }
     var children: [Coordinator] { get set }
     var navigationController : UINavigationController { get set }
     
     func start()
+    func childDidFinish(_ child: Coordinator)
 }
 
 class AppCoordinator : Coordinator {
@@ -28,13 +29,30 @@ class AppCoordinator : Coordinator {
     
     func start() {
         print("AppCoordinator Start")
-        // The first time this coordinator started, is to launch login page.
-       goToLogin()
+        
+        // check token
+        if true {
+            goToLogin()
+        } else {
+            goToAccounts()
+        }
+       
+    }
+    
+    func childDidFinish(_ child: any Coordinator) {
+        children.removeLast()
     }
     
     func goToLogin(){
-        // For the first time, the app is going to go to Authentication module
-        let authCoordinator = AuthCoordinator.init(navigationController: navigationController)
+        let authCoordinator = LoginCoordinator.init(navigationController: navigationController)
+        authCoordinator.parentCoordinator = self
+        children.append(authCoordinator)
+        
+        authCoordinator.start()
+    }
+    
+    func goToAccounts(){
+        let authCoordinator = LoginCoordinator.init(navigationController: navigationController)
         authCoordinator.parentCoordinator = self
         children.append(authCoordinator)
         
