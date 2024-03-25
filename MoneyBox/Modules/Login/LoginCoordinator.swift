@@ -41,7 +41,7 @@ extension LoginCoordinator : LoginNavigation {
         // Instantiate LoginViewModel and set the coordinator
         let loginViewModel = LoginViewModel.init(nav: self)
         // Set the ViewModel to ViewController
-        loginViewController.viewModel = loginViewModel as? LoginViewModelProtocol
+        loginViewController.viewModel = loginViewModel
         // Push it.
         navigationController.pushViewController(loginViewController, animated: true)
     }

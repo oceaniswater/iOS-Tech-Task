@@ -31,7 +31,7 @@ class AppCoordinator : Coordinator {
         print("AppCoordinator Start")
         
         // check token
-        if true {
+        if false {
             goToLogin()
         } else {
             goToAccounts()
@@ -52,11 +52,11 @@ class AppCoordinator : Coordinator {
     }
     
     func goToAccounts(){
-        let authCoordinator = LoginCoordinator.init(navigationController: navigationController)
-        authCoordinator.parentCoordinator = self
-        children.append(authCoordinator)
+        let accountsCoordinator = AccountsCoordinator.init(navigationController: navigationController)
+        accountsCoordinator.parentCoordinator = self
+        children.append(accountsCoordinator)
         
-        authCoordinator.start()
+        accountsCoordinator.start()
     }
     
     deinit {

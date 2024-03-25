@@ -16,7 +16,7 @@ protocol LoginViewModelProtocol {
     func goToAccounts()
 }
 
-class LoginViewModel {
+class LoginViewModel: LoginViewModelProtocol {
     
     weak var navigation : LoginNavigation!
     
