@@ -9,21 +9,21 @@ import UIKit
 import Networking
 
 class DetailsCoordinator : Coordinator {
-    weak var parentCoordinator: Coordinator?
+    weak var parentCoordinator      : Coordinator?
+    var children                    : [Coordinator] = []
+    var navigationController        : UINavigationController
+    var dataProvider                : DataProvider
+    var sessionManager              : SessionManager
+    var tokenManager                : TokenManager
     
-    var children: [Coordinator] = []
-    
-    var navigationController: UINavigationController
-    
-    var dataProvider: DataProvider
-    
-    var sessionManager: SessionManager
-    
-    init(navigationController : UINavigationController, dataProvider: DataProvider,
-         sessionManager: SessionManager) {
-        self.navigationController = navigationController
-        self.dataProvider = dataProvider
-        self.sessionManager = sessionManager
+    init(navigationController : UINavigationController,
+         dataProvider: DataProvider,
+         sessionManager: SessionManager,
+         tokenManager: TokenManager) {
+        self.navigationController   = navigationController
+        self.dataProvider           = dataProvider
+        self.sessionManager         = sessionManager
+        self.tokenManager           = tokenManager
     }
     
     func start() {
@@ -48,9 +48,9 @@ class DetailsCoordinator : Coordinator {
 extension DetailsCoordinator : DetailsNavigation {
     func goToDetailsScreen(){
         // Instantiate AccountsViewController
-        let detailsViewController = DetailsViewController()
+        let detailsViewController       = DetailsViewController()
         // Instantiate AccountsViewModel and set the coordinator
-        let detailsViewModel = DetailsViewModel.init(nav: self)
+        let detailsViewModel            = DetailsViewModel.init(nav: self)
         // Set the ViewModel to ViewController
         detailsViewController.viewModel = detailsViewModel
         // Push it.

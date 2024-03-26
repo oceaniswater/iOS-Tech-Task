@@ -16,10 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        let navigationCon = UINavigationController.init()
-        appCoordinator = AppCoordinator(navigationController: navigationCon)
+        let navigationController = UINavigationController()
+        let sessionManager = SessionManager()
+        let tokenManager = TokenManager(sessionManager: sessionManager)
+        appCoordinator = AppCoordinator(navigationController: navigationController, tokenManager: tokenManager)
         appCoordinator?.start()
-        window?.rootViewController = navigationCon
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
     }

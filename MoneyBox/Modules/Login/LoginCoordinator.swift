@@ -8,22 +8,20 @@
 import UIKit
 import Networking
 
-class LoginCoordinator : Coordinator {
-    weak var parentCoordinator: Coordinator?
+class LoginCoordinator: Coordinator {
+    weak var parentCoordinator      : Coordinator?
+    var children                    : [Coordinator] = []
+    var navigationController        : UINavigationController
+    var dataProvider                : DataProvider
+    var tokenManager                : TokenManager
     
-    var children: [Coordinator] = []
-    
-    var navigationController: UINavigationController
-    
-    var dataProvider: DataProvider
-    
-    var sessionManager: SessionManager
-    
-    init(navigationController : UINavigationController, dataProvider: DataProvider,
-         sessionManager: SessionManager) {
-        self.navigationController = navigationController
-        self.dataProvider = dataProvider
-        self.sessionManager = sessionManager
+    init(navigationController : UINavigationController,
+         dataProvider: DataProvider,
+         tokenManager: TokenManager
+    ) {
+        self.navigationController   = navigationController
+        self.dataProvider           = dataProvider
+        self.tokenManager           = tokenManager
     }
     
     func start() {
@@ -45,14 +43,16 @@ class LoginCoordinator : Coordinator {
     }
 }
 
-extension LoginCoordinator : LoginNavigation {
+extension LoginCoordinator: LoginNavigation {
     func goToLoginPage(){
-        // Instantiate LoginViewModel and set the coordinator
-        let loginViewModel = LoginViewModel(nav: self,
-                                            dataProvider: dataProvider,
-                                            sessionManager: sessionManager)
         // Instantiate LoginViewController
-        let loginViewController = LoginViewController()
+        let loginViewController     = LoginViewController()
+        
+        // Instantiate LoginViewModel and set the coordinator
+        let loginViewModel          = LoginViewModel(nav: self,
+                                                     dataProvider: dataProvider,
+                                                     delegate: loginViewController,
+                                                     tokenManager: tokenManager)
 
         // Set the ViewModel to ViewController
         loginViewController.viewModel = loginViewModel
@@ -62,8 +62,8 @@ extension LoginCoordinator : LoginNavigation {
     
     func goToAccountsScreen(){
         if let appC = parentCoordinator as? AppCoordinator {
+            navigationController.viewControllers.removeLast()
             parentCoordinator?.childDidFinish(self)
-            
             appC.goToAccounts()
         }
     }

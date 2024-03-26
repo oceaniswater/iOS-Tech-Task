@@ -15,7 +15,8 @@ protocol LoginNavigation : AnyObject{
 protocol LoginViewModelProtocol: AnyObject {
     var navigation      : LoginNavigation! { get set }
     var dataProvider    : DataProvider! { get set }
-    var sessionManager  : SessionManager! { get set }
+    var delegate        : LoginViewControllerDelegate! { get set }
+    var tokenManager    : TokenManager! { get set }
     
     func login(email: String, password: String)
     func goToAccounts()
@@ -23,28 +24,39 @@ protocol LoginViewModelProtocol: AnyObject {
 
 class LoginViewModel: LoginViewModelProtocol {
     
-    weak var navigation : LoginNavigation!
-    var dataProvider    : DataProvider!
-    var sessionManager  : SessionManager!
+    weak var navigation     : LoginNavigation!
+    var dataProvider        : DataProvider!
+    var delegate            : LoginViewControllerDelegate!
+    var tokenManager        : TokenManager!
     
-    init(nav : LoginNavigation, dataProvider: DataProvider, sessionManager: SessionManager) {
+    init(nav : LoginNavigation,
+         dataProvider: DataProvider,
+         delegate: LoginViewControllerDelegate,
+         tokenManager: TokenManager) {
+        
         self.navigation     = nav
         self.dataProvider   = dataProvider
-        self.sessionManager = sessionManager
+        self.delegate       = delegate
+        self.tokenManager   = tokenManager
     }
     
     func login(email: String, password: String) {
+        delegate.startLoading()
         let request = LoginRequest(email: email, password: password)
         dataProvider.login(request: request) { [weak self] result in
             switch result {
             case .success(let success):
                 let token = success.session.bearerToken
-                self?.sessionManager.setUserToken(token)
+                self?.tokenManager.saveToken(token)
+                let user = success.user
+                UserDefaultsManager.shared.saveUser(user)
                 self?.goToAccounts()
             case .failure(let failure):
-                self?.sessionManager.removeUserToken()
+                self?.tokenManager.deleteToken()
+                UserDefaultsManager.shared.deleteUser()
                 print(failure.localizedDescription)
             }
+            self?.delegate.stopLoading()
         }
     }
     

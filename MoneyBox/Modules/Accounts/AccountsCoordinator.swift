@@ -8,22 +8,19 @@
 import UIKit
 import Networking
 
-class AccountsCoordinator : Coordinator {
-    weak var parentCoordinator: Coordinator?
+class AccountsCoordinator: Coordinator {
+    weak var parentCoordinator      : Coordinator?
+    var children                    : [Coordinator] = []
+    var navigationController        : UINavigationController
+    var dataProvider                : DataProvider
+    var tokenManager                : TokenManager
     
-    var children: [Coordinator] = []
-    
-    var navigationController: UINavigationController
-    
-    var dataProvider: DataProvider
-    
-    var sessionManager: SessionManager
-    
-    init(navigationController : UINavigationController, dataProvider: DataProvider,
-         sessionManager: SessionManager) {
-        self.navigationController = navigationController
-        self.dataProvider = dataProvider
-        self.sessionManager = sessionManager
+    init(navigationController       : UINavigationController,
+         dataProvider               : DataProvider,
+         tokenManager               : TokenManager) {
+        self.navigationController   = navigationController
+        self.dataProvider           = dataProvider
+        self.tokenManager           = tokenManager
     }
     
     func start() {
@@ -42,7 +39,7 @@ class AccountsCoordinator : Coordinator {
     
     func goToRoot() {
         children.removeAll()
-
+        
     }
     
     deinit {
@@ -56,20 +53,22 @@ extension AccountsCoordinator : AccountsNavigation {
     }
     
     func goToAccountsScreen(){
-        // Instantiate AccountsViewController
-        let accountsViewController = AccountsViewController()
-        // Instantiate AccountsViewModel and set the coordinator
-        let accountsViewModel = AccountsViewModel.init(nav: self, sessionManager: sessionManager)
-        // Set the ViewModel to ViewController
-        accountsViewController.viewModel = accountsViewModel
-        // Push it.
+        let user = UserDefaultsManager.shared.getUser()
+        let accountsViewController          = AccountsViewController()
+        let accountsViewModel               = AccountsViewModel(nav: self,
+                                                                dataProvider: dataProvider,
+                                                                datatDelegate: accountsViewController,
+                                                                tokenManager: tokenManager,
+                                                                user: user)
+        accountsViewController.viewModel    = accountsViewModel
+        
         navigationController.pushViewController(accountsViewController, animated: true)
     }
     
     func goToRootScreen(){
         if let appC = parentCoordinator as? AppCoordinator {
+            navigationController.viewControllers.removeLast()
             parentCoordinator?.childDidFinish(self)
-//            parentCoordinator?.navigationController.popToRootViewController(animated: true)
             appC.goToLogin()
         }
     }

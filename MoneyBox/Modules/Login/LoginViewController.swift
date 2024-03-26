@@ -7,10 +7,12 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
-    
+protocol LoginViewControllerDelegate {
+    func startLoading()
+    func stopLoading()
+}
 
-    
+class LoginViewController: UIViewController {
     var viewModel: LoginViewModelProtocol!
     
     // MARK: - Properties
@@ -31,7 +33,9 @@ class LoginViewController: UIViewController {
     private let emailTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Email address"
-        label.font = .systemFont(ofSize: 10)
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = K.Design.secondaryColor
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -39,6 +43,8 @@ class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Email"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .clear
+        textField.layer.borderColor = K.Design.secondaryColor?.cgColor
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = "test+ios@moneyboxapp.com"
         return textField
@@ -47,7 +53,9 @@ class LoginViewController: UIViewController {
     private let passwordTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Email address"
-        label.font = .systemFont(ofSize: 10)
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = K.Design.secondaryColor
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -56,6 +64,8 @@ class LoginViewController: UIViewController {
         textField.placeholder = "Password"
         textField.borderStyle = .roundedRect
         textField.isSecureTextEntry = true
+        textField.layer.borderColor = K.Design.secondaryColor?.cgColor
+        textField.backgroundColor = .clear
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = "P455word12"
         return textField
@@ -72,10 +82,20 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private var emailStack: UIStackView!
+    private var passwordStack: UIStackView!
+    
+    private let activityView: UIActivityIndicatorView = {
+        let activity = UIActivityIndicatorView(style: .large)
+        activity.tintColor = K.Design.secondaryColor
+        activity.translatesAutoresizingMaskIntoConstraints = false
+        return activity
+    }()
+    
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = K.Design.backgroundColor
         setupViews()
         setupConstraints()
     }
@@ -86,11 +106,26 @@ class LoginViewController: UIViewController {
     
     // MARK: - Private Methods
     private func setupViews() {
+        emailStack = UIStackView(arrangedSubviews: [emailTitleLabel, emailTextField])
+        emailStack.axis = .vertical
+        emailStack.spacing = 2
+        emailStack.alignment = .leading
+        emailStack.distribution = .fillProportionally
+        emailStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        passwordStack = UIStackView(arrangedSubviews: [passwordTitleLabel, passwordTextField])
+        passwordStack.axis = .vertical
+        passwordStack.spacing = 2
+        passwordStack.alignment = .leading
+        passwordStack.distribution = .fillProportionally
+        passwordStack.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(registerButton)
         view.addSubview(logoView)
-        view.addSubview(emailTextField)
-        view.addSubview(passwordTextField)
+        view.addSubview(emailStack)
+        view.addSubview(passwordStack)
         view.addSubview(loginButton)
+        view.addSubview(activityView)
     }
     
     private func setupConstraints() {
@@ -103,20 +138,23 @@ class LoginViewController: UIViewController {
             logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
             logoView.heightAnchor.constraint(equalToConstant: 30),
             
-            emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailTextField.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 60),
+            emailStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emailStack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 60),
             emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             emailTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
-            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordStack.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
+            passwordStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 40),
             
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            loginButton.heightAnchor.constraint(equalToConstant: 40)
+            loginButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     
@@ -125,4 +163,22 @@ class LoginViewController: UIViewController {
         // Handle login button tapped
         viewModel.login(email: emailTextField.text!, password: passwordTextField.text!)
     }
+}
+
+extension LoginViewController: LoginViewControllerDelegate {
+    func startLoading() {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityView.isHidden = false
+            self?.activityView.startAnimating()
+        }
+    }
+    
+    func stopLoading() {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityView.isHidden = true
+            self?.activityView.stopAnimating()
+        }
+    }
+    
+    
 }

@@ -9,33 +9,34 @@ import UIKit
 import Networking
 
 protocol Coordinator: AnyObject {
-    var parentCoordinator: Coordinator? { get set }
-    var children: [Coordinator] { get set }
-    var navigationController : UINavigationController { get set }
+    var parentCoordinator           : Coordinator? { get set }
+    var children                    : [Coordinator] { get set }
+    var navigationController        : UINavigationController { get set }
+    var tokenManager                : TokenManager { get set }
     
     func start()
     func childDidFinish(_ child: Coordinator?)
 }
 
 class AppCoordinator : Coordinator {
-    var parentCoordinator: Coordinator?
+    var parentCoordinator           : Coordinator?
+    var children                    : [Coordinator] = []
+    var navigationController        : UINavigationController
+    var tokenManager                : TokenManager
     
-    var children: [Coordinator] = []
-    
-    var navigationController: UINavigationController
-    
-    init(navigationController : UINavigationController) {
-        self.navigationController = navigationController
+    init(navigationController: UINavigationController, tokenManager: TokenManager) {
+        self.navigationController   = navigationController
+        self.tokenManager           = tokenManager
     }
     
     func start() {
         print("AppCoordinator Start")
         
         // check token
-        if true {
-            goToLogin()
-        } else {
+        if let _ = tokenManager.getToken() {
             goToAccounts()
+        } else {
+            goToLogin()
         }
        
     }
@@ -50,11 +51,12 @@ class AppCoordinator : Coordinator {
     }
     
     func goToLogin(){
-        let dataProvider = DataProvider()
-        let sessionManager = SessionManager()
-        let authCoordinator = LoginCoordinator(navigationController: navigationController,
-                                                    dataProvider: dataProvider,
-                                                    sessionManager: sessionManager)
+        let dataProvider              = DataProvider()
+        let sessionManager            = SessionManager()
+        let tokenManager              = TokenManager(sessionManager: sessionManager)
+        let authCoordinator           = LoginCoordinator(navigationController: navigationController,
+                                                         dataProvider: dataProvider,
+                                                         tokenManager: tokenManager)
         authCoordinator.parentCoordinator = self
         children.append(authCoordinator)
         
@@ -62,11 +64,12 @@ class AppCoordinator : Coordinator {
     }
     
     func goToAccounts(){
-        let dataProvider = DataProvider()
-        let sessionManager = SessionManager()
-        let accountsCoordinator = AccountsCoordinator.init(navigationController: navigationController,
+        let dataProvider              = DataProvider()
+        let sessionManager            = SessionManager()
+        let tokenManager              = TokenManager(sessionManager: sessionManager)
+        let accountsCoordinator       = AccountsCoordinator.init(navigationController: navigationController,
                                                            dataProvider: dataProvider,
-                                                           sessionManager: sessionManager)
+                                                           tokenManager: tokenManager)
         accountsCoordinator.parentCoordinator = self
         children.append(accountsCoordinator)
         
