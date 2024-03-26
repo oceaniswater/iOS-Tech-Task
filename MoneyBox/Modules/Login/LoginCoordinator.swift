@@ -5,19 +5,25 @@
 //  Created by Mark Golubev on 25/03/2024.
 //
 
-import Foundation
 import UIKit
+import Networking
 
 class LoginCoordinator : Coordinator {
-    
     weak var parentCoordinator: Coordinator?
     
     var children: [Coordinator] = []
     
     var navigationController: UINavigationController
     
-    init(navigationController : UINavigationController) {
+    var dataProvider: DataProvider
+    
+    var sessionManager: SessionManager
+    
+    init(navigationController : UINavigationController, dataProvider: DataProvider,
+         sessionManager: SessionManager) {
         self.navigationController = navigationController
+        self.dataProvider = dataProvider
+        self.sessionManager = sessionManager
     }
     
     func start() {
@@ -25,8 +31,13 @@ class LoginCoordinator : Coordinator {
         goToLoginPage()
     }
     
-    func childDidFinish(_ child: any Coordinator) {
-        children.removeLast()
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in children.enumerated() {
+            if coordinator === child {
+                children.remove(at: index)
+                break
+            }
+        }
     }
     
     deinit {
@@ -36,10 +47,13 @@ class LoginCoordinator : Coordinator {
 
 extension LoginCoordinator : LoginNavigation {
     func goToLoginPage(){
+        // Instantiate LoginViewModel and set the coordinator
+        let loginViewModel = LoginViewModel(nav: self,
+                                            dataProvider: dataProvider,
+                                            sessionManager: sessionManager)
         // Instantiate LoginViewController
         let loginViewController = LoginViewController()
-        // Instantiate LoginViewModel and set the coordinator
-        let loginViewModel = LoginViewModel.init(nav: self)
+
         // Set the ViewModel to ViewController
         loginViewController.viewModel = loginViewModel
         // Push it.
@@ -47,11 +61,10 @@ extension LoginCoordinator : LoginNavigation {
     }
     
     func goToAccountsScreen(){
-        // Get the app coordinator
-        let appC = parentCoordinator as! AppCoordinator
-        // And go to home!
-        appC.goToAccounts()
-        // Remember to clean up
-        parentCoordinator?.childDidFinish(self)
+        if let appC = parentCoordinator as? AppCoordinator {
+            parentCoordinator?.childDidFinish(self)
+            
+            appC.goToAccounts()
+        }
     }
 }

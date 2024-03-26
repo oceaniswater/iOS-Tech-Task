@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Networking
 
 protocol Coordinator: AnyObject {
     var parentCoordinator: Coordinator? { get set }
@@ -13,7 +14,7 @@ protocol Coordinator: AnyObject {
     var navigationController : UINavigationController { get set }
     
     func start()
-    func childDidFinish(_ child: Coordinator)
+    func childDidFinish(_ child: Coordinator?)
 }
 
 class AppCoordinator : Coordinator {
@@ -31,7 +32,7 @@ class AppCoordinator : Coordinator {
         print("AppCoordinator Start")
         
         // check token
-        if false {
+        if true {
             goToLogin()
         } else {
             goToAccounts()
@@ -39,12 +40,21 @@ class AppCoordinator : Coordinator {
        
     }
     
-    func childDidFinish(_ child: any Coordinator) {
-        children.removeLast()
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in children.enumerated() {
+            if coordinator === child {
+                children.remove(at: index)
+                break
+            }
+        }
     }
     
     func goToLogin(){
-        let authCoordinator = LoginCoordinator.init(navigationController: navigationController)
+        let dataProvider = DataProvider()
+        let sessionManager = SessionManager()
+        let authCoordinator = LoginCoordinator(navigationController: navigationController,
+                                                    dataProvider: dataProvider,
+                                                    sessionManager: sessionManager)
         authCoordinator.parentCoordinator = self
         children.append(authCoordinator)
         
@@ -52,7 +62,11 @@ class AppCoordinator : Coordinator {
     }
     
     func goToAccounts(){
-        let accountsCoordinator = AccountsCoordinator.init(navigationController: navigationController)
+        let dataProvider = DataProvider()
+        let sessionManager = SessionManager()
+        let accountsCoordinator = AccountsCoordinator.init(navigationController: navigationController,
+                                                           dataProvider: dataProvider,
+                                                           sessionManager: sessionManager)
         accountsCoordinator.parentCoordinator = self
         children.append(accountsCoordinator)
         
