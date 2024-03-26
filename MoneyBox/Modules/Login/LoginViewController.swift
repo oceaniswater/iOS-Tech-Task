@@ -181,6 +181,4 @@ extension LoginViewController: LoginViewControllerDelegate {
             self?.activityView.stopAnimating()
         }
     }
-    
-    
 }

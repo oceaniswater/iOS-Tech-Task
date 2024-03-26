@@ -13,10 +13,10 @@ protocol LoginNavigation : AnyObject{
 }
 
 protocol LoginViewModelProtocol: AnyObject {
-    var navigation      : LoginNavigation! { get set }
-    var dataProvider    : DataProvider! { get set }
-    var delegate        : LoginViewControllerDelegate! { get set }
-    var tokenManager    : TokenManager! { get set }
+    var navigation      : LoginNavigation? { get set }
+    var dataProvider    : DataProvider { get set }
+    var delegate        : LoginViewControllerDelegate? { get set }
+    var tokenManager    : TokenManager { get set }
     
     func login(email: String, password: String)
     func goToAccounts()
@@ -24,10 +24,10 @@ protocol LoginViewModelProtocol: AnyObject {
 
 class LoginViewModel: LoginViewModelProtocol {
     
-    weak var navigation     : LoginNavigation!
-    var dataProvider        : DataProvider!
-    var delegate            : LoginViewControllerDelegate!
-    var tokenManager        : TokenManager!
+    weak var navigation     : LoginNavigation?
+    var dataProvider        : DataProvider
+    var delegate            : LoginViewControllerDelegate?
+    var tokenManager        : TokenManager
     
     init(nav : LoginNavigation,
          dataProvider: DataProvider,
@@ -41,27 +41,31 @@ class LoginViewModel: LoginViewModelProtocol {
     }
     
     func login(email: String, password: String) {
-        delegate.startLoading()
+        delegate?.startLoading()
         let request = LoginRequest(email: email, password: password)
         dataProvider.login(request: request) { [weak self] result in
-            switch result {
-            case .success(let success):
-                let token = success.session.bearerToken
-                self?.tokenManager.saveToken(token)
-                let user = success.user
-                UserDefaultsManager.shared.saveUser(user)
-                self?.goToAccounts()
-            case .failure(let failure):
-                self?.tokenManager.deleteToken()
-                UserDefaultsManager.shared.deleteUser()
-                print(failure.localizedDescription)
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let success):
+                    let token = success.session.bearerToken
+                    self.tokenManager.saveToken(token)
+                    let user = success.user
+                    UserDefaultsManager.shared.saveUser(user)
+                    self.goToAccounts()
+                case .failure(let failure):
+                    self.tokenManager.deleteToken()
+                    UserDefaultsManager.shared.deleteUser()
+                    print(failure.localizedDescription)
+                }
             }
-            self?.delegate.stopLoading()
+            self.delegate?.stopLoading()
+            
         }
     }
     
     func goToAccounts(){
-        navigation.goToAccountsScreen()
+        navigation?.goToAccountsScreen()
     }
     
     deinit {

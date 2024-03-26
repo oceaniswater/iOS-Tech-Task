@@ -5,6 +5,7 @@
 //  Created by Mark Golubev on 25/03/2024.
 //
 
+import Foundation
 import Networking
 
 protocol AccountsNavigation : AnyObject{
@@ -69,17 +70,20 @@ class AccountsViewModel: AccountsViewModelProtocol {
     func getAccounts() {
         dataDelegate.startLoading()
         dataProvider.fetchProducts { [weak self] result in
-            switch result {
-            case .success(let success):
-                self?.products = success.productResponses ?? []
-                self?.dataDelegate.didReciveData(total: success.totalPlanValue)
-            case .failure(let failure):
-                print(failure.localizedDescription)
-                self?.tokenManager.deleteToken()
-                UserDefaultsManager.shared.deleteUser()
-                self?.goToRoot()
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let success):
+                    self.products = success.productResponses ?? []
+                    self.dataDelegate.didReciveData(total: success.totalPlanValue)
+                case .failure(let failure):
+                    print(failure.localizedDescription)
+                    self.tokenManager.deleteToken()
+                    UserDefaultsManager.shared.deleteUser()
+                    self.goToRoot()
+                }
             }
-            self?.dataDelegate.stopLoading()
+            self.dataDelegate.stopLoading()
         }
     }
     

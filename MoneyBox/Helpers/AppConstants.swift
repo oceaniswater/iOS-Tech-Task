@@ -9,13 +9,13 @@ import UIKit
 
 struct K {
     struct Design {
-        static let backgroundColor = UIColor(named: "BackgroundColor")
-        static let secondaryColor = UIColor(named: "GrayColor")
+        static let backgroundColor      = UIColor(named: "BackgroundColor")
+        static let secondaryColor       = UIColor(named: "GrayColor")
         
-        static let primaryCellColor = UIColor(named: "primaryCellColor")
-        static let secondaryCellColor = UIColor(named: "secondaryCellColor")
+        static let primaryCellColor     = UIColor(named: "primaryCellColor")
+        static let secondaryCellColor   = UIColor(named: "secondaryCellColor")
         
-        static let primaryTextColor = UIColor(named: "primaryTextColor")
-        static let secondaryTextColor = UIColor(named: "secondaryTextColor")
+        static let primaryTextColor     = UIColor(named: "primaryTextColor")
+        static let secondaryTextColor   = UIColor(named: "secondaryTextColor")
     }
 }

@@ -36,12 +36,12 @@ class AccountTableViewCell: UITableViewCell {
     // MARK: - Private properties
     private let view: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = K.Design.primaryCellColor
         view.layer.cornerRadius = 5
 //        view.layer.shadowColor = K.Design.separatorLineColor?.cgColor
-        view.layer.shadowOpacity = 1
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 1
+//        view.layer.shadowOpacity = 1
+//        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+//        view.layer.shadowRadius = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -49,21 +49,21 @@ class AccountTableViewCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
-//        label.textColor = K.Design.primaryTextColor
+        label.textColor = K.Design.primaryTextColor
         return label
     }()
     
     private let planLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-//        label.textColor = K.Design.secondTextColor
+        label.textColor = K.Design.primaryTextColor
         return label
     }()
     
     private let moneyboxLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-//        label.textColor = K.Design.secondTextColor
+        label.textColor = K.Design.primaryTextColor
         return label
     }()
     
