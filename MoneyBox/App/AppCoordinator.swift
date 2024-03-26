@@ -38,7 +38,6 @@ class AppCoordinator : Coordinator {
         } else {
             goToLogin()
         }
-       
     }
     
     func childDidFinish(_ child: Coordinator?) {
@@ -68,8 +67,8 @@ class AppCoordinator : Coordinator {
         let sessionManager            = SessionManager()
         let tokenManager              = TokenManager(sessionManager: sessionManager)
         let accountsCoordinator       = AccountsCoordinator.init(navigationController: navigationController,
-                                                           dataProvider: dataProvider,
-                                                           tokenManager: tokenManager)
+                                                                 dataProvider: dataProvider,
+                                                                 tokenManager: tokenManager)
         accountsCoordinator.parentCoordinator = self
         children.append(accountsCoordinator)
         
@@ -79,6 +78,4 @@ class AppCoordinator : Coordinator {
     deinit {
         print("AppCoordinator Deinit")
     }
-    
-    
 }

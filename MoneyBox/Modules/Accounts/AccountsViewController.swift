@@ -42,13 +42,15 @@ class AccountsViewController: UIViewController {
     
     let tableView: UITableView = {
         let tableView = UITableView()
+        tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .clear
         return tableView
     }()
     
     private let loginButton: UIButton = {
         let button                                       = UIButton(type: .system)
-        button.setTitle("Refresh", for: .normal)
+        button.setTitle("Refresh (test expired/wrong token)", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor                           = UIColor(resource: .accent)
         button.layer.cornerRadius                        = 5
@@ -73,7 +75,7 @@ class AccountsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = K.Design.backgroundColor
         setupViews()
         setupConstraints()
         setupTableView()

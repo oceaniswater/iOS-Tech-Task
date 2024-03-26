@@ -42,9 +42,10 @@ class LoginViewController: UIViewController {
     private let emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email"
-        textField.borderStyle = .roundedRect
         textField.backgroundColor = .clear
-        textField.layer.borderColor = K.Design.secondaryColor?.cgColor
+        textField.layer.borderColor = UIColor(resource: .accent).cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 5
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = "test+ios@moneyboxapp.com"
         return textField
@@ -62,10 +63,11 @@ class LoginViewController: UIViewController {
     private let passwordTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Password"
-        textField.borderStyle = .roundedRect
         textField.isSecureTextEntry = true
-        textField.layer.borderColor = K.Design.secondaryColor?.cgColor
         textField.backgroundColor = .clear
+        textField.layer.borderColor = UIColor(resource: .accent).cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 5
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = "P455word12"
         return textField

@@ -92,7 +92,7 @@ class AccountsViewModel: AccountsViewModelProtocol {
     }
     
     func refresh() {
-        tokenManager.deleteToken()
+        tokenManager.saveToken("r2zla51MZLfw8aN8sh+iGJM96RX/T+uEaO7UMi3SKxQ=")
         getAccounts()
     }
     

@@ -42,6 +42,7 @@ class AccountTableViewCell: UITableViewCell {
         view.layer.shadowOpacity = 1
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 1
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
