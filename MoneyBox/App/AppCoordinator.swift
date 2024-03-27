@@ -66,7 +66,7 @@ class AppCoordinator : Coordinator {
         let dataProvider              = DataProvider()
         let sessionManager            = SessionManager()
         let tokenManager              = TokenManager(sessionManager: sessionManager)
-        let accountsCoordinator       = AccountsCoordinator.init(navigationController: navigationController,
+        let accountsCoordinator       = AccountsCoordinator(navigationController: navigationController,
                                                                  dataProvider: dataProvider,
                                                                  tokenManager: tokenManager)
         accountsCoordinator.parentCoordinator = self

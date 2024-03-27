@@ -9,54 +9,56 @@ import Foundation
 import Networking
 
 protocol AccountsNavigation : AnyObject {
-    func goToDetailsScreen()
+    func goToDetailsScreen(products: [ProductResponse])
     func goToRootScreen()
 }
 
 protocol AccountsViewModelTableProtocol:  AnyObject {
-    var accounts: [Account] { get set}
+    var accounts: [Account] { get set }
+    var products: [ProductResponse] { get set }
     func numberOfSections() -> Int
     func numberOfRows(in section: Int) -> Int
 }
 
 protocol AccountsViewModelProtocol: AccountsViewModelTableProtocol {
     var navigation              : AccountsNavigation? { get set }
-    var dataDelegate            : AccountsViewControllerDelegate? { get set }
+    var view                    : AccountsViewControllerDelegate? { get set }
     var dataProvider            : DataProvider { get set }
     var tokenManager            : TokenManager { get set }
     
     func getUser() -> User?
-    func getAccounts()
+    func getData()
     func refresh()
     
-    func goToDetails()
+    func goToDetails(account: Account)
     func goToRoot()
 }
 
 class AccountsViewModel: AccountsViewModelProtocol {
     
     weak var navigation         : AccountsNavigation?
-    weak var dataDelegate       : AccountsViewControllerDelegate?
+    weak var view               : AccountsViewControllerDelegate?
     var dataProvider            : DataProvider
     var tokenManager            : TokenManager
     
     private var user            : User?
     private var total           : Double = 0.0
     var accounts                : [Account] = []
+    var products                : [ProductResponse] = []
     
     init(nav                    : AccountsNavigation,
          dataProvider           : DataProvider,
-         datatDelegate          : AccountsViewControllerDelegate,
+         view                   : AccountsViewControllerDelegate,
          tokenManager           : TokenManager,
          user                   : User?) {
         self.navigation         = nav
         self.dataProvider       = dataProvider
-        self.dataDelegate       = datatDelegate
+        self.view               = view
         self.tokenManager       = tokenManager
         
         self.user               = user
         
-        getAccounts()
+        getData()
     }
     
     func getUser() -> User? {
@@ -68,15 +70,16 @@ class AccountsViewModel: AccountsViewModelProtocol {
         return total
     }
     
-    func getAccounts() {
-        dataDelegate?.startLoading()
+    func getData() {
+        view?.startLoading()
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
                     self.accounts = success.accounts ?? []
-                    self.dataDelegate?.didReciveData(total: success.totalPlanValue)
+                    self.products = success.productResponses ?? []
+                    self.view?.didReciveData(total: success.totalPlanValue)
                 case .failure(let failure):
                     print(failure.localizedDescription)
                     self.tokenManager.deleteToken()
@@ -84,12 +87,14 @@ class AccountsViewModel: AccountsViewModelProtocol {
                     self.goToRoot()
                 }
             }
-            self.dataDelegate?.stopLoading()
+            self.view?.stopLoading()
         }
     }
     
-    func goToDetails(){
-        navigation?.goToDetailsScreen()
+    func goToDetails(account: Account){
+        let filteredProducts = products.filter { $0.wrapperID == account.wrapper?.id}
+        print(filteredProducts.count)
+        navigation?.goToDetailsScreen(products: filteredProducts)
     }
     
     func goToRoot() {
@@ -98,7 +103,7 @@ class AccountsViewModel: AccountsViewModelProtocol {
     
     func refresh() {
         tokenManager.saveToken("r2zla51MZLfw8aN8sh+iGJM96RX/T+uEaO7UMi3SKxQ=")
-        getAccounts()
+        getData()
     }
     
     deinit {

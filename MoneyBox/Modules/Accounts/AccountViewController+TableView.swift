@@ -39,11 +39,15 @@ extension AccountsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AccountTableViewCell.identifier, for: indexPath) as? AccountTableViewCell else { return UITableViewCell() }
         
-        guard let item = self.viewModel?.products[indexPath.row] else { return UITableViewCell() }
+        guard let item = self.viewModel?.accounts[indexPath.row] else { return UITableViewCell() }
         cell.configure(with: item)
         cell.selectionStyle = .none
         
         return cell
-        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let account = self.viewModel?.accounts[indexPath.row] else { return }
+        viewModel.goToDetails(account: account)
     }
 }

@@ -13,21 +13,22 @@ class DetailsCoordinator : Coordinator {
     var children                    : [Coordinator] = []
     var navigationController        : UINavigationController
     var dataProvider                : DataProvider
-    var sessionManager              : SessionManager
     var tokenManager                : TokenManager
     
-    init(navigationController : UINavigationController,
-         dataProvider: DataProvider,
-         sessionManager: SessionManager,
-         tokenManager: TokenManager) {
+    var products                    : [ProductResponse]
+    
+    init(navigationController       : UINavigationController,
+         dataProvider               : DataProvider,
+         tokenManager               : TokenManager,
+         products                   : [ProductResponse]) {
         self.navigationController   = navigationController
         self.dataProvider           = dataProvider
-        self.sessionManager         = sessionManager
         self.tokenManager           = tokenManager
+        self.products               = products
     }
     
     func start() {
-        print("AuthCoordinator Start")
+        print("DetailsCoordinator Start")
         goToDetailsScreen()
     }
     
@@ -41,19 +42,20 @@ class DetailsCoordinator : Coordinator {
     }
     
     deinit {
-        print("AuthCoordinator Deinit")
+        print("DetailsCoordinator Deinit")
     }
 }
 
 extension DetailsCoordinator : DetailsNavigation {
     func goToDetailsScreen(){
-        // Instantiate AccountsViewController
         let detailsViewController       = DetailsViewController()
-        // Instantiate AccountsViewModel and set the coordinator
-        let detailsViewModel            = DetailsViewModel.init(nav: self)
-        // Set the ViewModel to ViewController
+        let detailsViewModel            = DetailsViewModel(nav: self,
+                                                           dataProvider     : dataProvider,
+                                                           view             : detailsViewController,
+                                                           tokenManager     : tokenManager,
+                                                           products         : products)
+        
         detailsViewController.viewModel = detailsViewModel
-        // Push it.
         navigationController.pushViewController(detailsViewController, animated: true)
     }
 }
