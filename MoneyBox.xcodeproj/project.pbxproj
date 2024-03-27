@@ -22,6 +22,8 @@
 		866B56FE2BB34A8C00E8E786 /* AccountViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56FD2BB34A8C00E8E786 /* AccountViewController+TableView.swift */; };
 		866B57002BB35C4A00E8E786 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56FF2BB35C4A00E8E786 /* Errors.swift */; };
 		866B57022BB35DD800E8E786 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57012BB35DD800E8E786 /* TokenManager.swift */; };
+		866B570F2BB4A73100E8E786 /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B570E2BB4A73100E8E786 /* ProductTableViewCell.swift */; };
+		866B57112BB4A88900E8E786 /* DetailsViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57102BB4A88900E8E786 /* DetailsViewController+TableView.swift */; };
 		B228EA6B2880B30B00B35F16 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B228EA692880B30B00B35F16 /* LoginViewController.swift */; };
 		B26EF47828881E7F003BFDF2 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = B26EF47728881E7F003BFDF2 /* Networking */; };
 		B2CA46CC279350880041B3A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA46CB279350880041B3A5 /* AppDelegate.swift */; };
@@ -58,6 +60,8 @@
 		866B56FD2BB34A8C00E8E786 /* AccountViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+TableView.swift"; sourceTree = "<group>"; };
 		866B56FF2BB35C4A00E8E786 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		866B57012BB35DD800E8E786 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		866B570E2BB4A73100E8E786 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
+		866B57102BB4A88900E8E786 /* DetailsViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsViewController+TableView.swift"; sourceTree = "<group>"; };
 		B228EA692880B30B00B35F16 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B24EED92288ED5740016C233 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		B2CA46C8279350880041B3A5 /* MoneyBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneyBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,9 +119,11 @@
 		866B56DB2BB1EB0000E8E786 /* Details */ = {
 			isa = PBXGroup;
 			children = (
+				866B57062BB4812C00E8E786 /* SupportingViews */,
+				866B56EF2BB21B4B00E8E786 /* DetailsCoordinator.swift */,
 				866B56E02BB1EC0800E8E786 /* DetailsViewModel.swift */,
 				866B56E22BB1EC1C00E8E786 /* DetailsViewController.swift */,
-				866B56EF2BB21B4B00E8E786 /* DetailsCoordinator.swift */,
+				866B57102BB4A88900E8E786 /* DetailsViewController+TableView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -166,6 +172,14 @@
 			isa = PBXGroup;
 			children = (
 				866B56FB2BB344D700E8E786 /* AccountTableViewCell.swift */,
+			);
+			path = SupportingViews;
+			sourceTree = "<group>";
+		};
+		866B57062BB4812C00E8E786 /* SupportingViews */ = {
+			isa = PBXGroup;
+			children = (
+				866B570E2BB4A73100E8E786 /* ProductTableViewCell.swift */,
 			);
 			path = SupportingViews;
 			sourceTree = "<group>";
@@ -334,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				866B57022BB35DD800E8E786 /* TokenManager.swift in Sources */,
+				866B570F2BB4A73100E8E786 /* ProductTableViewCell.swift in Sources */,
 				B2CA46CC279350880041B3A5 /* AppDelegate.swift in Sources */,
 				866B56DD2BB1EBBF00E8E786 /* AccountsViewController.swift in Sources */,
 				866B56E12BB1EC0800E8E786 /* DetailsViewModel.swift in Sources */,
@@ -350,6 +365,7 @@
 				866B56FC2BB344D700E8E786 /* AccountTableViewCell.swift in Sources */,
 				866B56EE2BB2178B00E8E786 /* AccountsCoordinator.swift in Sources */,
 				866B56E72BB1F35C00E8E786 /* AppCoordinator.swift in Sources */,
+				866B57112BB4A88900E8E786 /* DetailsViewController+TableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

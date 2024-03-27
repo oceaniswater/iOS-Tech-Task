@@ -8,16 +8,28 @@
 import Foundation
 import Networking
 
-protocol DetailsNavigation : AnyObject{
+protocol DetailsNavigation : AnyObject {
+    func goToDetailsScreen()
+    func goToAccountsScreen()
+    func goToRootScreen()
 
 }
 
-protocol DetailsViewModelProtocol {
+protocol DetailsViewModelCollectionProtocol: AnyObject {
+    func numberOfSections() -> Int
+    func numberOfRows(in section: Int) -> Int
+    
+    var selectedProduct: ProductResponse? { get set }
+}
+
+protocol DetailsViewModelProtocol: DetailsViewModelCollectionProtocol {
     var navigation              : DetailsNavigation? { get set }
     var dataProvider            : DataProvider { get set }
     var view                    : DetailsViewControllerDelegate? { get set }
     var tokenManager            : TokenManager { get set }
     var products                : [ProductResponse] { get set }
+    
+    func addMoney()
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
@@ -27,6 +39,7 @@ class DetailsViewModel: DetailsViewModelProtocol {
     var tokenManager            : TokenManager
     
     var products                : [ProductResponse]
+    var selectedProduct         : ProductResponse?
     
     init(nav                    : DetailsNavigation,
          dataProvider           : DataProvider,
@@ -39,14 +52,58 @@ class DetailsViewModel: DetailsViewModelProtocol {
         self.tokenManager       = tokenManager
         self.products           = products
         
-        printcount()
+//        printcount()
+//        addMoney(to: 8043)
+    }
+    
+    func addMoney() {
+        guard let productId = selectedProduct?.id else { return }
+        let request = OneOffPaymentRequest(amount: 10, investorProductID: productId)
+        dataProvider.addMoney(request: request) { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.view?.didAddMoneySucces()
+                guard let accountId = self?.selectedProduct?.wrapperID else { return }
+                self?.getFilteredData(accountId: accountId)
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
+    }
+    
+    func getFilteredData(accountId: String) {
+        dataProvider.fetchProducts { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let success):
+                    self.products = success.productResponses?.filter { $0.wrapperID == accountId} ?? []
+                    self.view?.didUpdateProducts()
+                case .failure(let failure):
+                    print(failure.localizedDescription)
+                    self.tokenManager.deleteToken()
+                    UserDefaultsManager.shared.deleteUser()
+                    self.goToRoot()
+                }
+            }
+        }
+    }
+    
+    func goToRoot() {
+        navigation?.goToRootScreen()
     }
     
     deinit {
         print("Deinit details view model")
     }
+}
+
+extension DetailsViewModel {
+    func numberOfSections() -> Int {
+        1
+    }
     
-    func printcount() {
-        print(products.count)
+    func numberOfRows(in section: Int) -> Int {
+        self.products.count
     }
 }

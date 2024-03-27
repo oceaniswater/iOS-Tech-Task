@@ -47,6 +47,21 @@ class DetailsCoordinator : Coordinator {
 }
 
 extension DetailsCoordinator : DetailsNavigation {
+    func goToRootScreen() {
+        if let appC = parentCoordinator as? AccountsCoordinator {
+            navigationController.viewControllers.removeLast()
+            parentCoordinator?.childDidFinish(self)
+            appC.goToRootScreen()
+        }
+    }
+    
+    func goToAccountsScreen() {
+        if let appC = parentCoordinator as? AccountsCoordinator {
+            navigationController.viewControllers.removeLast()
+            parentCoordinator?.childDidFinish(self)
+        }
+    }
+    
     func goToDetailsScreen(){
         let detailsViewController       = DetailsViewController()
         let detailsViewModel            = DetailsViewModel(nav: self,

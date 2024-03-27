@@ -37,11 +37,6 @@ class AccountTableViewCell: UITableViewCell {
     private let view: UIView = {
         let view = UIView()
         view.backgroundColor = K.Design.secondaryCellColor
-//        view.layer.cornerRadius = 5
-//        view.layer.shadowColor = K.Design.separatorLineColor?.cgColor
-//        view.layer.shadowOpacity = 1
-//        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-//        view.layer.shadowRadius = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -49,22 +44,22 @@ class AccountTableViewCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = K.Design.secondaryColor
+        label.textColor = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let amountLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = K.Design.secondaryColor
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let arrowImageView: UIImageView = {
         let image = UIImageView(image: UIImage(systemName: "chevron.right"))
-        image.tintColor = K.Design.secondaryColor
+        image.tintColor = K.Design.secondaryTextColor
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
