@@ -15,9 +15,9 @@ class LoginCoordinator: Coordinator {
     var dataProvider                : DataProvider
     var tokenManager                : TokenManager
     
-    init(navigationController : UINavigationController,
-         dataProvider: DataProvider,
-         tokenManager: TokenManager
+    init(navigationController       : UINavigationController,
+         dataProvider               : DataProvider,
+         tokenManager               : TokenManager
     ) {
         self.navigationController   = navigationController
         self.dataProvider           = dataProvider

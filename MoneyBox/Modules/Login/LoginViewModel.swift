@@ -8,7 +8,7 @@
 import Foundation
 import Networking
 
-protocol LoginNavigation : AnyObject{
+protocol LoginNavigation : AnyObject {
     func goToAccountsScreen()
 }
 
@@ -26,7 +26,7 @@ class LoginViewModel: LoginViewModelProtocol {
     
     weak var navigation     : LoginNavigation?
     var dataProvider        : DataProvider
-    var delegate            : LoginViewControllerDelegate?
+    weak var delegate       : LoginViewControllerDelegate?
     var tokenManager        : TokenManager
     
     init(nav : LoginNavigation,

@@ -8,7 +8,7 @@
 import Foundation
 import Networking
 
-protocol AccountsNavigation : AnyObject{
+protocol AccountsNavigation : AnyObject {
     func goToDetailsScreen()
     func goToRootScreen()
 }
@@ -20,9 +20,10 @@ protocol AccountsViewModelTableProtocol:  AnyObject {
 }
 
 protocol AccountsViewModelProtocol: AccountsViewModelTableProtocol {
-    var navigation              : AccountsNavigation! { get set }
-    var dataProvider            : DataProvider! { get set }
-    var tokenManager            : TokenManager! { get set }
+    var navigation              : AccountsNavigation? { get set }
+    var dataDelegate            : AccountsViewControllerDelegate? { get set }
+    var dataProvider            : DataProvider { get set }
+    var tokenManager            : TokenManager { get set }
     
     func getUser() -> User?
     func getAccounts()
@@ -34,10 +35,10 @@ protocol AccountsViewModelProtocol: AccountsViewModelTableProtocol {
 
 class AccountsViewModel: AccountsViewModelProtocol {
     
-    weak var navigation         : AccountsNavigation!
-    weak var dataDelegate       : AccountsViewControllerDelegate!
-    var dataProvider            : DataProvider!
-    var tokenManager            : TokenManager!
+    weak var navigation         : AccountsNavigation?
+    weak var dataDelegate       : AccountsViewControllerDelegate?
+    var dataProvider            : DataProvider
+    var tokenManager            : TokenManager
     
     private var user            : User?
     private var total           : Double = 0.0
@@ -68,14 +69,14 @@ class AccountsViewModel: AccountsViewModelProtocol {
     }
     
     func getAccounts() {
-        dataDelegate.startLoading()
+        dataDelegate?.startLoading()
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
                     self.products = success.productResponses ?? []
-                    self.dataDelegate.didReciveData(total: success.totalPlanValue)
+                    self.dataDelegate?.didReciveData(total: success.totalPlanValue)
                 case .failure(let failure):
                     print(failure.localizedDescription)
                     self.tokenManager.deleteToken()
@@ -83,16 +84,16 @@ class AccountsViewModel: AccountsViewModelProtocol {
                     self.goToRoot()
                 }
             }
-            self.dataDelegate.stopLoading()
+            self.dataDelegate?.stopLoading()
         }
     }
     
     func goToDetails(){
-        navigation.goToDetailsScreen()
+        navigation?.goToDetailsScreen()
     }
     
     func goToRoot() {
-        navigation.goToRootScreen()
+        navigation?.goToRootScreen()
     }
     
     func refresh() {

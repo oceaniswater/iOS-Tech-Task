@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol LoginViewControllerDelegate {
+protocol LoginViewControllerDelegate: AnyObject {
     func startLoading()
     func stopLoading()
 }
