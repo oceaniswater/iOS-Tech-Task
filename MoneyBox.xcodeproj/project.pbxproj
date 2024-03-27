@@ -103,10 +103,10 @@
 		866B56DA2BB1EAF800E8E786 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				866B57032BB4467400E8E786 /* SupportingViews */,
 				866B56DC2BB1EBBF00E8E786 /* AccountsViewController.swift */,
 				866B56DE2BB1EBED00E8E786 /* AccountsViewModel.swift */,
 				866B56ED2BB2178B00E8E786 /* AccountsCoordinator.swift */,
-				866B56FB2BB344D700E8E786 /* AccountTableViewCell.swift */,
 				866B56FD2BB34A8C00E8E786 /* AccountViewController+TableView.swift */,
 			);
 			path = Accounts;
@@ -160,6 +160,14 @@
 				866B57012BB35DD800E8E786 /* TokenManager.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		866B57032BB4467400E8E786 /* SupportingViews */ = {
+			isa = PBXGroup;
+			children = (
+				866B56FB2BB344D700E8E786 /* AccountTableViewCell.swift */,
+			);
+			path = SupportingViews;
 			sourceTree = "<group>";
 		};
 		B2CA46BF279350880041B3A5 = {

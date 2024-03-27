@@ -14,7 +14,7 @@ protocol AccountsNavigation : AnyObject {
 }
 
 protocol AccountsViewModelTableProtocol:  AnyObject {
-    var products: [ProductResponse] { get set}
+    var accounts: [Account] { get set}
     func numberOfSections() -> Int
     func numberOfRows(in section: Int) -> Int
 }
@@ -42,7 +42,7 @@ class AccountsViewModel: AccountsViewModelProtocol {
     
     private var user            : User?
     private var total           : Double = 0.0
-    var products                : [ProductResponse] = []
+    var accounts                : [Account] = []
     
     init(nav                    : AccountsNavigation,
          dataProvider           : DataProvider,
@@ -75,7 +75,7 @@ class AccountsViewModel: AccountsViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
-                    self.products = success.productResponses ?? []
+                    self.accounts = success.accounts ?? []
                     self.dataDelegate?.didReciveData(total: success.totalPlanValue)
                 case .failure(let failure):
                     print(failure.localizedDescription)
@@ -112,6 +112,6 @@ extension AccountsViewModel {
     }
     
     func numberOfRows(in section: Int) -> Int {
-        return self.products.count
+        return self.accounts.count
     }
 }
