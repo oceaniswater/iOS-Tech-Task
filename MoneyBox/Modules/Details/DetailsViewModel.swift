@@ -15,14 +15,14 @@ protocol DetailsNavigation : AnyObject {
 
 }
 
-protocol DetailsViewModelCollectionProtocol: AnyObject {
+protocol DetailsViewModelTableProtocol: AnyObject {
     func numberOfSections() -> Int
     func numberOfRows(in section: Int) -> Int
     
     var selectedProduct: ProductResponse? { get set }
 }
 
-protocol DetailsViewModelProtocol: DetailsViewModelCollectionProtocol {
+protocol DetailsViewModelProtocol: DetailsViewModelTableProtocol {
     var navigation              : DetailsNavigation? { get set }
     var dataProvider            : DataProvider { get set }
     var view                    : DetailsViewControllerDelegate? { get set }
@@ -33,6 +33,7 @@ protocol DetailsViewModelProtocol: DetailsViewModelCollectionProtocol {
     
     func addMoney()
     func getTitle() -> String
+    func enableAddMoneyButton()
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
@@ -66,18 +67,20 @@ class DetailsViewModel: DetailsViewModelProtocol {
         guard let productId = selectedProduct?.id else { return }
         let request = OneOffPaymentRequest(amount: 10, investorProductID: productId)
         dataProvider.addMoney(request: request) { [weak self] result in
-            switch result {
-            case .success(let success):
-                self?.view?.didAddMoneySucces()
-                guard let accountId = self?.selectedProduct?.wrapperID else { return }
-                self?.getFilteredData(accountId: accountId)
-            case .failure(let failure):
-                print(failure.localizedDescription)
+            DispatchQueue.main.async {
+                switch result {
+                case .success( _):
+                    guard let accountId = self?.selectedProduct?.wrapperID else { return }
+                    self?.getFilteredData(accountId: accountId)
+                case .failure(let failure):
+                    print(failure.localizedDescription)
+                }
             }
         }
     }
     
-    func getFilteredData(accountId: String) {
+    private func getFilteredData(accountId: String) {
+        view?.isLoading(true)
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -85,12 +88,14 @@ class DetailsViewModel: DetailsViewModelProtocol {
                 case .success(let success):
                     self.products = success.productResponses?.filter { $0.wrapperID == accountId} ?? []
                     self.view?.didUpdateProducts()
+                    self.setupSelectedProduct()
                 case .failure(let failure):
                     print(failure.localizedDescription)
                     self.tokenManager.deleteToken()
                     UserDefaultsManager.shared.deleteUser()
                     self.goToRoot()
                 }
+                self.view?.isLoading(false)
             }
         }
     }
@@ -102,8 +107,17 @@ class DetailsViewModel: DetailsViewModelProtocol {
     private func setupSelectedProduct() {
         if products.count == 1 {
             selectedProduct = products.first
-            view?.hideSelectProductLabel()
+            view?.hideSelectProductLabel(true)
+        } else {
+            selectedProduct = nil
+            view?.hideSelectProductLabel(false)
+            view?.changeAddMoneyButtonState(false)
         }
+    }
+    
+    func enableAddMoneyButton() {
+        view?.changeAddMoneyButtonState(true)
+        view?.hideSelectProductLabel(true)
     }
     
     func goToRoot() {

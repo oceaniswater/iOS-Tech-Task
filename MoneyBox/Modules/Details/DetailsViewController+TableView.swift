@@ -49,6 +49,7 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let product = self.viewModel?.products[indexPath.row] else { return }
         self.viewModel.selectedProduct = product
+        self.viewModel.enableAddMoneyButton()
     }
 }
 

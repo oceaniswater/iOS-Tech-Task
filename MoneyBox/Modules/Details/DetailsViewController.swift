@@ -10,7 +10,9 @@ import UIKit
 protocol DetailsViewControllerDelegate: AnyObject {
     func didAddMoneySucces()
     func didUpdateProducts()
-    func hideSelectProductLabel()
+    func hideSelectProductLabel(_ isHidden: Bool)
+    func changeAddMoneyButtonState(_ isEnabled: Bool)
+    func isLoading(_ isActive: Bool)
 }
 
 class DetailsViewController: UIViewController {
@@ -52,9 +54,17 @@ class DetailsViewController: UIViewController {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "You need to choose a product to top up."
+        label.numberOfLines = 2
+        label.text = "You need to choose a product to top your moneybox."
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let activityView: UIActivityIndicatorView = {
+        let activity = UIActivityIndicatorView(style: .large)
+        activity.tintColor = K.Design.secondaryColor
+        activity.translatesAutoresizingMaskIntoConstraints = false
+        return activity
     }()
     
     var itemW: CGFloat {
@@ -141,6 +151,7 @@ private extension DetailsViewController {
         view.addSubview(tableView)
         view.addSubview(addMoneyButton)
         view.addSubview(selectProductLabel)
+        view.addSubview(activityView)
     }
 }
 
@@ -167,17 +178,37 @@ private extension DetailsViewController {
             
             selectProductLabel.bottomAnchor.constraint(equalTo: addMoneyButton.topAnchor, constant: -20),
             selectProductLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            selectProductLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-//            selectProductLabel.heightAnchor.constraint(equalToConstant: 40),
+            selectProductLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
+            selectProductLabel.leadingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
             
+            activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 }
 
 extension DetailsViewController: DetailsViewControllerDelegate {
-    func hideSelectProductLabel() {
+    func isLoading(_ isActive: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.selectProductLabel.isHidden = true
+            self?.activityView.isHidden = isActive
+            if isActive {
+                self?.activityView.startAnimating()
+            } else {
+                self?.activityView.stopAnimating()
+            }
+        }
+    }
+    
+    func changeAddMoneyButtonState(_ isEnabled: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.addMoneyButton.isEnabled = isEnabled
+            self?.addMoneyButton.layer.opacity = isEnabled ? 1 : 0.5
+        }
+    }
+    
+    func hideSelectProductLabel(_ isHidden: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.selectProductLabel.isHidden = isHidden
         }
     }
     
