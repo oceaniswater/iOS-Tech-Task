@@ -133,17 +133,16 @@ private extension ProductTableViewCell {
 private extension ProductTableViewCell {
     func setupLayout() {
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: topAnchor),
-            view.leadingAnchor.constraint(equalTo: leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: trailingAnchor),
-            view.bottomAnchor.constraint(equalTo: bottomAnchor , constant: -20),
+            view.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
             nameLabel.heightAnchor.constraint(equalToConstant: 20),
             
             planValueLabel.heightAnchor.constraint(equalToConstant: 20),
             
             moneyboxLabel.heightAnchor.constraint(equalToConstant: 20),
-            
             
             vStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

@@ -28,8 +28,11 @@ protocol DetailsViewModelProtocol: DetailsViewModelCollectionProtocol {
     var view                    : DetailsViewControllerDelegate? { get set }
     var tokenManager            : TokenManager { get set }
     var products                : [ProductResponse] { get set }
+    var selectedProduct         : ProductResponse? { get set }
+    var account                 : Account { get set }
     
     func addMoney()
+    func getTitle() -> String
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
@@ -40,20 +43,23 @@ class DetailsViewModel: DetailsViewModelProtocol {
     
     var products                : [ProductResponse]
     var selectedProduct         : ProductResponse?
+    var account                 : Account
     
     init(nav                    : DetailsNavigation,
          dataProvider           : DataProvider,
          view                   : DetailsViewControllerDelegate,
          tokenManager           : TokenManager,
-         products               : [ProductResponse]) {
+         products               : [ProductResponse],
+         account                : Account) {
+        
         self.navigation         = nav
         self.dataProvider       = dataProvider
         self.view               = view
         self.tokenManager       = tokenManager
         self.products           = products
+        self.account            = account
         
-//        printcount()
-//        addMoney(to: 8043)
+        setupSelectedProduct()
     }
     
     func addMoney() {
@@ -89,9 +95,21 @@ class DetailsViewModel: DetailsViewModelProtocol {
         }
     }
     
+    func getTitle() -> String {
+        return account.name ?? "Your products"
+    }
+    
+    private func setupSelectedProduct() {
+        if products.count == 1 {
+            selectedProduct = products.first
+            view?.hideSelectProductLabel()
+        }
+    }
+    
     func goToRoot() {
         navigation?.goToRootScreen()
     }
+    
     
     deinit {
         print("Deinit details view model")

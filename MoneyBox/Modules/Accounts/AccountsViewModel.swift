@@ -9,7 +9,7 @@ import Foundation
 import Networking
 
 protocol AccountsNavigation : AnyObject {
-    func goToDetailsScreen(products: [ProductResponse])
+    func goToDetailsScreen(products: [ProductResponse], account: Account)
     func goToRootScreen()
 }
 
@@ -94,7 +94,7 @@ class AccountsViewModel: AccountsViewModelProtocol {
     func goToDetails(account: Account){
         let filteredProducts = products.filter { $0.wrapperID == account.wrapper?.id}
         print(filteredProducts.count)
-        navigation?.goToDetailsScreen(products: filteredProducts)
+        navigation?.goToDetailsScreen(products: filteredProducts, account: account)
     }
     
     func goToRoot() {

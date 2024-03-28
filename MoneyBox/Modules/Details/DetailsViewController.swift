@@ -10,6 +10,7 @@ import UIKit
 protocol DetailsViewControllerDelegate: AnyObject {
     func didAddMoneySucces()
     func didUpdateProducts()
+    func hideSelectProductLabel()
 }
 
 class DetailsViewController: UIViewController {
@@ -20,24 +21,40 @@ class DetailsViewController: UIViewController {
     let screenHeight = UIScreen.main.bounds.size.height
     
     // MARK: - Private properties
-    private let loginButton: UIButton = {
+    private let addMoneyButton: UIButton = {
         let button                                       = UIButton(type: .system)
         button.setTitle("Add money: £10", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor                           = UIColor(resource: .accent)
         button.layer.cornerRadius                        = 5
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addMoneyButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    let tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
         tableView.isScrollEnabled = true
         return tableView
+    }()
+    
+    private var backView: UIView = {
+        let view = UIView()
+        view.backgroundColor = K.Design.primaryCellColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var selectProductLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "You need to choose a product to top up."
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     var itemW: CGFloat {
@@ -50,21 +67,53 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
         setupView()
         setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Restore default navigation bar color when the view controller disappears
+        navigationController?.navigationBar.backgroundColor = nil // Restore default color
     }
     
     deinit {
         print("Details VC deinit")
     }
     
+    func setupCustomBackButton() {
+        // Create a custom back button
+        let backButton = UIButton(type: .custom)
+        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        backButton.tintColor = K.Design.primaryTextColor
+        
+        // Add left padding to the button to adjust its position
+        var configuration = UIButton.Configuration.plain()
+        configuration.buttonSize = .large
+        backButton.configuration = configuration
+        
+        // Create a UIBarButtonItem with the custom button
+        let backButtonItem = UIBarButtonItem(customView: backButton)
+        
+        // Assign the custom back button to the navigation item
+        navigationItem.leftBarButtonItem = backButtonItem
+    }
+    
     // MARK: - Actions
-    @objc private func loginButtonTapped() {
-        // Handle login button tapped
+    @objc private func addMoneyButtonTapped() {
         viewModel.addMoney()
-//        viewModel.navigation?.goToAccountsScreen()
+    }
+    
+    @objc func backButtonTapped() {
+        viewModel.navigation?.goToAccountsScreen()
     }
 }
 
@@ -72,19 +121,26 @@ class DetailsViewController: UIViewController {
 private extension DetailsViewController {
     func setupView() {
         view.backgroundColor = K.Design.backgroundColor
+        navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
+        title = viewModel.getTitle()
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: K.Design.primaryTextColor as Any]
+        }
         
         addSubview()
         setupLayout()
         setupTableView()
-        
+        setupCustomBackButton()
     }
 }
 
 // MARK: - Setting
 private extension DetailsViewController {
     func addSubview() {
+        view.addSubview(backView)
         view.addSubview(tableView)
-        view.addSubview(loginButton)
+        view.addSubview(addMoneyButton)
+        view.addSubview(selectProductLabel)
     }
 }
 
@@ -92,20 +148,39 @@ private extension DetailsViewController {
 private extension DetailsViewController {
     func setupLayout() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            backView.topAnchor.constraint(equalTo: view.topAnchor),
+            backView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backView.heightAnchor.constraint(equalToConstant: 200),
+            
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            loginButton.heightAnchor.constraint(equalToConstant: 40),
+            addMoneyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            addMoneyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addMoneyButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            addMoneyButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            
+            selectProductLabel.bottomAnchor.constraint(equalTo: addMoneyButton.topAnchor, constant: -20),
+            selectProductLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            selectProductLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+//            selectProductLabel.heightAnchor.constraint(equalToConstant: 40),
+            
         ])
     }
 }
 
 extension DetailsViewController: DetailsViewControllerDelegate {
+    func hideSelectProductLabel() {
+        DispatchQueue.main.async { [weak self] in
+            self?.selectProductLabel.isHidden = true
+        }
+    }
+    
     func didUpdateProducts() {
         reloadTableView()
     }

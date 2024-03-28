@@ -16,15 +16,19 @@ class DetailsCoordinator : Coordinator {
     var tokenManager                : TokenManager
     
     var products                    : [ProductResponse]
+    var account                     : Account
     
     init(navigationController       : UINavigationController,
          dataProvider               : DataProvider,
          tokenManager               : TokenManager,
-         products                   : [ProductResponse]) {
+         products                   : [ProductResponse],
+         account                    : Account) {
+        
         self.navigationController   = navigationController
         self.dataProvider           = dataProvider
         self.tokenManager           = tokenManager
         self.products               = products
+        self.account                = account
     }
     
     func start() {
@@ -68,7 +72,8 @@ extension DetailsCoordinator : DetailsNavigation {
                                                            dataProvider     : dataProvider,
                                                            view             : detailsViewController,
                                                            tokenManager     : tokenManager,
-                                                           products         : products)
+                                                           products         : products,
+                                                           account          : account)
         
         detailsViewController.viewModel = detailsViewModel
         navigationController.pushViewController(detailsViewController, animated: true)
