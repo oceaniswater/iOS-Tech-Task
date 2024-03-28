@@ -10,20 +10,13 @@ import UIKit
 protocol LoginViewControllerDelegate: AnyObject {
     func startLoading()
     func stopLoading()
+    func validationError()
 }
 
 class LoginViewController: UIViewController {
     var viewModel: LoginViewModelProtocol!
     
     // MARK: - Properties
-//    private let registerButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
-//        return button
-//    }()
-    
     private let logoView: UIImageView = {
         let view = UIImageView(image: UIImage(named: "moneybox"))
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -34,29 +27,41 @@ class LoginViewController: UIViewController {
     private let emailTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Email address"
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = K.Design.secondaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let emailTextField: AuthTextField = {
+    let emailTextField: AuthTextField = {
         let textField = AuthTextField(isSecure: false)
+        textField.tag = 0
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
+    }()
+    
+    private let invalidEmailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "The email addres you entered is not valid."
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = K.Design.errorHilightColor
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let passwordTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Email address"
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = K.Design.secondaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let passwordTextField: AuthTextField = {
+    let passwordTextField: AuthTextField = {
         let textField = AuthTextField(isSecure: true)
+        textField.tag = 1
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -112,6 +117,7 @@ class LoginViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupNavigationBar()
+        setupUITextFieldDelegate()
     }
     
     func setupNavigationBar() {
@@ -139,16 +145,16 @@ class LoginViewController: UIViewController {
     
     // MARK: - Private Methods
     private func setupViews() {
-        emailStack = UIStackView(arrangedSubviews: [emailTitleLabel, emailTextField])
+        emailStack = UIStackView(arrangedSubviews: [emailTitleLabel, emailTextField, invalidEmailLabel])
         emailStack.axis = .vertical
-        emailStack.spacing = 2
+        emailStack.spacing = 0
         emailStack.alignment = .leading
         emailStack.distribution = .fillProportionally
         emailStack.translatesAutoresizingMaskIntoConstraints = false
         
         passwordStack = UIStackView(arrangedSubviews: [passwordTitleLabel, passwordTextField])
         passwordStack.axis = .vertical
-        passwordStack.spacing = 2
+        passwordStack.spacing = 0
         passwordStack.alignment = .leading
         passwordStack.distribution = .fillProportionally
         passwordStack.translatesAutoresizingMaskIntoConstraints = false
@@ -178,7 +184,7 @@ class LoginViewController: UIViewController {
             emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             emailTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            passwordStack.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
+            passwordStack.topAnchor.constraint(equalTo: emailStack.bottomAnchor, constant: 5),
             passwordStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 40),
@@ -203,21 +209,46 @@ class LoginViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc private func loginButtonTapped() {
-        // Handle login button tapped
-        viewModel.login(email: emailTextField.text!, password: passwordTextField.text!)
+    @objc func loginButtonTapped() {
+        if viewModel.isValidEmail(emailTextField.text) {
+            viewModel.login(email: emailTextField.text!, password: passwordTextField.text!)
+        } else {
+            isEmalilValidationErrorHilighted(true)
+        }
+    }
+    
+    func isEmalilValidationErrorHilighted(_ isHilighted: Bool ) {
+        if isHilighted {
+            DispatchQueue.main.async { [weak self] in
+                self?.emailTitleLabel.textColor = K.Design.errorHilightColor
+                self?.emailTextField.layer.borderColor = K.Design.errorHilightColor?.cgColor
+                self?.invalidEmailLabel.isHidden = false
+            }
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.emailTitleLabel.textColor = K.Design.secondaryTextColor
+                self?.emailTextField.layer.borderColor = UIColor(resource: .accent).cgColor
+                self?.invalidEmailLabel.isHidden = true
+            }
+        }
     }
     
     @objc private func registerButtonTapped() {
         DispatchQueue.main.async { [weak self] in
             self?.emailTextField.text = "test+ios@moneyboxapp.com"
             self?.passwordTextField.text = "P455word12"
-            print("registerButtonTapped")
         }
     }
 }
 
 extension LoginViewController: LoginViewControllerDelegate {
+    func validationError() {
+        DispatchQueue.main.async { [weak self] in
+            self?.emailTitleLabel.textColor = K.Design.errorHilightColor
+            self?.invalidEmailLabel.isHidden = false
+        }
+    }
+    
     func startLoading() {
         DispatchQueue.main.async { [weak self] in
             self?.activityView.isHidden = false

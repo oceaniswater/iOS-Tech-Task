@@ -15,10 +15,11 @@ protocol LoginNavigation : AnyObject {
 protocol LoginViewModelProtocol: AnyObject {
     var navigation      : LoginNavigation? { get set }
     var dataProvider    : DataProvider { get set }
-    var delegate        : LoginViewControllerDelegate? { get set }
+    var view        : LoginViewControllerDelegate? { get set }
     var tokenManager    : TokenManager { get set }
     
     func login(email: String, password: String)
+    func isValidEmail(_ email: String?) -> Bool
     func goToAccounts()
 }
 
@@ -26,7 +27,7 @@ class LoginViewModel: LoginViewModelProtocol {
     
     weak var navigation     : LoginNavigation?
     var dataProvider        : DataProvider
-    weak var delegate       : LoginViewControllerDelegate?
+    weak var view           : LoginViewControllerDelegate?
     var tokenManager        : TokenManager
     
     init(nav : LoginNavigation,
@@ -36,32 +37,38 @@ class LoginViewModel: LoginViewModelProtocol {
         
         self.navigation     = nav
         self.dataProvider   = dataProvider
-        self.delegate       = delegate
+        self.view       = delegate
         self.tokenManager   = tokenManager
     }
     
     func login(email: String, password: String) {
-        delegate?.startLoading()
-        let request = LoginRequest(email: email, password: password)
-        dataProvider.login(request: request) { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let success):
-                    let token = success.session.bearerToken
-                    self.tokenManager.saveToken(token)
-                    let user = success.user
-                    UserDefaultsManager.shared.saveUser(user)
-                    self.goToAccounts()
-                case .failure(let failure):
-                    self.tokenManager.deleteToken()
-                    UserDefaultsManager.shared.deleteUser()
-                    print(failure.localizedDescription)
+            view?.startLoading()
+            let request = LoginRequest(email: email, password: password)
+            dataProvider.login(request: request) { [weak self] result in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let success):
+                        let token = success.session.bearerToken
+                        self.tokenManager.saveToken(token)
+                        let user = success.user
+                        UserDefaultsManager.shared.saveUser(user)
+                        self.goToAccounts()
+                    case .failure(let failure):
+                        self.tokenManager.deleteToken()
+                        UserDefaultsManager.shared.deleteUser()
+                        print(failure.localizedDescription)
+                    }
                 }
+                self.view?.stopLoading()
             }
-            self.delegate?.stopLoading()
-            
-        }
+    }
+    
+    func isValidEmail(_ email: String?) -> Bool {
+        let emailRegex = #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"#
+        
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
     }
     
     func goToAccounts(){
