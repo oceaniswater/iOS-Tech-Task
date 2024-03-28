@@ -14,8 +14,9 @@ protocol AccountsNavigation : AnyObject {
 }
 
 protocol AccountsViewModelTableProtocol:  AnyObject {
-    var accounts: [Account] { get set }
-    var products: [ProductResponse] { get set }
+    var products                        : [ProductResponse] { get set }
+    var accounts                        : [(account: Account, totalMoney: Double)] { get set }
+
     func numberOfSections() -> Int
     func numberOfRows(in section: Int) -> Int
 }
@@ -35,7 +36,6 @@ protocol AccountsViewModelProtocol: AccountsViewModelTableProtocol {
 }
 
 class AccountsViewModel: AccountsViewModelProtocol {
-    
     weak var navigation         : AccountsNavigation?
     weak var view               : AccountsViewControllerDelegate?
     var dataProvider            : DataProvider
@@ -43,8 +43,8 @@ class AccountsViewModel: AccountsViewModelProtocol {
     
     private var user            : User?
     private var total           : Double = 0.0
-    var accounts                : [Account] = []
     var products                : [ProductResponse] = []
+    var accounts                : [(account: Account, totalMoney: Double)] = []
     
     init(nav                    : AccountsNavigation,
          dataProvider           : DataProvider,
@@ -57,8 +57,6 @@ class AccountsViewModel: AccountsViewModelProtocol {
         self.tokenManager       = tokenManager
         
         self.user               = user
-        
-        getData()
     }
     
     func getUser() -> User? {
@@ -70,24 +68,47 @@ class AccountsViewModel: AccountsViewModelProtocol {
         return total
     }
     
+    func getSavedMoneyByAccount(accountResponse: AccountResponse) -> [(account: Account, totalMoney: Double)]{
+        guard let accounts = accountResponse.accounts else { return []}
+        let productResponses = accountResponse.productResponses
+        var result: [(account: Account, totalMoney: Double)] = []
+        for account in accounts {
+            var money = 0.0
+            for product in products {
+                if account.wrapper?.id == product.wrapperID {
+                    money += product.moneybox ?? 0.0
+                }
+            }
+            result.append((account: account, totalMoney: money))
+        }
+        return result
+    }
+    
+    func getTotalSaved() -> Double {
+        return accounts.map({$0.totalMoney}).reduce(0, +)
+    }
+    
     func getData() {
-        view?.startLoading()
+        view?.isLoading(true)
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
-                    self.accounts = success.accounts ?? []
                     self.products = success.productResponses ?? []
-                    self.view?.didReciveData(total: success.totalPlanValue)
+                    self.accounts = self.getSavedMoneyByAccount(accountResponse: success)
+                    let totalSaved = self.getTotalSaved()
+                    self.view?.totalsAreRecieved(totalPlan: success.totalPlanValue, totalSaved: totalSaved)
+                    self.view?.accountsAreRecieved()
                 case .failure(let failure):
                     print(failure.localizedDescription)
                     self.tokenManager.deleteToken()
                     UserDefaultsManager.shared.deleteUser()
                     self.goToRoot()
                 }
+                self.view?.isLoading(false)
             }
-            self.view?.stopLoading()
+
         }
     }
     
@@ -119,4 +140,6 @@ extension AccountsViewModel {
     func numberOfRows(in section: Int) -> Int {
         return self.accounts.count
     }
+    
+
 }

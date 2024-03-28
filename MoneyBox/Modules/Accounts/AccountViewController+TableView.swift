@@ -47,7 +47,7 @@ extension AccountsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let account = self.viewModel?.accounts[indexPath.row] else { return }
-        viewModel.goToDetails(account: account)
+        guard let item = self.viewModel?.accounts[indexPath.row] else { return }
+        viewModel.goToDetails(account: item.account)
     }
 }

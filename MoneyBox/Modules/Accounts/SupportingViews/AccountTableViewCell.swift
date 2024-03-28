@@ -80,9 +80,9 @@ class AccountTableViewCell: UITableViewCell {
     }
     
     // MARK: - Public methods
-    func configure(with item: Account) {
-        nameLabel.text          = item.name
-        amountLabel.text        = "£\(item.wrapper?.totalValue ?? 0.00)"
+    func configure(with item: (account: Account, totalMoney: Double)) {
+        nameLabel.text          = item.account.name
+        amountLabel.text        = "£\(item.totalMoney)"
     }
 }
 
@@ -129,7 +129,7 @@ private extension AccountTableViewCell {
             hStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             hStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            hStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
+            hStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 }

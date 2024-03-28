@@ -8,9 +8,9 @@
 import UIKit
 
 protocol AccountsViewControllerDelegate: AnyObject {
-    func didReciveData(total: Double?)
-    func startLoading()
-    func stopLoading()
+    func totalsAreRecieved(totalPlan: Double?, totalSaved: Double)
+    func accountsAreRecieved()
+    func isLoading(_ isActive: Bool)
 }
 
 class AccountsViewController: UIViewController {
@@ -26,16 +26,25 @@ class AccountsViewController: UIViewController {
     private let greetingLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let totalAmountLabel: UILabel = {
+    private let totalPlanLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.text = "Total Amount: $0.00"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.text = "Total Plan Value: £0.00"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let totalSavingsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.text = "You already saved: £0.00"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -58,6 +67,7 @@ class AccountsViewController: UIViewController {
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.layer.shadowRadius = 2
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
         return view
     }()
     
@@ -122,72 +132,98 @@ class AccountsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = K.Design.backgroundColor
-        setupViews()
-        setupConstraints()
-        setupTableView()
         
+        setupView()
+        setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.getData()
+    }
+}
+
+// MARK: - Setup View
+private extension AccountsViewController {
+     func setupView() {
+         view.backgroundColor = K.Design.backgroundColor
+         
+         addSubview()
+         setupLayout()
+         setupName()
+
+    }
+    
+    func setupName() {
         DispatchQueue.main.async { [weak self] in
             let name = self?.viewModel.getUser()?.firstName ?? "Moneyboxer"
             self?.greetingLabel.text = "Hello \(name)!"
         }
     }
-    
-    // MARK: - Private Methods
-    
-    private func setupViews() {
+}
+
+// MARK: - Setting
+private extension AccountsViewController {
+    func addSubview() {
         view.addSubview(greetingLabel)
-        view.addSubview(totalAmountLabel)
+        view.addSubview(totalPlanLabel)
+        view.addSubview(totalSavingsLabel)
         
-        vStack = UIStackView(arrangedSubviews: [tableViewFormLabel, tableView])
+        vStack = UIStackView(arrangedSubviews: [tableViewFormLabel, tableView, exploreMoreAccountsButton])
         vStack.axis = .vertical
         vStack.spacing = 10
         vStack.alignment = .leading
+        vStack.distribution = .fillProportionally
         vStack.translatesAutoresizingMaskIntoConstraints = false
-        
 
         tableViewForm.addSubview(vStack)
+        tableViewForm.addSubview(deviderView)
+//        tableViewForm.addSubview(exploreMoreAccountsButton)
         view.addSubview(tableViewForm)
-        view.addSubview(deviderView)
-        view.addSubview(exploreMoreAccountsButton)
-        
+
         view.addSubview(loginButton)
         view.addSubview(activityView)
     }
-    
-    private func setupConstraints() {
+}
+
+// MARK: - Setup Layout
+private extension AccountsViewController {
+    func setupLayout() {
         NSLayoutConstraint.activate([
             greetingLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             greetingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             greetingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            totalAmountLabel.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 10),
-            totalAmountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            totalAmountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            totalPlanLabel.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 10),
+            totalPlanLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            totalPlanLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            tableViewForm.topAnchor.constraint(equalTo: totalAmountLabel.bottomAnchor, constant: 20),
+            totalSavingsLabel.topAnchor.constraint(equalTo: totalPlanLabel.bottomAnchor, constant: 10),
+            totalSavingsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            totalSavingsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            tableViewForm.topAnchor.constraint(equalTo: totalSavingsLabel.bottomAnchor, constant: 20),
             tableViewForm.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             tableViewForm.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
             
             vStack.topAnchor.constraint(equalTo: tableViewForm.topAnchor, constant: 15),
             vStack.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor, constant: 15),
             vStack.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor, constant: -15),
-            vStack.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor, constant: -15),
+            vStack.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor),
             
             tableView.leadingAnchor.constraint(equalTo: vStack.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: vStack.trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 100),
+            tableView.heightAnchor.constraint(equalToConstant: 64),
             
-            deviderView.topAnchor.constraint(equalTo: vStack.bottomAnchor),
+            deviderView.bottomAnchor.constraint(equalTo: exploreMoreAccountsButton.topAnchor),
             deviderView.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor),
             deviderView.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor),
             deviderView.heightAnchor.constraint(equalToConstant: 1),
             
-            exploreMoreAccountsButton.topAnchor.constraint(equalTo: deviderView.bottomAnchor),
+//            exploreMoreAccountsButton.topAnchor.constraint(equalTo: deviderView.bottomAnchor),
             exploreMoreAccountsButton.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor, constant: 5),
             exploreMoreAccountsButton.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor, constant: -5),
-            exploreMoreAccountsButton.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor),
-            exploreMoreAccountsButton.heightAnchor.constraint(equalToConstant: 50),
+//            exploreMoreAccountsButton.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor),
+            exploreMoreAccountsButton.heightAnchor.constraint(equalToConstant: 40),
             
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -200,29 +236,31 @@ class AccountsViewController: UIViewController {
     }
 }
 
+// MARK: - AccountsViewControllerDelegate
 extension AccountsViewController: AccountsViewControllerDelegate {
-    func startLoading() {
+    func accountsAreRecieved() {
         DispatchQueue.main.async { [weak self] in
-            self?.activityView.isHidden = false
-            self?.activityView.startAnimating()
+            self?.reloadTableView()
+            self?.tableViewForm.isHidden = false
         }
     }
     
-    func stopLoading() {
+    func isLoading(_ isActive: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.activityView.isHidden = true
-            self?.activityView.stopAnimating()
+            self?.activityView.isHidden = isActive
+            if isActive {
+                self?.activityView.startAnimating()
+            } else {
+                self?.activityView.stopAnimating()
+            }
         }
-
     }
     
-    func didReciveData(total: Double?) {
-        // Set dummy data for testing
+    func totalsAreRecieved(totalPlan: Double?, totalSaved: Double) {
         DispatchQueue.main.async { [weak self] in
-            self?.totalAmountLabel.text = "Total Amount: $\(total ?? 0.0)"
+            self?.totalPlanLabel.text = "Total Plan Value: £\(totalPlan ?? 0.0)"
+            self?.totalSavingsLabel.text = "You already saved: £\(totalSaved)"
         }
-        
-        reloadTableView()
     }
     
     
