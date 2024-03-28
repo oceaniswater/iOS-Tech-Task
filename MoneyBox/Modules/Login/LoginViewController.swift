@@ -241,6 +241,7 @@ class LoginViewController: UIViewController {
             self?.passwordTextField.text = "P455word12"
         }
         isEmalilValidationErrorHilighted(false)
+        changeLoginButtonState(true)
     }
 }
 
