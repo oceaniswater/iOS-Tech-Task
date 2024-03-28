@@ -133,6 +133,7 @@ private extension DetailsViewController {
         view.backgroundColor = K.Design.backgroundColor
         navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
         title = viewModel.getTitle()
+        
         if let navigationBar = navigationController?.navigationBar {
             navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: K.Design.primaryTextColor as Any]
         }

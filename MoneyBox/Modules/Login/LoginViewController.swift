@@ -16,12 +16,13 @@ class LoginViewController: UIViewController {
     var viewModel: LoginViewModelProtocol!
     
     // MARK: - Properties
-    private let registerButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+//    private let registerButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
+//        return button
+//    }()
     
     private let logoView: UIImageView = {
         let view = UIImageView(image: UIImage(named: "moneybox"))
@@ -39,15 +40,9 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    private let emailTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Email"
-        textField.backgroundColor = .clear
-        textField.layer.borderColor = UIColor(resource: .accent).cgColor
-        textField.layer.borderWidth = 1
-        textField.layer.cornerRadius = 5
+    private let emailTextField: AuthTextField = {
+        let textField = AuthTextField(isSecure: false)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.text = "test+ios@moneyboxapp.com"
         return textField
     }()
     
@@ -60,27 +55,43 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    private let passwordTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Password"
-        textField.isSecureTextEntry = true
-        textField.backgroundColor = .clear
-        textField.layer.borderColor = UIColor(resource: .accent).cgColor
-        textField.layer.borderWidth = 1
-        textField.layer.cornerRadius = 5
+    private let passwordTextField: AuthTextField = {
+        let textField = AuthTextField(isSecure: true)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.text = "P455word12"
         return textField
     }()
     
     private let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Log in", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.setTitleColor(K.Design.primaryTextColor, for: .normal)
         button.backgroundColor = UIColor(resource: .accent)
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private let pinLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Log in with PIN", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        button.setTitleColor(UIColor(resource: .accent), for: .normal)
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        //        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private let forgottenPasswordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Forgotten password?", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        button.setTitleColor(UIColor(resource: .accent), for: .normal)
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        //        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -100,6 +111,26 @@ class LoginViewController: UIViewController {
         view.backgroundColor = K.Design.backgroundColor
         setupViews()
         setupConstraints()
+        setupNavigationBar()
+    }
+    
+    func setupNavigationBar() {
+        // Create a custom back button
+        let registerButton = UIButton(type: .system)
+        registerButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
+        registerButton.translatesAutoresizingMaskIntoConstraints = false
+        registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
+        
+        // Add left padding to the button to adjust its position
+        var configuration = UIButton.Configuration.plain()
+        configuration.buttonSize = .large
+        registerButton.configuration = configuration
+        
+        // Create a UIBarButtonItem with the custom button
+        let backButtonItem = UIBarButtonItem(customView: registerButton)
+        
+        // Assign the custom back button to the navigation item
+        navigationItem.rightBarButtonItem = backButtonItem
     }
     
     deinit {
@@ -122,19 +153,21 @@ class LoginViewController: UIViewController {
         passwordStack.distribution = .fillProportionally
         passwordStack.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(registerButton)
+//        view.addSubview(registerButton)
         view.addSubview(logoView)
         view.addSubview(emailStack)
         view.addSubview(passwordStack)
         view.addSubview(loginButton)
         view.addSubview(activityView)
+        view.addSubview(pinLoginButton)
+        view.addSubview(forgottenPasswordButton)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            registerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -40),
-            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            registerButton.heightAnchor.constraint(equalToConstant: 40),
+//            registerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+//            registerButton.heightAnchor.constraint(equalToConstant: 40),
             
             logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
@@ -150,7 +183,16 @@ class LoginViewController: UIViewController {
             passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 40),
             
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            forgottenPasswordButton.topAnchor.constraint(equalTo: passwordStack.bottomAnchor),
+            forgottenPasswordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            forgottenPasswordButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            pinLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            pinLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pinLoginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            pinLoginButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            loginButton.bottomAnchor.constraint(equalTo: pinLoginButton.topAnchor, constant: -10),
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             loginButton.heightAnchor.constraint(equalToConstant: 40),
@@ -164,6 +206,14 @@ class LoginViewController: UIViewController {
     @objc private func loginButtonTapped() {
         // Handle login button tapped
         viewModel.login(email: emailTextField.text!, password: passwordTextField.text!)
+    }
+    
+    @objc private func registerButtonTapped() {
+        DispatchQueue.main.async { [weak self] in
+            self?.emailTextField.text = "test+ios@moneyboxapp.com"
+            self?.passwordTextField.text = "P455word12"
+            print("registerButtonTapped")
+        }
     }
 }
 
