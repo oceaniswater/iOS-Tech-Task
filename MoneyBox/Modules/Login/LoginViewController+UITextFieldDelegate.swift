@@ -20,6 +20,7 @@ extension LoginViewController: UITextFieldDelegate {
         
     }
     
+    // Change logic for return button on the keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField.tag {
         case 0:
@@ -33,9 +34,23 @@ extension LoginViewController: UITextFieldDelegate {
         return true
     }
     
+    // Remove error hilight when select textfield again
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.tag == 0 {
             isEmalilValidationErrorHilighted(false)
+        }
+    }
+    
+    // Enable the Login button if both email and password fields are not empty
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            return
+        }
+
+        if !email.isEmpty && !password.isEmpty {
+            changeLoginButtonState(true)
+        } else {
+            changeLoginButtonState(false)
         }
     }
     

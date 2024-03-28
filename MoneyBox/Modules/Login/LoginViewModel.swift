@@ -20,6 +20,7 @@ protocol LoginViewModelProtocol: AnyObject {
     
     func login(email: String, password: String)
     func isValidEmail(_ email: String?) -> Bool
+    func isTextFieldsNotEmpty(_ email: String?, _ password: String?) -> Bool
     func goToAccounts()
 }
 
@@ -69,6 +70,14 @@ class LoginViewModel: LoginViewModelProtocol {
         
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         return emailPredicate.evaluate(with: email)
+    }
+    
+    func isTextFieldsNotEmpty(_ email: String?, _ password: String?) -> Bool {
+        guard let password = password,
+              let email = email,
+              !password.isEmpty,
+              !email.isEmpty else { return false }
+        return true
     }
     
     func goToAccounts(){

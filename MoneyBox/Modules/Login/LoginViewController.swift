@@ -74,6 +74,8 @@ class LoginViewController: UIViewController {
         button.backgroundColor = UIColor(resource: .accent)
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isEnabled = false
+        button.layer.opacity = 0.5
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -238,10 +240,18 @@ class LoginViewController: UIViewController {
             self?.emailTextField.text = "test+ios@moneyboxapp.com"
             self?.passwordTextField.text = "P455word12"
         }
+        isEmalilValidationErrorHilighted(false)
     }
 }
 
 extension LoginViewController: LoginViewControllerDelegate {
+    func changeLoginButtonState(_ isEnabled: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.loginButton.isEnabled = isEnabled
+            self?.loginButton.layer.opacity = isEnabled ? 1 : 0.5
+        }
+    }
+    
     func validationError() {
         DispatchQueue.main.async { [weak self] in
             self?.emailTitleLabel.textColor = K.Design.errorHilightColor
