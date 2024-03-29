@@ -9,7 +9,7 @@ import Foundation
 import Networking
 
 protocol AccountsNavigation : AnyObject {
-    func goToDetailsScreen(products: [ProductResponse], account: Account)
+    func goToDetailsScreen(account: Account)
     func goToRootScreen()
 }
 
@@ -95,9 +95,9 @@ class AccountsViewModel: AccountsViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
-                    self.products = success.productResponses ?? []
-                    self.accounts = self.getSavedMoneyByAccount(accountResponse: success)
-                    let totalSaved = self.getTotalSaved()
+                    self.products   = success.productResponses ?? []
+                    self.accounts   = self.getSavedMoneyByAccount(accountResponse: success)
+                    let totalSaved  = self.getTotalSaved()
                     self.view?.totalsAreRecieved(totalPlan: success.totalPlanValue, totalSaved: totalSaved)
                     self.view?.accountsAreRecieved()
                 case .failure(let failure):
@@ -115,9 +115,7 @@ class AccountsViewModel: AccountsViewModelProtocol {
     }
     
     func goToDetails(account: Account){
-        let filteredProducts = products.filter { $0.wrapperID == account.wrapper?.id}
-        print(filteredProducts.count)
-        navigation?.goToDetailsScreen(products: filteredProducts, account: account)
+        navigation?.goToDetailsScreen(account: account)
     }
     
     func goToRoot() {
@@ -142,6 +140,4 @@ extension AccountsViewModel {
     func numberOfRows(in section: Int) -> Int {
         return self.accounts.count
     }
-    
-
 }

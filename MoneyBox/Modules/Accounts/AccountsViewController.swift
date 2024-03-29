@@ -24,65 +24,65 @@ class AccountsViewController: UIViewController {
     
     // MARK: - Properties
     private let greetingLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        let label                                       = UILabel()
+        label.textAlignment                             = .left
+        label.font                                      = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let totalPlanLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.text = "Total Plan Value: £0.00"
+        let label                                       = UILabel()
+        label.textAlignment                             = .left
+        label.font                                      = UIFont.systemFont(ofSize: 16)
+        label.text                                      = "Total Plan Value: £0.00"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let totalSavingsLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.text = "You already saved: £0.00"
+        let label                                       = UILabel()
+        label.textAlignment                             = .left
+        label.font                                      = UIFont.systemFont(ofSize: 16)
+        label.text                                      = "You already saved: £0.00"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let tableViewFormLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "Your accounts"
+        let label                                       = UILabel()
+        label.textAlignment                             = .left
+        label.font                                      = UIFont.systemFont(ofSize: 14)
+        label.text                                      = "Your accounts"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var tableViewForm: UIView = {
         let view = UIView()
-        view.backgroundColor = K.Design.secondaryCellColor
-        view.layer.cornerRadius = 10
-        view.layer.shadowColor = UIColor(.black).cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = CGSize(width: 0, height: 0)
-        view.layer.shadowRadius = 2
+        view.backgroundColor                           = K.Design.secondaryCellColor
+        view.layer.cornerRadius                        = 10
+        view.layer.shadowColor                         = UIColor(.black).cgColor
+        view.layer.shadowOpacity                       = 0.2
+        view.layer.shadowOffset                        = CGSize(width: 0, height: 0)
+        view.layer.shadowRadius                        = 2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         return view
     }()
     
     let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.separatorStyle = .none
+        let tableView                                       = UITableView()
+        tableView.separatorStyle                            = .none
+        tableView.backgroundColor                           = .clear
+        tableView.isScrollEnabled                           = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .clear
-        tableView.isScrollEnabled = false
         return tableView
     }()
     
     private lazy var deviderView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray2
+        let view                                       = UIView()
+        view.backgroundColor                           = .systemGray2
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -90,15 +90,15 @@ class AccountsViewController: UIViewController {
     private let exploreMoreAccountsButton: UIButton = {
         let button = UIButton()
         button.setTitle("Explore more accounts", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        var configuration = UIButton.Configuration.plain()
-        configuration.imagePlacement = .trailing
-        configuration.buttonSize = .mini
-        button.configuration = configuration
+        button.titleLabel?.font                          = UIFont.systemFont(ofSize: 14)
+        var configuration                                = UIButton.Configuration.plain()
+        configuration.imagePlacement                     = .trailing
+        configuration.buttonSize                         = .mini
+        button.configuration                             = configuration
         button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         button.setTitleColor(UIColor(resource: .accent), for: .normal)
-        button.tintColor = UIColor(resource: .accent)
-        button.contentHorizontalAlignment = .fill
+        button.tintColor                                 = UIColor(resource: .accent)
+        button.contentHorizontalAlignment                = .fill
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -107,16 +107,16 @@ class AccountsViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Refresh (test expired/wrong token)", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(resource: .accent)
-        button.layer.cornerRadius = 9
+        button.backgroundColor                           = UIColor(resource: .accent)
+        button.layer.cornerRadius                        = 9
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private let activityView: UIActivityIndicatorView = {
-        let activity = UIActivityIndicatorView(style: .large)
-        activity.tintColor = UIColor(resource: .accent)
+        let activity                                       = UIActivityIndicatorView(style: .large)
+        activity.tintColor                                 = UIColor(resource: .accent)
         activity.translatesAutoresizingMaskIntoConstraints = false
         return activity
     }()
@@ -256,10 +256,8 @@ extension AccountsViewController: AccountsViewControllerDelegate {
     
     func totalsAreRecieved(totalPlan: Double?, totalSaved: Double) {
         DispatchQueue.main.async { [weak self] in
-            self?.totalPlanLabel.text = "Total Plan Value: £\(String.fromDouble(totalPlan ?? 0.0))"
+            self?.totalPlanLabel.text    = "Total Plan Value: £\(String.fromDouble(totalPlan ?? 0.0))"
             self?.totalSavingsLabel.text = "You already saved: £\(String.fromDouble(totalSaved))"
         }
     }
 }
-
-

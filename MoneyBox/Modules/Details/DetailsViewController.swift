@@ -57,6 +57,7 @@ class DetailsViewController: UIViewController {
         label.font                                          = UIFont.systemFont(ofSize: 14)
         label.numberOfLines                                 = 2
         label.text                                          = "You need to choose a product to top up your moneybox."
+        label.isHidden                                      = true
         label.translatesAutoresizingMaskIntoConstraints     = false
         return label
     }()
@@ -78,6 +79,7 @@ class DetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
+        viewModel.getFilteredData(account: viewModel.account)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

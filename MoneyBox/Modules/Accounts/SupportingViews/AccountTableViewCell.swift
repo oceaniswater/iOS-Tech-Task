@@ -10,12 +10,6 @@ import Networking
 
 class AccountTableViewCell: UITableViewCell {
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
     public static var identifier: String {
         get {
             return "AccountTableViewCell"
@@ -35,31 +29,31 @@ class AccountTableViewCell: UITableViewCell {
     
     // MARK: - Private properties
     private let view: UIView = {
-        let view = UIView()
-        view.backgroundColor = K.Design.secondaryCellColor
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view                                        = UIView()
+        view.backgroundColor                            = K.Design.secondaryCellColor
+        view.translatesAutoresizingMaskIntoConstraints  = false
         return view
     }()
     
     private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = K.Design.secondaryTextColor
+        let label                                       = UILabel()
+        label.font                                      = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor                                 = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let amountLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        label.textColor = K.Design.secondaryTextColor
+        let label                                       = UILabel()
+        label.font                                      = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor                                 = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let arrowImageView: UIImageView = {
-        let image = UIImageView(image: UIImage(systemName: "chevron.right"))
-        image.tintColor = K.Design.secondaryTextColor
+        let image                                       = UIImageView(image: UIImage(systemName: "chevron.right"))
+        image.tintColor                                 = K.Design.secondaryTextColor
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -69,9 +63,9 @@ class AccountTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        nameLabel.text          = nil
-        amountLabel.text        = nil
-
+        nameLabel.text     = nil
+        amountLabel.text   = nil
+        
     }
     
     override func layoutSubviews() {
@@ -101,10 +95,10 @@ private extension AccountTableViewCell {
     func addSubview() {
         addSubview(view)
         
-        hStack = UIStackView(arrangedSubviews: [nameLabel, amountLabel, arrowImageView])
-        hStack.axis = .horizontal
-        hStack.spacing = 10
-        hStack.alignment = .leading
+        hStack                                           = UIStackView(arrangedSubviews: [nameLabel, amountLabel, arrowImageView])
+        hStack.axis                                      = .horizontal
+        hStack.spacing                                   = 10
+        hStack.alignment                                 = .leading
         hStack.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(hStack)
@@ -134,4 +128,3 @@ private extension AccountTableViewCell {
         ])
     }
 }
-

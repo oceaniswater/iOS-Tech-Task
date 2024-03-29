@@ -48,14 +48,13 @@ class AccountsCoordinator: Coordinator {
 }
 
 extension AccountsCoordinator : AccountsNavigation {
-    func goToDetailsScreen(products: [ProductResponse], account: Account) {
+    func goToDetailsScreen(account: Account) {
         let dataProvider              = DataProvider()
         let sessionManager            = SessionManager()
         let tokenManager              = TokenManager(sessionManager: sessionManager)
         let detailsCoordinator        = DetailsCoordinator(navigationController     : navigationController,
                                                            dataProvider             : dataProvider,
                                                            tokenManager             : tokenManager,
-                                                           products                 : products,
                                                            account                  : account)
         detailsCoordinator.parentCoordinator = self
         children.append(detailsCoordinator)

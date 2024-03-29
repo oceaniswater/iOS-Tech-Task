@@ -8,11 +8,10 @@
 import Foundation
 import Networking
 
-protocol DetailsNavigation : AnyObject {
+protocol DetailsNavigation: AnyObject {
     func goToDetailsScreen()
     func goToAccountsScreen()
     func goToRootScreen()
-    
 }
 
 protocol DetailsViewModelTableProtocol: AnyObject {
@@ -32,6 +31,7 @@ protocol DetailsViewModelProtocol: DetailsViewModelTableProtocol {
     var account                 : Account { get set }
     
     func addMoney()
+    func getFilteredData(account: Account)
     func getTitle() -> String
     func enableAddMoneyButton()
 }
@@ -42,7 +42,7 @@ class DetailsViewModel: DetailsViewModelProtocol {
     weak var view               : DetailsViewControllerDelegate?
     var tokenManager            : TokenManager
     
-    var products                : [ProductResponse]
+    var products                : [ProductResponse] = []
     var selectedProduct         : ProductResponse?
     var account                 : Account
     
@@ -50,17 +50,13 @@ class DetailsViewModel: DetailsViewModelProtocol {
          dataProvider           : DataProvider,
          view                   : DetailsViewControllerDelegate,
          tokenManager           : TokenManager,
-         products               : [ProductResponse],
          account                : Account) {
         
         self.navigation         = nav
         self.dataProvider       = dataProvider
         self.view               = view
         self.tokenManager       = tokenManager
-        self.products           = products
         self.account            = account
-        
-        setupSelectedProduct()
     }
     
     func addMoney() {
@@ -72,8 +68,7 @@ class DetailsViewModel: DetailsViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success( _):
-                    guard let accountId = self.selectedProduct?.wrapperID else { return }
-                    self.getFilteredData(accountId: accountId)
+                    self.getFilteredData(account: self.account)
                 case .failure(let failure):
                     self.view?.showError(message: failure.localizedDescription, dismissHandler: {
                         self.goToRoot()
@@ -84,7 +79,8 @@ class DetailsViewModel: DetailsViewModelProtocol {
         }
     }
     
-    private func getFilteredData(accountId: String) {
+    func getFilteredData(account: Account) {
+        guard let accountId = account.wrapper?.id else { return }
         view?.isLoading(true)
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
@@ -131,12 +127,12 @@ class DetailsViewModel: DetailsViewModelProtocol {
         navigation?.goToRootScreen()
     }
     
-    
     deinit {
         print("Deinit details view model")
     }
 }
 
+// MARK: - DetailsViewModelTableProtocol
 extension DetailsViewModel {
     func numberOfSections() -> Int {
         1

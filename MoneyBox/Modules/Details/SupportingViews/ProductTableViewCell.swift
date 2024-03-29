@@ -30,44 +30,44 @@ class ProductTableViewCell: UITableViewCell {
     // MARK: - Private properties
     private let view: UIView = {
         let view = UIView()
-        view.backgroundColor = K.Design.secondaryCellColor
-        view.layer.cornerRadius = 5
-        view.layer.shadowColor = UIColor(.black).cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = CGSize(width: 0, height: 0)
-        view.layer.shadowRadius = 1
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor                            = K.Design.secondaryCellColor
+        view.layer.cornerRadius                         = 5
+        view.layer.shadowColor                          = UIColor(.black).cgColor
+        view.layer.shadowOpacity                        = 0.2
+        view.layer.shadowOffset                         = CGSize(width: 0, height: 0)
+        view.layer.shadowRadius                         = 1
+        view.translatesAutoresizingMaskIntoConstraints  = false
         return view
     }()
     
     private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = K.Design.secondaryTextColor
+        let label                                       = UILabel()
+        label.font                                      = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor                                 = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let planValueLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        label.textColor = K.Design.secondaryTextColor
+        let label                                       = UILabel()
+        label.font                                      = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor                                 = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let moneyboxLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        label.textColor = K.Design.secondaryTextColor
+        let label                                       = UILabel()
+        label.font                                      = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textColor                                 = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let selectedImageView: UIImageView = {
-        let image = UIImageView(image: UIImage(systemName: "checkmark.seal.fill"))
-        image.tintColor = UIColor(resource: .accent)
-        image.isHidden = true
+        let image                                       = UIImageView(image: UIImage(systemName: "checkmark.seal.fill"))
+        image.tintColor                                 = UIColor(resource: .accent)
+        image.isHidden                                  = true
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -77,15 +77,15 @@ class ProductTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        nameLabel.text = nil
-        planValueLabel.text = nil
-        moneyboxLabel.text = nil
-
+        nameLabel.text          = nil
+        planValueLabel.text     = nil
+        moneyboxLabel.text      = nil
+        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor         =  .clear
+        backgroundColor = .clear
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -103,9 +103,9 @@ class ProductTableViewCell: UITableViewCell {
     
     // MARK: - Public methods
     func configure(with product: ProductResponse) {
-        nameLabel.text = product.product?.name
-        planValueLabel.text = "Your plan: \(String.fromDouble(product.planValue ?? 0.0))"
-        moneyboxLabel.text = "You saved: \(String.fromDouble(product.moneybox ?? 0.0))"
+        nameLabel.text          = product.product?.name
+        planValueLabel.text     = "Your plan: \(String.fromDouble(product.planValue ?? 0.0))"
+        moneyboxLabel.text      = "You saved: \(String.fromDouble(product.moneybox ?? 0.0))"
     }
 }
 
@@ -124,12 +124,12 @@ private extension ProductTableViewCell {
     func addSubview() {
         addSubview(view)
         
-        vStack = UIStackView(arrangedSubviews: [nameLabel, planValueLabel, moneyboxLabel])
-        vStack.axis = .vertical
-        vStack.spacing = 5
-        vStack.alignment = .leading
-        vStack.distribution = .fill
-        vStack.translatesAutoresizingMaskIntoConstraints = false
+        vStack                                             = UIStackView(arrangedSubviews: [nameLabel, planValueLabel, moneyboxLabel])
+        vStack.axis                                        = .vertical
+        vStack.spacing                                     = 5
+        vStack.alignment                                   = .leading
+        vStack.distribution                                = .fill
+        vStack.translatesAutoresizingMaskIntoConstraints   = false
         
         view.addSubview(vStack)
         view.addSubview(selectedImageView)
@@ -162,4 +162,3 @@ private extension ProductTableViewCell {
         ])
     }
 }
-
