@@ -12,7 +12,7 @@ protocol DetailsNavigation : AnyObject {
     func goToDetailsScreen()
     func goToAccountsScreen()
     func goToRootScreen()
-
+    
 }
 
 protocol DetailsViewModelTableProtocol: AnyObject {
@@ -65,16 +65,21 @@ class DetailsViewModel: DetailsViewModelProtocol {
     
     func addMoney() {
         guard let productId = selectedProduct?.id else { return }
+        view?.isLoading(true)
         let request = OneOffPaymentRequest(amount: 10, investorProductID: productId)
         dataProvider.addMoney(request: request) { [weak self] result in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success( _):
-                    guard let accountId = self?.selectedProduct?.wrapperID else { return }
-                    self?.getFilteredData(accountId: accountId)
+                    guard let accountId = self.selectedProduct?.wrapperID else { return }
+                    self.getFilteredData(accountId: accountId)
                 case .failure(let failure):
-                    print(failure.localizedDescription)
+                    self.view?.showError(message: failure.localizedDescription, dismissHandler: {
+                        self.goToRoot()
+                    })
                 }
+                self.view?.isLoading(false)
             }
         }
     }
@@ -87,13 +92,15 @@ class DetailsViewModel: DetailsViewModelProtocol {
                 switch result {
                 case .success(let success):
                     self.products = success.productResponses?.filter { $0.wrapperID == accountId} ?? []
-                    self.view?.didUpdateProducts()
+                    self.view?.productsUpdated()
                     self.setupSelectedProduct()
                 case .failure(let failure):
-                    print(failure.localizedDescription)
                     self.tokenManager.deleteToken()
                     UserDefaultsManager.shared.deleteUser()
-                    self.goToRoot()
+                    self.view?.showError(message: failure.localizedDescription, dismissHandler: {
+                        self.goToRoot()
+                    })
+                    
                 }
                 self.view?.isLoading(false)
             }

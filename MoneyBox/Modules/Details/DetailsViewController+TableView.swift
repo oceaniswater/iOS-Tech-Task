@@ -52,4 +52,3 @@ extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
         self.viewModel.enableAddMoneyButton()
     }
 }
-

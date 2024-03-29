@@ -17,7 +17,7 @@ class CustomAlertView {
     struct Constants {
         static let backgroundAlphaTo: CGFloat = 0.6
         static let alertViewAlphaTo: CGFloat = 1
-        static let alertPadding: CGFloat = 20
+        static let alertPadding: CGFloat = 30
     }
     
     private var dismissHandler: DismissHandler?
@@ -37,7 +37,7 @@ class CustomAlertView {
         alert.layer.masksToBounds = true
         alert.layer.cornerRadius = 12
         alert.alpha = 0
-        alert.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        alert.translatesAutoresizingMaskIntoConstraints = false
         return alert
     }()
     
@@ -46,8 +46,8 @@ class CustomAlertView {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = K.Design.primaryTextColor
-        label.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        label.textColor = K.Design.secondaryTextColor
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -67,7 +67,9 @@ class CustomAlertView {
         mytargetView = targetView
         
         backgroundView.frame = targetView.bounds
-        messageLabel.text = message
+        
+        
+        messageLabel.text = message == "Data error" ? "Something is wrong. Check your internet connection or try later." : message
         dismissButton.setTitle(buttonTitle, for: .normal)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         setupView()

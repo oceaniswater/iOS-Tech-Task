@@ -64,6 +64,14 @@ class ProductTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let selectedImageView: UIImageView = {
+        let image = UIImageView(image: UIImage(systemName: "checkmark.seal.fill"))
+        image.tintColor = UIColor(resource: .accent)
+        image.isHidden = true
+        image.translatesAutoresizingMaskIntoConstraints = false
+        return image
+    }()
+    
     private var vStack: UIStackView!
     
     override func prepareForReuse() {
@@ -86,20 +94,18 @@ class ProductTableViewCell: UITableViewCell {
         // Configure the view for the selected state
         if selected {
             // Apply selected state UI changes
-            view.layer.borderColor = UIColor(resource: .accent).cgColor
-            view.layer.borderWidth = 2
+            selectedImageView.isHidden = false
         } else {
             // Apply deselected state UI changes
-            view.layer.borderColor = nil
-            view.layer.borderWidth = 0.0
+            selectedImageView.isHidden = true
         }
     }
     
     // MARK: - Public methods
     func configure(with product: ProductResponse) {
         nameLabel.text = product.product?.name
-        planValueLabel.text = "Your plan: \(product.planValue ?? 0.0)"
-        moneyboxLabel.text = "You saved: \(product.moneybox ?? 0.0)"
+        planValueLabel.text = "Your plan: \(String.fromDouble(product.planValue ?? 0.0))"
+        moneyboxLabel.text = "You saved: \(String.fromDouble(product.moneybox ?? 0.0))"
     }
 }
 
@@ -126,6 +132,7 @@ private extension ProductTableViewCell {
         vStack.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(vStack)
+        view.addSubview(selectedImageView)
     }
 }
 
@@ -148,6 +155,10 @@ private extension ProductTableViewCell {
             vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             vStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             vStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            
+            selectedImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            selectedImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            selectedImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 }

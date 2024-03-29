@@ -8,9 +8,9 @@
 import UIKit
 
 protocol LoginViewControllerDelegate: AnyObject {
-    func startLoading()
-    func stopLoading()
+    func isLoading(_ isActive: Bool)
     func validationError()
+    func showError(message: String)
 }
 
 class LoginViewController: UIViewController {
@@ -42,7 +42,7 @@ class LoginViewController: UIViewController {
     
     private let invalidEmailLabel: UILabel = {
         let label = UILabel()
-        label.text = "The email addres you entered is not valid."
+        label.text = "The email address you entered is not valid."
         label.font = .systemFont(ofSize: 12)
         label.textColor = K.Design.errorHilightColor
         label.isHidden = true
@@ -72,7 +72,7 @@ class LoginViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         button.setTitleColor(K.Design.primaryTextColor, for: .normal)
         button.backgroundColor = UIColor(resource: .accent)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 9
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isEnabled = false
         button.layer.opacity = 0.5
@@ -87,7 +87,7 @@ class LoginViewController: UIViewController {
         button.setTitleColor(UIColor(resource: .accent), for: .normal)
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
-        //        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pinButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -115,110 +115,16 @@ class LoginViewController: UIViewController {
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = K.Design.backgroundColor
-        setupViews()
-        setupConstraints()
-        setupNavigationBar()
+        
+        setupView()
         setupUITextFieldDelegate()
-    }
-    
-    func setupNavigationBar() {
-        // Create a custom back button
-        let registerButton = UIButton(type: .system)
-        registerButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-        registerButton.translatesAutoresizingMaskIntoConstraints = false
-        registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
-        
-        // Add left padding to the button to adjust its position
-        var configuration = UIButton.Configuration.plain()
-        configuration.buttonSize = .large
-        registerButton.configuration = configuration
-        
-        // Create a UIBarButtonItem with the custom button
-        let backButtonItem = UIBarButtonItem(customView: registerButton)
-        
-        // Assign the custom back button to the navigation item
-        navigationItem.rightBarButtonItem = backButtonItem
     }
     
     deinit {
         print("Login VC deinit")
     }
     
-    // MARK: - Private Methods
-    private func setupViews() {
-        emailStack = UIStackView(arrangedSubviews: [emailTitleLabel, emailTextField, invalidEmailLabel])
-        emailStack.axis = .vertical
-        emailStack.spacing = 0
-        emailStack.alignment = .leading
-        emailStack.distribution = .fillProportionally
-        emailStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        passwordStack = UIStackView(arrangedSubviews: [passwordTitleLabel, passwordTextField])
-        passwordStack.axis = .vertical
-        passwordStack.spacing = 0
-        passwordStack.alignment = .leading
-        passwordStack.distribution = .fillProportionally
-        passwordStack.translatesAutoresizingMaskIntoConstraints = false
-        
-//        view.addSubview(registerButton)
-        view.addSubview(logoView)
-        view.addSubview(emailStack)
-        view.addSubview(passwordStack)
-        view.addSubview(loginButton)
-        view.addSubview(activityView)
-        view.addSubview(pinLoginButton)
-        view.addSubview(forgottenPasswordButton)
-    }
-    
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-//            registerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            registerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-//            registerButton.heightAnchor.constraint(equalToConstant: 40),
-            
-            logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
-            logoView.heightAnchor.constraint(equalToConstant: 30),
-            
-            emailStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailStack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 60),
-            emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            emailTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            passwordStack.topAnchor.constraint(equalTo: emailStack.bottomAnchor, constant: 5),
-            passwordStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            forgottenPasswordButton.topAnchor.constraint(equalTo: passwordStack.bottomAnchor),
-            forgottenPasswordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            forgottenPasswordButton.heightAnchor.constraint(equalToConstant: 40),
-            
-            pinLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            pinLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pinLoginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            pinLoginButton.heightAnchor.constraint(equalToConstant: 40),
-            
-            loginButton.bottomAnchor.constraint(equalTo: pinLoginButton.topAnchor, constant: -10),
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            loginButton.heightAnchor.constraint(equalToConstant: 40),
-            
-            activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-    }
-    
-    // MARK: - Actions
-    @objc func loginButtonTapped() {
-        if viewModel.isValidEmail(emailTextField.text) {
-            viewModel.login(email: emailTextField.text!, password: passwordTextField.text!)
-        } else {
-            isEmalilValidationErrorHilighted(true)
-        }
-    }
-    
+    // MARK: - Methods
     func isEmalilValidationErrorHilighted(_ isHilighted: Bool ) {
         if isHilighted {
             DispatchQueue.main.async { [weak self] in
@@ -235,6 +141,20 @@ class LoginViewController: UIViewController {
         }
     }
     
+    // MARK: - Actions
+    @objc func loginButtonTapped() {
+        if viewModel.isValidEmail(emailTextField.text) {
+            viewModel.login(email: emailTextField.text!, password: passwordTextField.text!)
+        } else {
+            isEmalilValidationErrorHilighted(true)
+        }
+    }
+    
+    @objc func pinButtonTapped() {
+        self.showAlert(message: "It is a test message.") {
+        }
+    }
+    
     @objc private func registerButtonTapped() {
         DispatchQueue.main.async { [weak self] in
             self?.emailTextField.text = "test+ios@moneyboxapp.com"
@@ -243,9 +163,109 @@ class LoginViewController: UIViewController {
         isEmalilValidationErrorHilighted(false)
         changeLoginButtonState(true)
     }
+    
+    
 }
 
+// MARK: - Setup View
+private extension LoginViewController {
+    func setupView() {
+        view.backgroundColor = K.Design.backgroundColor
+        
+        addSubview()
+        setupLayout()
+        setupNavigationBar()
+        
+    }
+    
+    func setupNavigationBar() {
+        let registerButton = UIButton(type: .system)
+        registerButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
+        registerButton.translatesAutoresizingMaskIntoConstraints = false
+        registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.buttonSize = .large
+        registerButton.configuration = configuration
+        
+        let backButtonItem = UIBarButtonItem(customView: registerButton)
+        
+        navigationItem.rightBarButtonItem = backButtonItem
+        navigationController?.navigationBar.backgroundColor = .clear
+    }
+}
+
+// MARK: - Setting
+private extension LoginViewController {
+    func addSubview() {
+        emailStack = UIStackView(arrangedSubviews: [emailTitleLabel, emailTextField, invalidEmailLabel])
+        emailStack.axis = .vertical
+        emailStack.spacing = 0
+        emailStack.alignment = .leading
+        emailStack.distribution = .fillProportionally
+        emailStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        passwordStack = UIStackView(arrangedSubviews: [passwordTitleLabel, passwordTextField])
+        passwordStack.axis = .vertical
+        passwordStack.spacing = 0
+        passwordStack.alignment = .leading
+        passwordStack.distribution = .fillProportionally
+        passwordStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(logoView)
+        view.addSubview(emailStack)
+        view.addSubview(passwordStack)
+        view.addSubview(loginButton)
+        view.addSubview(activityView)
+        view.addSubview(pinLoginButton)
+        view.addSubview(forgottenPasswordButton)
+    }
+}
+
+// MARK: - Setup Layout
+private extension LoginViewController {
+    func setupLayout() {
+        NSLayoutConstraint.activate([
+            logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
+            logoView.heightAnchor.constraint(equalToConstant: 30),
+            
+            emailStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emailStack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 60),
+            emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            emailTextField.heightAnchor.constraint(equalToConstant: 45),
+            
+            passwordStack.topAnchor.constraint(equalTo: emailStack.bottomAnchor, constant: 5),
+            passwordStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 45),
+            
+            forgottenPasswordButton.topAnchor.constraint(equalTo: passwordStack.bottomAnchor),
+            forgottenPasswordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            forgottenPasswordButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            pinLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            pinLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pinLoginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            pinLoginButton.heightAnchor.constraint(equalToConstant: 45),
+            
+            loginButton.bottomAnchor.constraint(equalTo: pinLoginButton.topAnchor, constant: -10),
+            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            loginButton.heightAnchor.constraint(equalToConstant: 45),
+            
+            activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
+}
+
+// MARK: - LoginViewControllerDelegate
 extension LoginViewController: LoginViewControllerDelegate {
+    func showError(message: String) {
+        showAlert(message: message)
+    }
+    
     func changeLoginButtonState(_ isEnabled: Bool) {
         DispatchQueue.main.async { [weak self] in
             self?.loginButton.isEnabled = isEnabled
@@ -260,17 +280,14 @@ extension LoginViewController: LoginViewControllerDelegate {
         }
     }
     
-    func startLoading() {
+    func isLoading(_ isActive: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.activityView.isHidden = false
-            self?.activityView.startAnimating()
-        }
-    }
-    
-    func stopLoading() {
-        DispatchQueue.main.async { [weak self] in
-            self?.activityView.isHidden = true
-            self?.activityView.stopAnimating()
+            self?.activityView.isHidden = isActive
+            if isActive {
+                self?.activityView.startAnimating()
+            } else {
+                self?.activityView.stopAnimating()
+            }
         }
     }
 }

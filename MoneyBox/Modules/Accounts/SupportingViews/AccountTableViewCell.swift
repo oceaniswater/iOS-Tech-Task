@@ -43,7 +43,7 @@ class AccountTableViewCell: UITableViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -51,7 +51,7 @@ class AccountTableViewCell: UITableViewCell {
     
     private let amountLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textColor = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -82,7 +82,7 @@ class AccountTableViewCell: UITableViewCell {
     // MARK: - Public methods
     func configure(with item: (account: Account, totalMoney: Double)) {
         nameLabel.text          = item.account.name
-        amountLabel.text        = "£\(item.totalMoney)"
+        amountLabel.text        = "£\(String.fromDouble(item.totalMoney))"
     }
 }
 
@@ -119,6 +119,7 @@ private extension AccountTableViewCell {
             view.leadingAnchor.constraint(equalTo: leadingAnchor),
             view.trailingAnchor.constraint(equalTo: trailingAnchor),
             view.bottomAnchor.constraint(equalTo: bottomAnchor),
+            view.heightAnchor.constraint(equalToConstant: 40),
             
             nameLabel.heightAnchor.constraint(equalToConstant: 20),
             

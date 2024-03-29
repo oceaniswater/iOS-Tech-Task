@@ -8,76 +8,69 @@
 import UIKit
 
 protocol DetailsViewControllerDelegate: AnyObject {
-    func didAddMoneySucces()
-    func didUpdateProducts()
+    func productsUpdated()
     func hideSelectProductLabel(_ isHidden: Bool)
     func changeAddMoneyButtonState(_ isEnabled: Bool)
     func isLoading(_ isActive: Bool)
+    func showError(message: String, dismissHandler: (() -> Void)?)
 }
 
 class DetailsViewController: UIViewController {
     
     var viewModel: DetailsViewModelProtocol!
     
-    let screenWidth = UIScreen.main.bounds.size.width
-    let screenHeight = UIScreen.main.bounds.size.height
-    
     // MARK: - Private properties
     private let addMoneyButton: UIButton = {
-        let button                                       = UIButton(type: .system)
+        let button                                          = UIButton(type: .system)
+        button.layer.cornerRadius                           = 25
+        button.backgroundColor                              = UIColor(resource: .accent)
+        button.layer.shadowColor                            = UIColor.black.cgColor
+        button.layer.shadowOpacity                          = 0.7
+        button.layer.shadowOffset                           = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius                           = 1
+        button.translatesAutoresizingMaskIntoConstraints    = false
         button.setTitle("Add money: £10", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor                           = UIColor(resource: .accent)
-        button.layer.cornerRadius                        = 5
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(K.Design.primaryTextColor, for: .normal)
         button.addTarget(self, action: #selector(addMoneyButtonTapped), for: .touchUpInside)
         return button
     }()
     
     lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.separatorStyle = .none
+        let tableView                                       = UITableView()
+        tableView.separatorStyle                            = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .clear
-        tableView.isScrollEnabled = true
+        tableView.backgroundColor                           = .clear
+        tableView.isScrollEnabled                           = true
         return tableView
     }()
     
     private var backView: UIView = {
-        let view = UIView()
-        view.backgroundColor = K.Design.primaryCellColor
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view                                            = UIView()
+        view.backgroundColor                                = K.Design.primaryCellColor
+        view.translatesAutoresizingMaskIntoConstraints      = false
         return view
     }()
     
     private var selectProductLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.numberOfLines = 2
-        label.text = "You need to choose a product to top your moneybox."
-        label.translatesAutoresizingMaskIntoConstraints = false
+        let label                                           = UILabel()
+        label.textAlignment                                 = .center
+        label.font                                          = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines                                 = 2
+        label.text                                          = "You need to choose a product to top up your moneybox."
+        label.translatesAutoresizingMaskIntoConstraints     = false
         return label
     }()
     
     private let activityView: UIActivityIndicatorView = {
-        let activity = UIActivityIndicatorView(style: .large)
-        activity.tintColor = K.Design.secondaryColor
-        activity.translatesAutoresizingMaskIntoConstraints = false
+        let activity                                        = UIActivityIndicatorView(style: .large)
+        activity.tintColor                                  = K.Design.secondaryColor
+        activity.translatesAutoresizingMaskIntoConstraints  = false
         return activity
     }()
     
-    var itemW: CGFloat {
-        return screenWidth * 0.8
-    }
-    
-    var itemH: CGFloat {
-        return itemW * 0.5
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupView()
         setupTableView()
     }
@@ -90,8 +83,7 @@ class DetailsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // Restore default navigation bar color when the view controller disappears
-        navigationController?.navigationBar.backgroundColor = nil // Restore default color
+        navigationController?.navigationBar.backgroundColor = nil
     }
     
     deinit {
@@ -103,18 +95,18 @@ class DetailsViewController: UIViewController {
         let backButton = UIButton(type: .custom)
         backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        backButton.tintColor = K.Design.primaryTextColor
+        backButton.tintColor                                = K.Design.primaryTextColor
         
         // Add left padding to the button to adjust its position
         var configuration = UIButton.Configuration.plain()
-        configuration.buttonSize = .large
-        backButton.configuration = configuration
+        configuration.buttonSize                            = .large
+        backButton.configuration                            = configuration
         
         // Create a UIBarButtonItem with the custom button
         let backButtonItem = UIBarButtonItem(customView: backButton)
         
         // Assign the custom back button to the navigation item
-        navigationItem.leftBarButtonItem = backButtonItem
+        navigationItem.leftBarButtonItem                    = backButtonItem
     }
     
     // MARK: - Actions
@@ -130,9 +122,9 @@ class DetailsViewController: UIViewController {
 // MARK: - Setup View
 private extension DetailsViewController {
     func setupView() {
-        view.backgroundColor = K.Design.backgroundColor
+        view.backgroundColor                                = K.Design.backgroundColor
         navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
-        title = viewModel.getTitle()
+        title                                               = viewModel.getTitle()
         
         if let navigationBar = navigationController?.navigationBar {
             navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: K.Design.primaryTextColor as Any]
@@ -172,10 +164,9 @@ private extension DetailsViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             addMoneyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addMoneyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addMoneyButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            addMoneyButton.heightAnchor.constraint(equalToConstant: 40),
-            
+            addMoneyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            addMoneyButton.heightAnchor.constraint(equalToConstant: 50),
+            addMoneyButton.widthAnchor.constraint(equalToConstant: 150),
             
             selectProductLabel.bottomAnchor.constraint(equalTo: addMoneyButton.topAnchor, constant: -20),
             selectProductLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -188,7 +179,12 @@ private extension DetailsViewController {
     }
 }
 
+// MARK: - DetailsViewControllerDelegate
 extension DetailsViewController: DetailsViewControllerDelegate {
+    func showError(message: String, dismissHandler: (() -> Void)?) {
+        showAlert(message: message, dismissHandler: dismissHandler)
+    }
+    
     func isLoading(_ isActive: Bool) {
         DispatchQueue.main.async { [weak self] in
             self?.activityView.isHidden = isActive
@@ -213,11 +209,7 @@ extension DetailsViewController: DetailsViewControllerDelegate {
         }
     }
     
-    func didUpdateProducts() {
-        reloadTableView()
-    }
-    
-    func didAddMoneySucces() {
+    func productsUpdated() {
         reloadTableView()
     }
 }

@@ -60,7 +60,7 @@ extension DetailsCoordinator : DetailsNavigation {
     }
     
     func goToAccountsScreen() {
-        if let appC = parentCoordinator as? AccountsCoordinator {
+        if let _ = parentCoordinator as? AccountsCoordinator {
             navigationController.viewControllers.removeLast()
             parentCoordinator?.childDidFinish(self)
         }

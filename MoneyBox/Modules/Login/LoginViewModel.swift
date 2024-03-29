@@ -13,56 +13,55 @@ protocol LoginNavigation : AnyObject {
 }
 
 protocol LoginViewModelProtocol: AnyObject {
-    var navigation      : LoginNavigation? { get set }
-    var dataProvider    : DataProvider { get set }
-    var view        : LoginViewControllerDelegate? { get set }
-    var tokenManager    : TokenManager { get set }
+    var navigation             : LoginNavigation? { get set }
+    var dataProvider           : DataProvider { get set }
+    var view                   : LoginViewControllerDelegate? { get set }
+    var tokenManager           : TokenManager { get set }
     
     func login(email: String, password: String)
     func isValidEmail(_ email: String?) -> Bool
-    func isTextFieldsNotEmpty(_ email: String?, _ password: String?) -> Bool
     func goToAccounts()
 }
 
 class LoginViewModel: LoginViewModelProtocol {
     
-    weak var navigation     : LoginNavigation?
-    var dataProvider        : DataProvider
-    weak var view           : LoginViewControllerDelegate?
-    var tokenManager        : TokenManager
+    weak var navigation        : LoginNavigation?
+    var dataProvider           : DataProvider
+    weak var view              : LoginViewControllerDelegate?
+    var tokenManager           : TokenManager
     
-    init(nav : LoginNavigation,
-         dataProvider: DataProvider,
-         delegate: LoginViewControllerDelegate,
-         tokenManager: TokenManager) {
+    init(nav                   : LoginNavigation,
+         dataProvider          : DataProvider,
+         delegate              : LoginViewControllerDelegate,
+         tokenManager          : TokenManager) {
         
-        self.navigation     = nav
-        self.dataProvider   = dataProvider
-        self.view       = delegate
-        self.tokenManager   = tokenManager
+        self.navigation        = nav
+        self.dataProvider      = dataProvider
+        self.view              = delegate
+        self.tokenManager      = tokenManager
     }
     
     func login(email: String, password: String) {
-            view?.startLoading()
-            let request = LoginRequest(email: email, password: password)
-            dataProvider.login(request: request) { [weak self] result in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let success):
-                        let token = success.session.bearerToken
-                        self.tokenManager.saveToken(token)
-                        let user = success.user
-                        UserDefaultsManager.shared.saveUser(user)
-                        self.goToAccounts()
-                    case .failure(let failure):
-                        self.tokenManager.deleteToken()
-                        UserDefaultsManager.shared.deleteUser()
-                        print(failure.localizedDescription)
-                    }
+        view?.isLoading(true)
+        let request = LoginRequest(email: email, password: password)
+        dataProvider.login(request: request) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let success):
+                    let token = success.session.bearerToken
+                    self.tokenManager.saveToken(token)
+                    let user = success.user
+                    UserDefaultsManager.shared.saveUser(user)
+                    self.goToAccounts()
+                case .failure(let failure):
+                    self.tokenManager.deleteToken()
+                    UserDefaultsManager.shared.deleteUser()
+                    self.view?.showError(message: failure.localizedDescription)
                 }
-                self.view?.stopLoading()
             }
+            self.view?.isLoading(false)
+        }
     }
     
     func isValidEmail(_ email: String?) -> Bool {
@@ -70,14 +69,6 @@ class LoginViewModel: LoginViewModelProtocol {
         
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         return emailPredicate.evaluate(with: email)
-    }
-    
-    func isTextFieldsNotEmpty(_ email: String?, _ password: String?) -> Bool {
-        guard let password = password,
-              let email = email,
-              !password.isEmpty,
-              !email.isEmpty else { return false }
-        return true
     }
     
     func goToAccounts(){

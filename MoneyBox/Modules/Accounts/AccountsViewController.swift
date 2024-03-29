@@ -11,6 +11,7 @@ protocol AccountsViewControllerDelegate: AnyObject {
     func totalsAreRecieved(totalPlan: Double?, totalSaved: Double)
     func accountsAreRecieved()
     func isLoading(_ isActive: Bool)
+    func showError(message: String, dismissHandler: (() -> Void)?)
 }
 
 class AccountsViewController: UIViewController {
@@ -22,7 +23,6 @@ class AccountsViewController: UIViewController {
     var viewModel: AccountsViewModelProtocol!
     
     // MARK: - Properties
-    
     private let greetingLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -90,7 +90,7 @@ class AccountsViewController: UIViewController {
     private let exploreMoreAccountsButton: UIButton = {
         let button = UIButton()
         button.setTitle("Explore more accounts", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14) // Set font size for the title
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         var configuration = UIButton.Configuration.plain()
         configuration.imagePlacement = .trailing
         configuration.buttonSize = .mini
@@ -103,33 +103,31 @@ class AccountsViewController: UIViewController {
         return button
     }()
     
-    private let loginButton: UIButton = {
-        let button                                       = UIButton(type: .system)
+    private let logoutButton: UIButton = {
+        let button = UIButton(type: .system)
         button.setTitle("Refresh (test expired/wrong token)", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor                           = UIColor(resource: .accent)
-        button.layer.cornerRadius                        = 5
+        button.backgroundColor = UIColor(resource: .accent)
+        button.layer.cornerRadius = 9
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private let activityView: UIActivityIndicatorView = {
         let activity = UIActivityIndicatorView(style: .large)
-        activity.tintColor = K.Design.secondaryColor
+        activity.tintColor = UIColor(resource: .accent)
         activity.translatesAutoresizingMaskIntoConstraints = false
         return activity
     }()
     
     private var vStack: UIStackView!
     
-    @objc private func loginButtonTapped() {
-        // Handle login button tapped
+    @objc private func logoutButtonTapped() {
         viewModel.refresh()
     }
     
     // MARK: - Lifecycle Methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -144,13 +142,12 @@ class AccountsViewController: UIViewController {
 
 // MARK: - Setup View
 private extension AccountsViewController {
-     func setupView() {
-         view.backgroundColor = K.Design.backgroundColor
-         
-         addSubview()
-         setupLayout()
-         setupName()
-
+    func setupView() {
+        view.backgroundColor = K.Design.backgroundColor
+        
+        addSubview()
+        setupLayout()
+        setupName()
     }
     
     func setupName() {
@@ -174,13 +171,12 @@ private extension AccountsViewController {
         vStack.alignment = .leading
         vStack.distribution = .fillProportionally
         vStack.translatesAutoresizingMaskIntoConstraints = false
-
+        
         tableViewForm.addSubview(vStack)
         tableViewForm.addSubview(deviderView)
-//        tableViewForm.addSubview(exploreMoreAccountsButton)
         view.addSubview(tableViewForm)
-
-        view.addSubview(loginButton)
+        
+        view.addSubview(logoutButton)
         view.addSubview(activityView)
     }
 }
@@ -212,23 +208,21 @@ private extension AccountsViewController {
             
             tableView.leadingAnchor.constraint(equalTo: vStack.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: vStack.trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 64),
+            tableView.heightAnchor.constraint(equalToConstant: 80),
             
             deviderView.bottomAnchor.constraint(equalTo: exploreMoreAccountsButton.topAnchor),
             deviderView.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor),
             deviderView.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor),
             deviderView.heightAnchor.constraint(equalToConstant: 1),
             
-//            exploreMoreAccountsButton.topAnchor.constraint(equalTo: deviderView.bottomAnchor),
             exploreMoreAccountsButton.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor, constant: 5),
             exploreMoreAccountsButton.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor, constant: -5),
-//            exploreMoreAccountsButton.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor),
             exploreMoreAccountsButton.heightAnchor.constraint(equalToConstant: 40),
             
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            loginButton.heightAnchor.constraint(equalToConstant: 40),
+            logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            logoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoutButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            logoutButton.heightAnchor.constraint(equalToConstant: 45),
             
             activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -238,6 +232,10 @@ private extension AccountsViewController {
 
 // MARK: - AccountsViewControllerDelegate
 extension AccountsViewController: AccountsViewControllerDelegate {
+    func showError(message: String, dismissHandler: (() -> Void)?) {
+        showAlert(message: message, dismissHandler: dismissHandler)
+    }
+    
     func accountsAreRecieved() {
         DispatchQueue.main.async { [weak self] in
             self?.reloadTableView()
@@ -258,12 +256,10 @@ extension AccountsViewController: AccountsViewControllerDelegate {
     
     func totalsAreRecieved(totalPlan: Double?, totalSaved: Double) {
         DispatchQueue.main.async { [weak self] in
-            self?.totalPlanLabel.text = "Total Plan Value: £\(totalPlan ?? 0.0)"
-            self?.totalSavingsLabel.text = "You already saved: £\(totalSaved)"
+            self?.totalPlanLabel.text = "Total Plan Value: £\(String.fromDouble(totalPlan ?? 0.0))"
+            self?.totalSavingsLabel.text = "You already saved: £\(String.fromDouble(totalSaved))"
         }
     }
-    
-    
 }
 
 

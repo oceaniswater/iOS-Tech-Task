@@ -101,10 +101,12 @@ class AccountsViewModel: AccountsViewModelProtocol {
                     self.view?.totalsAreRecieved(totalPlan: success.totalPlanValue, totalSaved: totalSaved)
                     self.view?.accountsAreRecieved()
                 case .failure(let failure):
-                    print(failure.localizedDescription)
+                    self.view?.showError(message: failure.localizedDescription, dismissHandler: {
+                        self.goToRoot()
+                    })
                     self.tokenManager.deleteToken()
                     UserDefaultsManager.shared.deleteUser()
-                    self.goToRoot()
+                    
                 }
                 self.view?.isLoading(false)
             }
