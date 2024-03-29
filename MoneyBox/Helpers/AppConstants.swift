@@ -19,5 +19,7 @@ struct K {
         static let secondaryTextColor   = UIColor(named: "secondaryTextColor")
         
         static let errorHilightColor   = UIColor(named: "errorHilightColor")
+        
+        static let distructiveButtonColor   = UIColor(named: "distructiveButtonColor")
     }
 }

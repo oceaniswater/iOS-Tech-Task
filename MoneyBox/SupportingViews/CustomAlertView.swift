@@ -1,16 +1,29 @@
+////
+////  CustomAlertView.swift
+////  MoneyBox
+////
+////  Created by Mark Golubev on 28/03/2024.
+////
 //
-//  CustomAlertView.swift
-//  MoneyBox
-//
-//  Created by Mark Golubev on 28/03/2024.
-//
-
 import UIKit
 
 class CustomAlertView {
+    typealias DismissHandler = () -> Void
+    
+    deinit {
+        print("alert deinit")
+    }
+    
     struct Constants {
         static let backgroundAlphaTo: CGFloat = 0.6
+        static let alertViewAlphaTo: CGFloat = 1
+        static let alertPadding: CGFloat = 20
     }
+    
+    private var dismissHandler: DismissHandler?
+    private var customAlert: CustomAlertView?
+    private var mytargetView: UIView?
+    
     private let backgroundView: UIView = {
         let backgroundView = UIView()
         backgroundView.backgroundColor = .black
@@ -19,91 +32,112 @@ class CustomAlertView {
     }()
     
     private let alertView: UIView = {
-        let
-        alert = UIView()
-        alert.backgroundColor = .white
+        let alert = UIView()
+        alert.backgroundColor = K.Design.secondaryCellColor
         alert.layer.masksToBounds = true
         alert.layer.cornerRadius = 12
+        alert.alpha = 0
+        alert.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         return alert
     }()
-    private var mytargetView: UIView?
     
-    func showAlert(with title: String,
-                   message: String,
-                   on viewController: UIViewController) {
+    private let messageLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = K.Design.primaryTextColor
+        label.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        return label
+    }()
+    
+    private let dismissButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(K.Design.primaryTextColor, for: .normal)
+        button.backgroundColor = K.Design.distructiveButtonColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    func showAlert(message: String,
+                   buttonTitle: String = "OK",
+                   on viewController: UIViewController,
+                   dismissHandler: DismissHandler? = nil) {
         guard let targetView = viewController.view else { return }
-        
         mytargetView = targetView
         
         backgroundView.frame = targetView.bounds
-        targetView.addSubview(backgroundView)
-        targetView.addSubview(alertView)
-        alertView.frame = CGRect(x: 40,
-                                 y: -300,
-                                 width: targetView.frame.size.width-80,
-                                 height: 300)
-        let titleLabel = UILabel(frame: CGRect(x: 0,
-                                               y: 0,
-                                               width: alertView.frame.size.width,
-                                               height: 80))
-        titleLabel.text = title
-        titleLabel.textAlignment = .center
-        alertView.addSubview(titleLabel)
-        let messageLabel = UILabel(frame: CGRect(x: 0,
-                                                 y: 80,
-                                                 width: alertView.frame.size.width,
-                                                 height: 170))
-        
-        messageLabel.numberOfLines = 0
         messageLabel.text = message
-        messageLabel.textAlignment = .left
-        alertView.addSubview(titleLabel)
-        let button = UIButton(frame: CGRect(x: 0,
-                                            y: alertView.frame.size.height-50,
-                                            width: alertView.frame.size.width,
-                                            height: 50))
-        alertView.addSubview(button)
-        button.setTitle("Ok", for: .normal)
-        button.addTarget (self,
-                          action: #selector(dismissAlert),
-                          for: .touchUpInside)
+        dismissButton.setTitle(buttonTitle, for: .normal)
+        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
+        setupView()
         
-        UIView.animate(withDuration: 0.25,
-                       animations: {
+        self.dismissHandler = dismissHandler
+        
+        UIView.animate(withDuration: 0.25) {
             self.backgroundView.alpha = Constants.backgroundAlphaTo
-        }, completion: { done in
-            if done {
-                UIView.animate(withDuration: 0.25, animations: {
-                    self.alertView.center = targetView.center
-                })
-            }
-        })
+            self.alertView.alpha = Constants.alertViewAlphaTo
+        }
+        
+        customAlert = self
     }
     
-    @objc func dismissAlert() {
-        guard let targetView = mytargetView else { return }
-        
-        UIView.animate(withDuration: 0.25,
-                       animations: {
-            self.alertView.frame = CGRect (x: 40,
-                                           y: targetView.frame.size.height,
-                                           width: targetView.frame.size.width-80,
-                                           height: 300)
-        }, completion:  { done in
-            if done {
-                UIView.animate(withDuration: 0.25,
-                               animations: {
-                    self.backgroundView.alpha = 0
-                }, completion: { done in
-                    if done {
-                        self.alertView.removeFromSuperview()
-                        self.backgroundView.removeFromSuperview()
-                    }
-                })
-            }
-        })
+    @objc private func dismissButtonTapped() {
+        customAlert?.dismissAlert()
+        dismissHandler?()
+        customAlert = nil
+    }
+    
+    private func dismissAlert() {
+        UIView.animate(withDuration: 0.25) {
+            self.alertView.alpha = 0
+            self.backgroundView.alpha = 0
+        }
+    }
+}
+
+// MARK: - Setup View
+private extension CustomAlertView {
+    func setupView() {
+        addSubview()
+        setupLayout()
         
     }
 }
 
+// MARK: - Setting
+private extension CustomAlertView {
+    func addSubview() {
+        guard let targetView = mytargetView else { return }
+        targetView.addSubview(backgroundView)
+        targetView.addSubview(alertView)
+        alertView.addSubview(messageLabel)
+        alertView.addSubview(dismissButton)
+    }
+}
 
+// MARK: - Setup Layout
+private extension CustomAlertView {
+    func setupLayout() {
+        guard let targetView = mytargetView else { return }
+        
+        NSLayoutConstraint.activate([
+            // Constraints for alert view
+            alertView.centerXAnchor.constraint(equalTo: targetView.centerXAnchor),
+            alertView.centerYAnchor.constraint(equalTo: targetView.centerYAnchor),
+            alertView.widthAnchor.constraint(equalToConstant: targetView.frame.size.width - 80),
+            
+            // Constraints for message label
+            messageLabel.topAnchor.constraint(equalTo: alertView.topAnchor, constant: Constants.alertPadding),
+            messageLabel.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: Constants.alertPadding),
+            messageLabel.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -Constants.alertPadding),
+            
+            // Constraints for button
+            dismissButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: Constants.alertPadding),
+            dismissButton.leadingAnchor.constraint(equalTo: alertView.leadingAnchor),
+            dismissButton.trailingAnchor.constraint(equalTo: alertView.trailingAnchor),
+            dismissButton.bottomAnchor.constraint(equalTo: alertView.bottomAnchor),
+            dismissButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+}
