@@ -20,7 +20,6 @@
 		866B56FA2BB3217200E8E786 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56F92BB3217200E8E786 /* UserDefaultsManager.swift */; };
 		866B56FC2BB344D700E8E786 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56FB2BB344D700E8E786 /* AccountTableViewCell.swift */; };
 		866B56FE2BB34A8C00E8E786 /* AccountViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56FD2BB34A8C00E8E786 /* AccountViewController+TableView.swift */; };
-		866B57002BB35C4A00E8E786 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56FF2BB35C4A00E8E786 /* Errors.swift */; };
 		866B57022BB35DD800E8E786 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57012BB35DD800E8E786 /* TokenManager.swift */; };
 		866B570F2BB4A73100E8E786 /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B570E2BB4A73100E8E786 /* ProductTableViewCell.swift */; };
 		866B57112BB4A88900E8E786 /* DetailsViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57102BB4A88900E8E786 /* DetailsViewController+TableView.swift */; };
@@ -28,6 +27,7 @@
 		866B57162BB5D55700E8E786 /* LoginViewController+UITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57152BB5D55700E8E786 /* LoginViewController+UITextFieldDelegate.swift */; };
 		866B57192BB605F900E8E786 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57182BB605F900E8E786 /* CustomAlertView.swift */; };
 		86E7D1E32BB6B834009FFC31 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1E22BB6B834009FFC31 /* UIViewController+Alert.swift */; };
+		86E7D1E72BB74EAC009FFC31 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1E62BB74EAC009FFC31 /* String+Extensions.swift */; };
 		B228EA6B2880B30B00B35F16 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B228EA692880B30B00B35F16 /* LoginViewController.swift */; };
 		B26EF47828881E7F003BFDF2 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = B26EF47728881E7F003BFDF2 /* Networking */; };
 		B2CA46CC279350880041B3A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA46CB279350880041B3A5 /* AppDelegate.swift */; };
@@ -62,7 +62,6 @@
 		866B56F92BB3217200E8E786 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		866B56FB2BB344D700E8E786 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		866B56FD2BB34A8C00E8E786 /* AccountViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountViewController+TableView.swift"; sourceTree = "<group>"; };
-		866B56FF2BB35C4A00E8E786 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		866B57012BB35DD800E8E786 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		866B570E2BB4A73100E8E786 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		866B57102BB4A88900E8E786 /* DetailsViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsViewController+TableView.swift"; sourceTree = "<group>"; };
@@ -70,6 +69,7 @@
 		866B57152BB5D55700E8E786 /* LoginViewController+UITextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UITextFieldDelegate.swift"; sourceTree = "<group>"; };
 		866B57182BB605F900E8E786 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		86E7D1E22BB6B834009FFC31 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		86E7D1E62BB74EAC009FFC31 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		B228EA692880B30B00B35F16 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B24EED92288ED5740016C233 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		B2CA46C8279350880041B3A5 /* MoneyBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneyBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				86E7D1E22BB6B834009FFC31 /* UIViewController+Alert.swift */,
+				86E7D1E62BB74EAC009FFC31 /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -173,7 +174,6 @@
 			children = (
 				866B56F72BB30CC000E8E786 /* AppConstants.swift */,
 				866B56F92BB3217200E8E786 /* UserDefaultsManager.swift */,
-				866B56FF2BB35C4A00E8E786 /* Errors.swift */,
 				866B57012BB35DD800E8E786 /* TokenManager.swift */,
 			);
 			path = Helpers;
@@ -379,11 +379,11 @@
 				866B57142BB5C1CD00E8E786 /* AuthTextField.swift in Sources */,
 				866B57192BB605F900E8E786 /* CustomAlertView.swift in Sources */,
 				866B570F2BB4A73100E8E786 /* ProductTableViewCell.swift in Sources */,
+				86E7D1E72BB74EAC009FFC31 /* String+Extensions.swift in Sources */,
 				B2CA46CC279350880041B3A5 /* AppDelegate.swift in Sources */,
 				866B56DD2BB1EBBF00E8E786 /* AccountsViewController.swift in Sources */,
 				866B56E12BB1EC0800E8E786 /* DetailsViewModel.swift in Sources */,
 				866B56FA2BB3217200E8E786 /* UserDefaultsManager.swift in Sources */,
-				866B57002BB35C4A00E8E786 /* Errors.swift in Sources */,
 				866B56FE2BB34A8C00E8E786 /* AccountViewController+TableView.swift in Sources */,
 				866B56DF2BB1EBED00E8E786 /* AccountsViewModel.swift in Sources */,
 				866B56E92BB1F60500E8E786 /* LoginViewModel.swift in Sources */,
