@@ -1,10 +1,3 @@
-//
-//  AuthTextField.swift
-//  MoneyBox
-//
-//  Created by Mark Golubev on 28/03/2024.
-//
-
 import UIKit
 
 final class AuthTextField: UITextField {
@@ -59,14 +52,28 @@ final class AuthTextField: UITextField {
         button.setImage(UIImage(systemName: isSecure ? "eye.slash.fill" : "x.circle.fill"), for: .normal)
         var configuration = UIButton.Configuration.plain()
         configuration.imagePlacement = .trailing
-        configuration.buttonSize = .small
+        configuration.buttonSize = .mini
         configuration.baseForegroundColor = (isSecure ? UIColor(resource: .accent) : .lightGray)
         button.configuration = configuration
         button.backgroundColor = .clear
         button.addAction(buttonAction, for: .touchDown)
         
+        button.accessibilityLabel = isSecure ? "toggle password visibility" : "delete"
+        button.accessibilityIdentifier = isSecure ? "togglePasswordVisibilityButton" : "deleteButton"
+        button.accessibilityHint = isSecure ? "Use to reveal secure text" : "Use to wipe email address"
+        
         rightView = button
         rightViewMode = isSecureTextEntry ? .always : .whileEditing
+
         tintColor = UIColor(resource: .accent)
+        
+        font = UIFont.scaledFont(font: .systemFont(ofSize: 14))
+        adjustsFontForContentSizeCategory = true
+        
+        // Set minimum height constraint
+        let minHeightConstraint = heightAnchor.constraint(greaterThanOrEqualToConstant: 45)
+        minHeightConstraint.priority = .required
+        minHeightConstraint.isActive = true
+        
     }
 }

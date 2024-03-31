@@ -21,15 +21,23 @@ class LoginViewController: UIViewController {
         let view = UIImageView(image: UIImage(named: "moneybox"))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
+        
+        view.isAccessibilityElement = true
+        view.accessibilityLabel = "moneybox logo"
+        view.accessibilityTraits.insert(.image)
+        view.accessibilityIdentifier = "moneyboxLogo"
         return view
     }()
     
     private let emailTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Email address"
-        label.font = .systemFont(ofSize: 12)
+        label.font = UIFont.scaledFont(font: .systemFont(ofSize: 12))
         label.textColor = K.Design.secondaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.accessibilityIdentifier = "emailTitleLabel"
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -37,25 +45,37 @@ class LoginViewController: UIViewController {
         let textField = AuthTextField(isSecure: false)
         textField.tag = 0
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.accessibilityLabel = "Email address"
+        textField.accessibilityHint = "Choose delete button to wipe email address"
+        textField.accessibilityIdentifier = "emailTextField"
+        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
     
     private let invalidEmailLabel: UILabel = {
         let label = UILabel()
         label.text = "The email address you entered is not valid."
-        label.font = .systemFont(ofSize: 12)
+        label.font = UIFont.scaledFont(font: .systemFont(ofSize: 12))
         label.textColor = K.Design.errorHilightColor
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.accessibilityTraits = .staticText
+        label.accessibilityIdentifier = "invalidEmailLabel"
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     private let passwordTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Email address"
-        label.font = .systemFont(ofSize: 12)
+        label.text = "Password"
+        label.font = UIFont.scaledFont(font: .systemFont(ofSize: 12))
         label.textColor = K.Design.secondaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.accessibilityIdentifier = "passwordTitleLabel"
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -63,11 +83,15 @@ class LoginViewController: UIViewController {
         let textField = AuthTextField(isSecure: true)
         textField.tag = 1
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.accessibilityLabel = "Password"
+        textField.accessibilityHint = "Choose toggle password visability button to reveal secure text"
+        textField.accessibilityIdentifier = "passwordTextField"
         return textField
     }()
     
-    private let loginButton: UIButton = {
-        let button = UIButton(type: .system)
+    private let loginButton: CustomButton = {
+        let button = CustomButton(type: .system)
         button.setTitle("Log in", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         button.setTitleColor(K.Design.primaryTextColor, for: .normal)
@@ -77,28 +101,37 @@ class LoginViewController: UIViewController {
         button.isEnabled = false
         button.layer.opacity = 0.5
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        
+        button.accessibilityIdentifier = "loginButton"
+        button.titleLabel?.font = UIFont.scaledFont(font: UIFont.systemFont(ofSize: 16, weight: .regular))
         return button
     }()
     
-    private let pinLoginButton: UIButton = {
-        let button = UIButton(type: .system)
+    private let pinLoginButton: CustomButton = {
+        let button = CustomButton(type: .system)
         button.setTitle("Log in with PIN", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         button.setTitleColor(UIColor(resource: .accent), for: .normal)
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(pinButtonTapped), for: .touchUpInside)
+        
+        button.accessibilityIdentifier = "pinLoginButton"
+        button.titleLabel?.font = UIFont.scaledFont(font: UIFont.systemFont(ofSize: 16, weight: .regular))
         return button
     }()
     
-    private let forgottenPasswordButton: UIButton = {
-        let button = UIButton(type: .system)
+    private let forgottenPasswordButton: CustomButton = {
+        let button = CustomButton(type: .system)
         button.setTitle("Forgotten password?", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         button.setTitleColor(UIColor(resource: .accent), for: .normal)
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
-        //        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        
+        button.accessibilityHint = "Click here to reset password"
+        button.accessibilityIdentifier = "forgottenPasswordButton"
+        button.titleLabel?.font = UIFont.scaledFont(font: UIFont.systemFont(ofSize: 14, weight: .regular))
         return button
     }()
     
@@ -106,7 +139,7 @@ class LoginViewController: UIViewController {
     private var passwordStack: UIStackView!
     
     private let activityView: UIActivityIndicatorView = {
-        let activity = UIActivityIndicatorView(style: .large)
+        let activity = UIActivityIndicatorView(style: .medium)
         activity.tintColor = K.Design.secondaryColor
         activity.translatesAutoresizingMaskIntoConstraints = false
         return activity
@@ -118,6 +151,11 @@ class LoginViewController: UIViewController {
         
         setupView()
         setupUITextFieldDelegate()
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+////            UIAccessibility.post(notification: .layoutChanged, argument: invalidEmailLabel)
+//            UIAccessibility.post(notification: .layoutChanged, argument: self?.invalidEmailLabel)
+//        }
     }
     
     deinit {
@@ -131,6 +169,15 @@ class LoginViewController: UIViewController {
                 self?.emailTitleLabel.textColor = K.Design.errorHilightColor
                 self?.emailTextField.layer.borderColor = K.Design.errorHilightColor?.cgColor
                 self?.invalidEmailLabel.isHidden = false
+                
+                self?.invalidEmailLabel.accessibilityTraits = .staticText
+                self?.invalidEmailLabel.accessibilityHint = "The email address you entered is not valid"
+                
+                // Focus on the invalid email label
+                self?.invalidEmailLabel.becomeFirstResponder()
+                
+                // Notify VoiceOver about the layout change
+                UIAccessibility.post(notification: .layoutChanged, argument: self?.invalidEmailLabel)
             }
         } else {
             DispatchQueue.main.async { [weak self] in
@@ -151,7 +198,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func pinButtonTapped() {
-        self.showAlert(message: "It is a test message.") {
+        self.showAlert(message: "It is a test message. Hey you, whoever is checking my task! Have a wonderful day!") {
         }
     }
     
@@ -181,12 +228,15 @@ private extension LoginViewController {
     func setupNavigationBar() {
         let registerButton = UIButton(type: .system)
         registerButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-        registerButton.translatesAutoresizingMaskIntoConstraints = false
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         var configuration = UIButton.Configuration.plain()
         configuration.buttonSize = .large
         registerButton.configuration = configuration
+        
+        registerButton.accessibilityLabel = "Create an account"
+        registerButton.accessibilityTraits.insert(.button)
+        registerButton.accessibilityIdentifier = "registerButton"
         
         let backButtonItem = UIBarButtonItem(customView: registerButton)
         
@@ -233,29 +283,24 @@ private extension LoginViewController {
             emailStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emailStack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 60),
             emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            emailTextField.heightAnchor.constraint(equalToConstant: 45),
             
             passwordStack.topAnchor.constraint(equalTo: emailStack.bottomAnchor, constant: 5),
             passwordStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 45),
             
             forgottenPasswordButton.topAnchor.constraint(equalTo: passwordStack.bottomAnchor),
             forgottenPasswordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            forgottenPasswordButton.heightAnchor.constraint(equalToConstant: 40),
             
             pinLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             pinLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pinLoginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            pinLoginButton.heightAnchor.constraint(equalToConstant: 45),
             
             loginButton.bottomAnchor.constraint(equalTo: pinLoginButton.topAnchor, constant: -10),
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
-            loginButton.heightAnchor.constraint(equalToConstant: 45),
             
-            activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityView.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor),
+            activityView.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor),
         ])
     }
 }
@@ -284,6 +329,7 @@ extension LoginViewController: LoginViewControllerDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.activityView.isHidden = isActive
             if isActive {
+                self?.loginButton.setTitleColor(.clear, for: .normal)
                 self?.activityView.startAnimating()
             } else {
                 self?.activityView.stopAnimating()

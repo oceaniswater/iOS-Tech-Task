@@ -76,9 +76,9 @@ class CustomAlertView {
         
         self.dismissHandler = dismissHandler
         
-        UIView.animate(withDuration: 0.25) {
-            self.backgroundView.alpha = Constants.backgroundAlphaTo
-            self.alertView.alpha = Constants.alertViewAlphaTo
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.backgroundView.alpha = Constants.backgroundAlphaTo
+            self?.alertView.alpha = Constants.alertViewAlphaTo
         }
         
         customAlert = self
@@ -91,9 +91,9 @@ class CustomAlertView {
     }
     
     private func dismissAlert() {
-        UIView.animate(withDuration: 0.25) {
-            self.alertView.alpha = 0
-            self.backgroundView.alpha = 0
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.alertView.alpha = 0
+            self?.backgroundView.alpha = 0
         }
     }
 }

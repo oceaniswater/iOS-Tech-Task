@@ -32,15 +32,19 @@ class DetailsViewController: UIViewController {
         button.setTitle("Add money: £10", for: .normal)
         button.setTitleColor(K.Design.primaryTextColor, for: .normal)
         button.addTarget(self, action: #selector(addMoneyButtonTapped), for: .touchUpInside)
+        
+        button.accessibilityIdentifier = "addMoneyButton"
         return button
     }()
     
-    lazy var tableView: UITableView = {
+    lazy var productsTableView: UITableView = {
         let tableView                                       = UITableView()
         tableView.separatorStyle                            = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor                           = .clear
         tableView.isScrollEnabled                           = true
+        
+        tableView.accessibilityIdentifier = "productsTableView"
         return tableView
     }()
     
@@ -59,6 +63,8 @@ class DetailsViewController: UIViewController {
         label.text                                          = "You need to choose a product to top up your moneybox."
         label.isHidden                                      = true
         label.translatesAutoresizingMaskIntoConstraints     = false
+        
+        label.accessibilityIdentifier = "selectProductLabel"
         return label
     }()
     
@@ -78,14 +84,14 @@ class DetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
+        navigationController?.navigationBar.backgroundColor = .clear
         viewModel.getFilteredData(account: viewModel.account)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        navigationController?.navigationBar.backgroundColor = nil
+        navigationController?.navigationBar.backgroundColor = .clear
     }
     
     deinit {
@@ -143,7 +149,7 @@ private extension DetailsViewController {
 private extension DetailsViewController {
     func addSubview() {
         view.addSubview(backView)
-        view.addSubview(tableView)
+        view.addSubview(productsTableView)
         view.addSubview(addMoneyButton)
         view.addSubview(selectProductLabel)
         view.addSubview(activityView)
@@ -160,10 +166,10 @@ private extension DetailsViewController {
             backView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backView.heightAnchor.constraint(equalToConstant: 200),
             
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            productsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            productsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            productsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            productsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             addMoneyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             addMoneyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),

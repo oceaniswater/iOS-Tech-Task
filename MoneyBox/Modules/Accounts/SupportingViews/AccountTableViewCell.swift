@@ -29,32 +29,38 @@ class AccountTableViewCell: UITableViewCell {
     
     // MARK: - Private properties
     private let view: UIView = {
-        let view                                        = UIView()
-        view.backgroundColor                            = K.Design.secondaryCellColor
-        view.translatesAutoresizingMaskIntoConstraints  = false
+        let view = UIView()
+        view.backgroundColor = K.Design.secondaryCellColor
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let nameLabel: UILabel = {
-        let label                                       = UILabel()
-        label.font                                      = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor                                 = K.Design.secondaryTextColor
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     private let amountLabel: UILabel = {
-        let label                                       = UILabel()
-        label.font                                      = UIFont.systemFont(ofSize: 16, weight: .bold)
-        label.textColor                                 = K.Design.secondaryTextColor
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = K.Design.secondaryTextColor
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     private let arrowImageView: UIImageView = {
-        let image                                       = UIImageView(image: UIImage(systemName: "chevron.right"))
-        image.tintColor                                 = K.Design.secondaryTextColor
+        let image = UIImageView(image: UIImage(systemName: "chevron.right"))
+        image.tintColor = K.Design.secondaryTextColor
         image.translatesAutoresizingMaskIntoConstraints = false
+        
+        image.adjustsImageSizeForAccessibilityContentSizeCategory = true
         return image
     }()
     
@@ -63,20 +69,20 @@ class AccountTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        nameLabel.text     = nil
-        amountLabel.text   = nil
+        nameLabel.text = nil
+        amountLabel.text = nil
         
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor         = .clear
+        backgroundColor = .clear
     }
     
     // MARK: - Public methods
     func configure(with item: (account: Account, totalMoney: Double)) {
-        nameLabel.text          = item.account.name
-        amountLabel.text        = "£\(String.fromDouble(item.totalMoney))"
+        nameLabel.text = item.account.name
+        amountLabel.text = "£\(String.fromDouble(item.totalMoney))"
     }
 }
 
@@ -84,7 +90,7 @@ class AccountTableViewCell: UITableViewCell {
 private extension AccountTableViewCell {
     func setupCell() {
         backgroundColor = .clear
-        
+    
         addSubview()
         setupLayout()
     }
@@ -95,10 +101,10 @@ private extension AccountTableViewCell {
     func addSubview() {
         addSubview(view)
         
-        hStack                                           = UIStackView(arrangedSubviews: [nameLabel, amountLabel, arrowImageView])
-        hStack.axis                                      = .horizontal
-        hStack.spacing                                   = 10
-        hStack.alignment                                 = .leading
+        hStack = UIStackView(arrangedSubviews: [nameLabel, amountLabel, arrowImageView])
+        hStack.axis = .horizontal
+        hStack.spacing = 10
+        hStack.alignment = .leading
         hStack.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(hStack)

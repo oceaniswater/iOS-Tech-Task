@@ -24,28 +24,37 @@ class AccountsViewController: UIViewController {
     
     // MARK: - Properties
     private let greetingLabel: UILabel = {
-        let label                                       = UILabel()
-        label.textAlignment                             = .left
-        label.font                                      = UIFont.systemFont(ofSize: 18, weight: .bold)
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.accessibilityIdentifier = "greetingLabel"
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     private let totalPlanLabel: UILabel = {
-        let label                                       = UILabel()
-        label.textAlignment                             = .left
-        label.font                                      = UIFont.systemFont(ofSize: 16)
-        label.text                                      = "Total Plan Value: £0.00"
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.text = "Total Plan Value: £0.00"
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.accessibilityIdentifier = "totalPlanLabel"
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     private let totalSavingsLabel: UILabel = {
-        let label                                       = UILabel()
-        label.textAlignment                             = .left
-        label.font                                      = UIFont.systemFont(ofSize: 16)
-        label.text                                      = "You already saved: £0.00"
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.text = "You already saved: £0.00"
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.accessibilityIdentifier = "totalSavingsLabel"
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
@@ -68,6 +77,7 @@ class AccountsViewController: UIViewController {
         view.layer.shadowRadius                        = 2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
+        
         return view
     }()
     
@@ -77,6 +87,8 @@ class AccountsViewController: UIViewController {
         tableView.backgroundColor                           = .clear
         tableView.isScrollEnabled                           = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tableView.accessibilityIdentifier = "accountsTableView"
         return tableView
     }()
     
@@ -100,6 +112,9 @@ class AccountsViewController: UIViewController {
         button.tintColor                                 = UIColor(resource: .accent)
         button.contentHorizontalAlignment                = .fill
         button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.accessibilityIdentifier = "exploreMoreAccountsButton"
+        button.accessibilityLabel = "Explore more accounts"
         return button
     }()
     
@@ -111,6 +126,9 @@ class AccountsViewController: UIViewController {
         button.layer.cornerRadius                        = 9
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        
+        button.accessibilityIdentifier = "logoutButton"
+        button.accessibilityLabel = "Refresh (test expired/wrong token)"
         return button
     }()
     

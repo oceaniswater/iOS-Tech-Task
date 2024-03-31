@@ -26,6 +26,7 @@ extension LoginViewController: UITextFieldDelegate {
         case 0:
             passwordTextField.becomeFirstResponder()
         case 1:
+            passwordTextField.resignFirstResponder()
             loginButtonTapped()
         default:
             break

@@ -12,19 +12,19 @@ import UIKit
 extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func setupTableView() {
-        self.tableView.delegate     = self
-        self.tableView.dataSource   = self
+        self.productsTableView.delegate     = self
+        self.productsTableView.dataSource   = self
         
         self.registerTableCell()
     }
     
     func registerTableCell() {
-        tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: ProductTableViewCell.identifier)
+        productsTableView.register(ProductTableViewCell.self, forCellReuseIdentifier: ProductTableViewCell.identifier)
     }
     
     func reloadTableView() {
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            self.productsTableView.reloadData()
         }
     }
     
