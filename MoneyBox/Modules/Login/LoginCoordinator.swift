@@ -46,10 +46,10 @@ class LoginCoordinator: Coordinator {
 extension LoginCoordinator: LoginNavigation {
     func goToLoginPage(){
         let loginViewController = LoginViewController()
-        let loginViewModel = LoginViewModel(nav: self,
-                                                     dataProvider: dataProvider,
-                                                     delegate: loginViewController,
-                                                     tokenManager: tokenManager)
+        let loginViewModel = LoginViewModel(dataProvider: dataProvider,
+                                            tokenManager: tokenManager)
+        loginViewModel.navigation = self
+        loginViewModel.view = loginViewController
 
         loginViewController.viewModel = loginViewModel
         navigationController.pushViewController(loginViewController, animated: true)

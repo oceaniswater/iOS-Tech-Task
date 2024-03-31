@@ -65,7 +65,6 @@ class DetailsViewModel: DetailsViewModelProtocol {
         let request = OneOffPaymentRequest(amount: 10, investorProductID: productId)
         dataProvider.addMoney(request: request) { [weak self] result in
             guard let self = self else { return }
-            DispatchQueue.main.async {
                 switch result {
                 case .success( _):
                     self.getFilteredData(account: self.account)
@@ -75,7 +74,6 @@ class DetailsViewModel: DetailsViewModelProtocol {
                     })
                 }
                 self.view?.isLoading(false)
-            }
         }
     }
     
@@ -84,7 +82,6 @@ class DetailsViewModel: DetailsViewModelProtocol {
         view?.isLoading(true)
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
-            DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
                     self.products = success.productResponses?.filter { $0.wrapperID == accountId} ?? []
@@ -99,7 +96,6 @@ class DetailsViewModel: DetailsViewModelProtocol {
                     
                 }
                 self.view?.isLoading(false)
-            }
         }
     }
     

@@ -92,7 +92,6 @@ class AccountsViewModel: AccountsViewModelProtocol {
         view?.isLoading(true)
         dataProvider.fetchProducts { [weak self] result in
             guard let self = self else { return }
-            DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
                     self.products   = success.productResponses ?? []
@@ -109,7 +108,6 @@ class AccountsViewModel: AccountsViewModelProtocol {
                     
                 }
                 self.view?.isLoading(false)
-            }
 
         }
     }

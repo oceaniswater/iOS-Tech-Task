@@ -9,7 +9,13 @@ import Foundation
 import Security
 import Networking
 
-class TokenManager {
+protocol TokenManagerProtocol {
+    func saveToken(_ token: String)
+    func getToken() -> String?
+    func deleteToken()
+}
+
+class TokenManager: TokenManagerProtocol {
     
     var sessionManager: SessionManager
     
@@ -20,7 +26,7 @@ class TokenManager {
     // MARK: - Constants
     
     /// Unique service identifier for the app
-    private let service = "com.yourcompany.app.token"
+    private let service = "com.moneybox.app.token"
     
     // MARK: - Public Methods
     
