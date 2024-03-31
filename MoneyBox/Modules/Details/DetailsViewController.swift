@@ -85,7 +85,7 @@ class DetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.backgroundColor = .clear
-        viewModel.getFilteredData(account: viewModel.account)
+        viewModel.getFilteredData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -65,11 +65,11 @@ extension DetailsCoordinator : DetailsNavigation {
     
     func goToDetailsScreen(){
         let detailsViewController       = DetailsViewController()
-        let detailsViewModel            = DetailsViewModel(nav: self,
-                                                           dataProvider     : dataProvider,
-                                                           view             : detailsViewController,
+        let detailsViewModel            = DetailsViewModel(dataProvider     : dataProvider,
                                                            tokenManager     : tokenManager,
                                                            account          : account)
+        detailsViewModel.navigation = self
+        detailsViewModel.view = detailsViewController
         
         detailsViewController.viewModel = detailsViewModel
         navigationController.pushViewController(detailsViewController, animated: true)

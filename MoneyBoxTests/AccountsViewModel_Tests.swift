@@ -13,7 +13,7 @@ final class AccountsViewModel_Tests: XCTestCase {
     
     // Mock dependencies
     class MockNavigation: AccountsNavigation {
-        func goToDetailsScreen(account: Networking.Account) {
+        func goToDetailsScreen(account: Account) {
             //
         }
         
