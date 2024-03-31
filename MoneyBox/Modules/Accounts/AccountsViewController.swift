@@ -170,8 +170,8 @@ private extension AccountsViewController {
     
     func setupName() {
         DispatchQueue.main.async { [weak self] in
-            let name = self?.viewModel.getUser()?.firstName ?? "Moneyboxer"
-            self?.greetingLabel.text = "Hello \(name)!"
+            let name = self?.viewModel.getUser()
+            self?.greetingLabel.text = "Hello \(name!)!"
         }
     }
 }

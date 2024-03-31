@@ -65,11 +65,12 @@ extension AccountsCoordinator : AccountsNavigation {
     func goToAccountsScreen(){
         let user = UserDefaultsManager.shared.getUser()
         let accountsViewController          = AccountsViewController()
-        let accountsViewModel               = AccountsViewModel(nav: self,
+        let accountsViewModel               = AccountsViewModel(
                                                                 dataProvider: dataProvider,
-                                                                view: accountsViewController,
                                                                 tokenManager: tokenManager,
                                                                 user: user)
+        accountsViewModel.navigation = self
+        accountsViewModel.view = accountsViewController
         accountsViewController.viewModel    = accountsViewModel
         
         navigationController.pushViewController(accountsViewController, animated: true)

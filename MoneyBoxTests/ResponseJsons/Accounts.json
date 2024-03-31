@@ -8,46 +8,53 @@
         {
             "Id": 8043,
             "AssetBoxGlobalId": "cf0a49dd-a8cf-4b59-82ee-9215558cce8d",
-            "PlanValue": 10526.09,
-            "Moneybox": 570.00,
-            "SubscriptionAmount": 0.00,
-            "TotalFees": 36.83,
+            "PlanValue": 43330.89,
+            "TotalCollection": 60,
+            "FixedAllocationsTotal": 0,
+            "Moneybox": 60,
+            "SubscriptionAmount": 0,
+            "TotalWeeklySubscriptionAmount": 0,
+            "TotalFees": 391.66,
             "IsSelected": false,
             "IsFavourite": false,
-            "CollectionDayMessage": "3 days until collection",
+            "CollectionDayMessage": "£60 was collected at midday today",
             "WrapperId": "b9eaa523-cdd5-46c6-8353-9d538da845e0",
             "IsCashBox": false,
-            "PendingInstantBankTransferAmount": 0.0,
+            "PendingInstantBankTransferAmount": 0,
             "AssetBox": {
                 "Title": "Investments"
             },
             "Product": {
                 "Id": 1,
+                "GlobalId": "d140d99d-b759-46cb-84af-9fbd98dc517f",
                 "Name": "ISA",
+                "SvgImageUrl": "https://assets.moneyboxapp.com/images/app-assets/IsaIconRebrand.svg",
+                "PngImageUrl": "https://assets.moneyboxapp.com/images/app-assets/IsaIconRebrand.png",
                 "CategoryType": "Investment",
                 "Type": "Isa",
                 "FriendlyName": "Stocks & Shares ISA",
                 "CanWithdraw": true,
+                "CanProportionatelySelldown": false,
                 "ProductHexCode": "#c5d561",
-                "AnnualLimit": 20000.00,
-                "DepositLimit": 0.00,
-                "BonusMultiplier": 0.00,
-                "MinimumWeeklyDeposit": 2.0,
-                "MaximumWeeklyDeposit": 400.0,
+                "AnnualLimit": 20000,
+                "DepositLimit": 0,
+                "BonusMultiplier": 0,
+                "MinimumWeeklyDeposit": 2,
+                "MaximumWeeklyDeposit": 400,
                 "Documents": {
-                    "KeyFeaturesUrl": "https://api-test02.moneyboxapp.com/docs/KeyFeaturesDocumentAll"
+                    "KeyFeaturesUrl": "https://api-test02.moneyboxapp.com/docs/KeyFeaturesDocumentISAStocks"
                 },
                 "State": "None",
                 "WrapperDefinitionGlobalId": "ecdf7923-4f30-4e9d-84bc-1e71d3a53367"
             },
             "InvestorAccount": {
-                "ContributionsNet": 9243.00,
-                "EarningsNet": 1283.09,
-                "EarningsAsPercentage": 13.88
+                "ContributionsNet": 36902,
+                "EarningsNet": 6428.89,
+                "EarningsAsPercentage": 17.42
             },
             "Personalisation": {
                 "QuickAddDeposit": {
-                    "Amount": 100.00
+                    "Amount": 100
                 },
                 "HideAccounts": {
                     "Enabled": false,
@@ -63,64 +70,70 @@
             },
             "IsSwitchVisible": false,
             "State": "None",
-            "DateCreated": "2020-07-17T14:37:32.630"
+            "DateCreated": "2020-07-17T14:37:32.630",
+            "XSellToDoKey": "IsaXSell"
         },
         {
             "Id": 8042,
             "AssetBoxGlobalId": "b6a061d1-cfdf-45a0-9177-e89d69c9bd28",
-            "PlanValue": 5180.990000,
-            "Moneybox": 470.00,
-            "SubscriptionAmount": 0.00,
-            "TotalFees": 0.00,
+            "PlanValue": 16059.13,
+            "TotalCollection": 0,
+            "FixedAllocationsTotal": 0,
+            "Moneybox": 0,
+            "SubscriptionAmount": 0,
+            "TotalWeeklySubscriptionAmount": 0,
+            "TotalFees": 0,
             "IsSelected": true,
             "IsFavourite": true,
-            "CollectionDayMessage": "3 days until collection",
+            "CollectionDayMessage": "£60 was collected at midday today",
             "WrapperId": "e7bdfeb4-23c7-44d6-88f5-04dc0c7ab99d",
             "IsCashBox": false,
-            "PendingInstantBankTransferAmount": 0.0,
+            "PendingInstantBankTransferAmount": 0,
             "AssetBox": {
                 "Title": "Cash"
             },
             "Product": {
                 "Lisa": {
-                    "MaximumBonus": 1000.0000
+                    "MaximumBonus": 1000
                 },
                 "Id": 7,
+                "GlobalId": "cc31bf19-bef7-4b4c-8a3e-0970b55ca2cb",
                 "Name": "Lisa Plus",
+                "SvgImageUrl": "https://assets.moneyboxapp.com/images/app-assets/LisaIconRebrand.svg",
+                "PngImageUrl": "https://assets.moneyboxapp.com/images/app-assets/LisaIconRebrand.png",
                 "CategoryType": "Cash",
                 "Type": "Lisa",
                 "FriendlyName": "Lifetime ISA",
                 "CanWithdraw": false,
+                "CanProportionatelySelldown": false,
                 "ProductHexCode": "#49bfbd",
-                "AnnualLimit": 4000.00,
-                "DepositLimit": 0.00,
+                "AnnualLimit": 4000,
+                "DepositLimit": 0,
                 "BonusMultiplier": 0.25,
-                "MinimumWeeklyDeposit": 2.0,
-                "MaximumWeeklyDeposit": 400.0,
-                "InterestRate": "0.35% AER",
-                "InterestRateAmount": 0.003500,
-                "LogoUrl": "https://assets.moneyboxapp.com/images/app-assets/InvestecIconRebrand.png",
+                "MinimumWeeklyDeposit": 2,
+                "MaximumWeeklyDeposit": 400,
+                "InterestRate": "2.75% AER",
+                "InterestRateAmount": 0.0275,
                 "Documents": {
-                    "KeyFeaturesUrl": "https://api-test02.moneyboxapp.com/docs/KeyFeaturesDocumentAll"
+                    "KeyFeaturesUrl": "https://api-test02.moneyboxapp.com/docs/KeyFeaturesDocumentLISACashDMB2"
                 },
                 "State": "None",
                 "WrapperDefinitionGlobalId": "7b98e517-7a1f-4526-8266-b8ce0b9f8199",
                 "Fund": {
-                    "FundId": 37,
-                    "Name": "Investec",
-                    "LogoUrl": "https://assets.moneyboxapp.com/images/app-assets/InvestecIconRebrand.png",
-                    "IsFundDMB": false
+                    "FundId": 44,
+                    "Name": "Moneybox",
+                    "IsFundDMB": true
                 }
             },
             "InvestorAccount": {
-                "TodaysInterest": 0.0433,
-                "ContributionsNet": 4112.42,
-                "EarningsNet": 1070.390000,
-                "EarningsAsPercentage": 25.97
+                "TodaysInterest": 1.5141,
+                "ContributionsNet": 13792.94,
+                "EarningsNet": 2268.01,
+                "EarningsAsPercentage": 16.14
             },
             "Personalisation": {
                 "QuickAddDeposit": {
-                    "Amount": 100.00
+                    "Amount": 100
                 },
                 "HideAccounts": {
                     "Enabled": false,
@@ -136,7 +149,82 @@
             },
             "IsSwitchVisible": false,
             "State": "None",
-            "DateCreated": "2020-07-17T14:36:09.957"
+            "DateCreated": "2020-07-17T14:36:09.957",
+            "XSellToDoKey": "LisaXSell"
+        },
+        {
+            "Id": 13200,
+            "AssetBoxGlobalId": "ff96d801-5660-4d94-ad30-5f61f1b74343",
+            "PlanValue": 0,
+            "TotalCollection": 14200,
+            "FixedAllocationsTotal": 0,
+            "Moneybox": 14200,
+            "SubscriptionAmount": 0,
+            "TotalWeeklySubscriptionAmount": 0,
+            "TotalFees": 0,
+            "IsSelected": false,
+            "IsFavourite": false,
+            "CollectionDayMessage": "£60 was collected at midday today",
+            "WrapperId": "b9eaa523-cdd5-46c6-8353-9d538da845e0",
+            "IsCashBox": true,
+            "PendingInstantBankTransferAmount": 0,
+            "AssetBox": {
+                "Title": "Cash"
+            },
+            "Product": {
+                "Id": 10,
+                "GlobalId": "f539177c-2a56-4978-a20a-6c61142e93b6",
+                "Name": "Isa Cash Box",
+                "SvgImageUrl": "https://assets.moneyboxapp.com/images/app-assets/CashBoxIconRebrand.svg",
+                "PngImageUrl": "https://assets.moneyboxapp.com/images/app-assets/CashBoxIconRebrand.png",
+                "CategoryType": "Cash",
+                "Type": "Isa",
+                "FriendlyName": "Stocks & Shares ISA",
+                "CanWithdraw": true,
+                "CanProportionatelySelldown": false,
+                "AnnualLimit": 20000,
+                "DepositLimit": 0,
+                "BonusMultiplier": 0,
+                "MinimumWeeklyDeposit": 2,
+                "MaximumWeeklyDeposit": 400,
+                "InterestRate": "3.25% AER",
+                "InterestRateAmount": 0.0325,
+                "Documents": {
+                    "KeyFeaturesUrl": "https://api-test02.moneyboxapp.com/docs/KeyFeaturesDocumentISAStocks"
+                },
+                "State": "None",
+                "WrapperDefinitionGlobalId": "ecdf7923-4f30-4e9d-84bc-1e71d3a53367",
+                "Fund": {
+                    "FundId": 41,
+                    "Name": "Moneybox",
+                    "IsFundDMB": true
+                }
+            },
+            "InvestorAccount": {
+                "TodaysInterest": 0,
+                "ContributionsNet": 0,
+                "EarningsNet": 0,
+                "EarningsAsPercentage": 0
+            },
+            "Personalisation": {
+                "QuickAddDeposit": {
+                    "Amount": 100
+                },
+                "HideAccounts": {
+                    "Enabled": false,
+                    "IsHidden": false,
+                    "Sequence": 3
+                }
+            },
+            "Contributions": {
+                "Status": "Enabled"
+            },
+            "MoneyboxCircle": {
+                "State": "None"
+            },
+            "IsSwitchVisible": false,
+            "State": "None",
+            "DateCreated": "2020-11-02T15:32:00.270"
         }
     ],
     "Accounts": [
