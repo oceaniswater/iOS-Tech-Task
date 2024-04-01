@@ -18,7 +18,12 @@ Hi! This is the 'light' version of Moneybox app targeting iOS 15. This app follo
 
 PS: I left refresh a button on the Account screen for your convinience. You would be able to check how the app works with expired/wrong token or logout and go to the Login screen.
 
+Light appearance
 ![](https://github.com/oceaniswater/iOS-Tech-Task/blob/master/Media/1.png)
+Dark appearance
 ![](https://github.com/oceaniswater/iOS-Tech-Task/blob/master/Media/2.png)
+Error elements
 ![](https://github.com/oceaniswater/iOS-Tech-Task/blob/master/Media/3.png)
+Accessibility. Dynamic Types
+![](https://github.com/oceaniswater/iOS-Tech-Task/blob/master/Media/4.png)
 
