@@ -276,7 +276,7 @@ private extension LoginViewController {
             emailStack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 60),
             emailTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             
-            passwordStack.topAnchor.constraint(equalTo: emailStack.bottomAnchor, constant: 5),
+            passwordStack.topAnchor.constraint(equalTo: emailStack.bottomAnchor, constant: 10),
             passwordStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             

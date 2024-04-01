@@ -63,7 +63,7 @@ class CustomAlertView {
                    buttonTitle: String = "OK",
                    on viewController: UIViewController,
                    dismissHandler: DismissHandler? = nil) {
-        guard let targetView = viewController.view else { return }
+        guard let targetView = viewController.view.window else { return }
         mytargetView = targetView
         
         backgroundView.frame = targetView.bounds
