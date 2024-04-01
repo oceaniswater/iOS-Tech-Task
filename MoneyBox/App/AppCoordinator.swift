@@ -12,7 +12,7 @@ protocol Coordinator: AnyObject {
     var parentCoordinator           : Coordinator? { get set }
     var children                    : [Coordinator] { get set }
     var navigationController        : UINavigationController { get set }
-    var tokenManager                : TokenManager { get set }
+    var tokenManager                : TokenManagerProtocol { get set }
     
     func start()
     func childDidFinish(_ child: Coordinator?)
@@ -22,16 +22,14 @@ class AppCoordinator : Coordinator {
     var parentCoordinator           : Coordinator?
     var children                    : [Coordinator] = []
     var navigationController        : UINavigationController
-    var tokenManager                : TokenManager
+    var tokenManager                : TokenManagerProtocol
     
-    init(navigationController: UINavigationController, tokenManager: TokenManager) {
+    init(navigationController: UINavigationController, tokenManager: TokenManagerProtocol) {
         self.navigationController   = navigationController
         self.tokenManager           = tokenManager
     }
     
     func start() {
-        print("AppCoordinator Start")
-        
         // check token
         if let _ = tokenManager.getToken() {
             goToAccounts()
@@ -73,9 +71,5 @@ class AppCoordinator : Coordinator {
         children.append(accountsCoordinator)
         
         accountsCoordinator.start()
-    }
-    
-    deinit {
-        print("AppCoordinator Deinit")
     }
 }

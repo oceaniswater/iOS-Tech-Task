@@ -153,10 +153,6 @@ class LoginViewController: UIViewController {
         setupUITextFieldDelegate()
     }
     
-    deinit {
-        print("Login VC deinit")
-    }
-    
     // MARK: - Methods
     func isEmalilValidationErrorHilighted(_ isHilighted: Bool ) {
         if isHilighted {

@@ -8,8 +8,7 @@
 import UIKit
 
 extension UIFont {
-    /// Scaled and styled version of any custom Font
-    ///
+    /// Support Dynamic Types Accessibility feature for labels
     /// - Parameters:
     ///   - name: Name of the Font
     ///   - textSize: text szie i.e 10, 15, 20, ...

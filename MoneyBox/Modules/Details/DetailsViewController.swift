@@ -21,14 +21,14 @@ class DetailsViewController: UIViewController {
     
     // MARK: - Private properties
     private let addMoneyButton: UIButton = {
-        let button                                          = UIButton(type: .system)
-        button.layer.cornerRadius                           = 25
-        button.backgroundColor                              = UIColor(resource: .accent)
-        button.layer.shadowColor                            = UIColor.black.cgColor
-        button.layer.shadowOpacity                          = 0.7
-        button.layer.shadowOffset                           = CGSize(width: 0, height: 2)
-        button.layer.shadowRadius                           = 1
-        button.translatesAutoresizingMaskIntoConstraints    = false
+        let button = UIButton(type: .system)
+        button.layer.cornerRadius = 25
+        button.backgroundColor = UIColor(resource: .accent)
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.7
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 1
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add money: £10", for: .normal)
         button.setTitleColor(K.Design.primaryTextColor, for: .normal)
         button.addTarget(self, action: #selector(addMoneyButtonTapped), for: .touchUpInside)
@@ -38,40 +38,40 @@ class DetailsViewController: UIViewController {
     }()
     
     lazy var productsTableView: UITableView = {
-        let tableView                                       = UITableView()
-        tableView.separatorStyle                            = .none
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor                           = .clear
-        tableView.isScrollEnabled                           = true
+        tableView.backgroundColor = .clear
+        tableView.isScrollEnabled = true
         
         tableView.accessibilityIdentifier = "productsTableView"
         return tableView
     }()
     
     private var backView: UIView = {
-        let view                                            = UIView()
-        view.backgroundColor                                = K.Design.primaryCellColor
-        view.translatesAutoresizingMaskIntoConstraints      = false
+        let view = UIView()
+        view.backgroundColor = K.Design.primaryCellColor
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private var selectProductLabel: UILabel = {
-        let label                                           = UILabel()
-        label.textAlignment                                 = .center
-        label.font                                          = UIFont.systemFont(ofSize: 14)
-        label.numberOfLines                                 = 2
-        label.text                                          = "You need to choose a product to top up your moneybox."
-        label.isHidden                                      = true
-        label.translatesAutoresizingMaskIntoConstraints     = false
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 2
+        label.text = "You need to choose a product to top up your moneybox."
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         label.accessibilityIdentifier = "selectProductLabel"
         return label
     }()
     
     private let activityView: UIActivityIndicatorView = {
-        let activity                                        = UIActivityIndicatorView(style: .large)
-        activity.tintColor                                  = K.Design.secondaryColor
-        activity.translatesAutoresizingMaskIntoConstraints  = false
+        let activity = UIActivityIndicatorView(style: .large)
+        activity.tintColor = K.Design.secondaryColor
+        activity.translatesAutoresizingMaskIntoConstraints = false
         return activity
     }()
     
@@ -94,27 +94,19 @@ class DetailsViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .clear
     }
     
-    deinit {
-        print("Details VC deinit")
-    }
-    
     func setupCustomBackButton() {
-        // Create a custom back button
         let backButton = UIButton(type: .custom)
         backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        backButton.tintColor                                = K.Design.primaryTextColor
+        backButton.tintColor = K.Design.primaryTextColor
         
-        // Add left padding to the button to adjust its position
         var configuration = UIButton.Configuration.plain()
-        configuration.buttonSize                            = .large
-        backButton.configuration                            = configuration
+        configuration.buttonSize = .large
+        backButton.configuration = configuration
         
-        // Create a UIBarButtonItem with the custom button
         let backButtonItem = UIBarButtonItem(customView: backButton)
         
-        // Assign the custom back button to the navigation item
-        navigationItem.leftBarButtonItem                    = backButtonItem
+        navigationItem.leftBarButtonItem = backButtonItem
     }
     
     // MARK: - Actions
@@ -130,9 +122,9 @@ class DetailsViewController: UIViewController {
 // MARK: - Setup View
 private extension DetailsViewController {
     func setupView() {
-        view.backgroundColor                                = K.Design.backgroundColor
+        view.backgroundColor = K.Design.backgroundColor
         navigationController?.navigationBar.backgroundColor = K.Design.primaryCellColor
-        title                                               = viewModel.getTitle()
+        title = viewModel.getTitle()
         
         if let navigationBar = navigationController?.navigationBar {
             navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: K.Design.primaryTextColor as Any]

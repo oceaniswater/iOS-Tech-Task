@@ -33,7 +33,6 @@ class TokenManager: TokenManagerProtocol {
     /// Save token to Keychain
     func saveToken(_ token: String) {
         guard let data = token.data(using: .utf8) else {
-            print("Error converting token to data")
             return
         }
         
@@ -49,11 +48,9 @@ class TokenManager: TokenManagerProtocol {
         // Add the new token to Keychain
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            print("Error saving token to Keychain: \(status)")
             return
         }
         sessionManager.setUserToken(token)
-        print("Token saved successfully")
     }
     
     /// Retrieve token from Keychain
@@ -71,7 +68,6 @@ class TokenManager: TokenManagerProtocol {
         guard status == errSecSuccess,
               let tokenData = item as? Data,
               let token = String(data: tokenData, encoding: .utf8) else {
-            print("Error retrieving token from Keychain: \(status)")
             return nil
         }
         
@@ -89,11 +85,9 @@ class TokenManager: TokenManagerProtocol {
         
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
-            print("Error deleting token from Keychain: \(status)")
             return
         }
         
         sessionManager.removeUserToken()
-        print("Token deleted successfully")
     }
 }

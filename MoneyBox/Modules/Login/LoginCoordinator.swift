@@ -13,11 +13,11 @@ class LoginCoordinator: Coordinator {
     var children                    : [Coordinator] = []
     var navigationController        : UINavigationController
     var dataProvider                : DataProvider
-    var tokenManager                : TokenManager
+    var tokenManager                : TokenManagerProtocol
     
     init(navigationController       : UINavigationController,
          dataProvider               : DataProvider,
-         tokenManager               : TokenManager
+         tokenManager               : TokenManagerProtocol
     ) {
         self.navigationController   = navigationController
         self.dataProvider           = dataProvider
@@ -25,7 +25,6 @@ class LoginCoordinator: Coordinator {
     }
     
     func start() {
-        print("AuthCoordinator Start")
         goToLoginPage()
     }
     
@@ -36,10 +35,6 @@ class LoginCoordinator: Coordinator {
                 break
             }
         }
-    }
-    
-    deinit {
-        print("AuthCoordinator Deinit")
     }
 }
 

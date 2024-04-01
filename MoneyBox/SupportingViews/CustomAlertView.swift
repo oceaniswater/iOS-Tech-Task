@@ -9,11 +9,7 @@ import UIKit
 
 class CustomAlertView {
     typealias DismissHandler = () -> Void
-    
-    deinit {
-        print("alert deinit")
-    }
-    
+        
     struct Constants {
         static let backgroundAlphaTo: CGFloat = 0.6
         static let alertViewAlphaTo: CGFloat = 1
@@ -67,7 +63,6 @@ class CustomAlertView {
         mytargetView = targetView
         
         backgroundView.frame = targetView.bounds
-        
         
         messageLabel.text = message == "Data error" ? "Something is wrong. Check your internet connection or try later." : message
         dismissButton.setTitle(buttonTitle, for: .normal)
@@ -124,17 +119,14 @@ private extension CustomAlertView {
         guard let targetView = mytargetView else { return }
         
         NSLayoutConstraint.activate([
-            // Constraints for alert view
             alertView.centerXAnchor.constraint(equalTo: targetView.centerXAnchor),
             alertView.centerYAnchor.constraint(equalTo: targetView.centerYAnchor),
             alertView.widthAnchor.constraint(equalToConstant: targetView.frame.size.width - 80),
             
-            // Constraints for message label
             messageLabel.topAnchor.constraint(equalTo: alertView.topAnchor, constant: Constants.alertPadding),
             messageLabel.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: Constants.alertPadding),
             messageLabel.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -Constants.alertPadding),
             
-            // Constraints for button
             dismissButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: Constants.alertPadding),
             dismissButton.leadingAnchor.constraint(equalTo: alertView.leadingAnchor),
             dismissButton.trailingAnchor.constraint(equalTo: alertView.trailingAnchor),

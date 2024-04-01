@@ -13,18 +13,17 @@ class AccountsCoordinator: Coordinator {
     var children                    : [Coordinator] = []
     var navigationController        : UINavigationController
     var dataProvider                : DataProvider
-    var tokenManager                : TokenManager
+    var tokenManager                : TokenManagerProtocol
     
     init(navigationController       : UINavigationController,
          dataProvider               : DataProvider,
-         tokenManager               : TokenManager) {
+         tokenManager               : TokenManagerProtocol) {
         self.navigationController   = navigationController
         self.dataProvider           = dataProvider
         self.tokenManager           = tokenManager
     }
     
     func start() {
-        print("AccountsCoordinator Start")
         goToAccountsScreen()
     }
     
@@ -40,10 +39,6 @@ class AccountsCoordinator: Coordinator {
     func goToRoot() {
         children.removeAll()
         
-    }
-    
-    deinit {
-        print("AccountsCoordinator Deinit")
     }
 }
 

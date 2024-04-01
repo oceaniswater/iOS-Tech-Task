@@ -89,7 +89,6 @@ class AccountsViewModel: AccountsViewModelProtocol {
     }
     
     // MARK: - Private Methods
-    
     private func handleDataSuccess(_ success: AccountResponse) {
         products = success.productResponses ?? []
         accounts = calculateTotalMoneyByAccount(accountResponse: success)

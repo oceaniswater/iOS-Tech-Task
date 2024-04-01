@@ -45,7 +45,6 @@ class LoginViewModel: LoginViewModelProtocol {
                 }
             view?.isLoading(false)
         }
-        
     }
     
     func isValidEmail(_ email: String?) -> Bool {
@@ -66,11 +65,6 @@ class LoginViewModel: LoginViewModelProtocol {
     private func handleLoginFailure(_ failure: Error) {
         tokenManager.deleteToken()
         UserDefaultsManager.shared.deleteUser()
-        // Pass the error message to the view for display
         view?.showError(message: failure.localizedDescription)
-    }
-    
-    deinit {
-        print("Logi VM deinit")
     }
 }

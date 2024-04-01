@@ -13,13 +13,13 @@ class DetailsCoordinator : Coordinator {
     var children                    : [Coordinator] = []
     var navigationController        : UINavigationController
     var dataProvider                : DataProvider
-    var tokenManager                : TokenManager
+    var tokenManager                : TokenManagerProtocol
     
     var account                     : Account
     
     init(navigationController       : UINavigationController,
          dataProvider               : DataProvider,
-         tokenManager               : TokenManager,
+         tokenManager               : TokenManagerProtocol,
          account                    : Account) {
         
         self.navigationController   = navigationController
@@ -29,7 +29,6 @@ class DetailsCoordinator : Coordinator {
     }
     
     func start() {
-        print("DetailsCoordinator Start")
         goToDetailsScreen()
     }
     
@@ -40,10 +39,6 @@ class DetailsCoordinator : Coordinator {
                 break
             }
         }
-    }
-    
-    deinit {
-        print("DetailsCoordinator Deinit")
     }
 }
 
@@ -65,9 +60,9 @@ extension DetailsCoordinator : DetailsNavigation {
     
     func goToDetailsScreen(){
         let detailsViewController       = DetailsViewController()
-        let detailsViewModel            = DetailsViewModel(dataProvider     : dataProvider,
-                                                           tokenManager     : tokenManager,
-                                                           account          : account)
+        let detailsViewModel            = DetailsViewModel(dataProvider: dataProvider,
+                                                           tokenManager: tokenManager,
+                                                           account     : account)
         detailsViewModel.navigation = self
         detailsViewModel.view = detailsViewController
         

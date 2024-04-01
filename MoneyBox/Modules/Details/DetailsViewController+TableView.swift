@@ -12,8 +12,8 @@ import UIKit
 extension DetailsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func setupTableView() {
-        self.productsTableView.delegate     = self
-        self.productsTableView.dataSource   = self
+        self.productsTableView.delegate = self
+        self.productsTableView.dataSource = self
         
         self.registerTableCell()
     }

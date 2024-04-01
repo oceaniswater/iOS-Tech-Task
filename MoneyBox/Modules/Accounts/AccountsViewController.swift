@@ -16,10 +16,6 @@ protocol AccountsViewControllerDelegate: AnyObject {
 
 class AccountsViewController: UIViewController {
     
-    deinit {
-        print("Accounts View Controller deinit")
-    }
-    
     var viewModel: AccountsViewModelProtocol!
     
     // MARK: - Properties
@@ -59,22 +55,22 @@ class AccountsViewController: UIViewController {
     }()
     
     private let tableViewFormLabel: UILabel = {
-        let label                                       = UILabel()
-        label.textAlignment                             = .left
-        label.font                                      = UIFont.systemFont(ofSize: 14)
-        label.text                                      = "Your accounts"
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "Your accounts"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var tableViewForm: UIView = {
         let view = UIView()
-        view.backgroundColor                           = K.Design.secondaryCellColor
-        view.layer.cornerRadius                        = 10
-        view.layer.shadowColor                         = UIColor(.black).cgColor
-        view.layer.shadowOpacity                       = 0.2
-        view.layer.shadowOffset                        = CGSize(width: 0, height: 0)
-        view.layer.shadowRadius                        = 2
+        view.backgroundColor = K.Design.secondaryCellColor
+        view.layer.cornerRadius = 10
+        view.layer.shadowColor = UIColor(.black).cgColor
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowOffset = CGSize(width: 0, height: 0)
+        view.layer.shadowRadius = 2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         
@@ -82,10 +78,10 @@ class AccountsViewController: UIViewController {
     }()
     
     let tableView: UITableView = {
-        let tableView                                       = UITableView()
-        tableView.separatorStyle                            = .none
-        tableView.backgroundColor                           = .clear
-        tableView.isScrollEnabled                           = false
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
+        tableView.isScrollEnabled = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.accessibilityIdentifier = "accountsTableView"
@@ -93,8 +89,8 @@ class AccountsViewController: UIViewController {
     }()
     
     private lazy var deviderView: UIView = {
-        let view                                       = UIView()
-        view.backgroundColor                           = .systemGray2
+        let view = UIView()
+        view.backgroundColor = .systemGray2
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -102,15 +98,15 @@ class AccountsViewController: UIViewController {
     private let exploreMoreAccountsButton: UIButton = {
         let button = UIButton()
         button.setTitle("Explore more accounts", for: .normal)
-        button.titleLabel?.font                          = UIFont.systemFont(ofSize: 14)
-        var configuration                                = UIButton.Configuration.plain()
-        configuration.imagePlacement                     = .trailing
-        configuration.buttonSize                         = .mini
-        button.configuration                             = configuration
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        var configuration = UIButton.Configuration.plain()
+        configuration.imagePlacement = .trailing
+        configuration.buttonSize = .mini
+        button.configuration = configuration
         button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         button.setTitleColor(UIColor(resource: .accent), for: .normal)
-        button.tintColor                                 = UIColor(resource: .accent)
-        button.contentHorizontalAlignment                = .fill
+        button.tintColor  = UIColor(resource: .accent)
+        button.contentHorizontalAlignment = .fill
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.accessibilityIdentifier = "exploreMoreAccountsButton"
@@ -122,8 +118,8 @@ class AccountsViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Refresh (test expired/wrong token)", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor                           = UIColor(resource: .accent)
-        button.layer.cornerRadius                        = 9
+        button.backgroundColor = UIColor(resource: .accent)
+        button.layer.cornerRadius = 9
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
         
@@ -133,8 +129,8 @@ class AccountsViewController: UIViewController {
     }()
     
     private let activityView: UIActivityIndicatorView = {
-        let activity                                       = UIActivityIndicatorView(style: .large)
-        activity.tintColor                                 = UIColor(resource: .accent)
+        let activity = UIActivityIndicatorView(style: .large)
+        activity.tintColor = UIColor(resource: .accent)
         activity.translatesAutoresizingMaskIntoConstraints = false
         return activity
     }()
@@ -183,7 +179,7 @@ private extension AccountsViewController {
         view.addSubview(totalPlanLabel)
         view.addSubview(totalSavingsLabel)
         
-        vStack = UIStackView(arrangedSubviews: [tableViewFormLabel, tableView, exploreMoreAccountsButton])
+        vStack = UIStackView(arrangedSubviews: [tableViewFormLabel, tableView])
         vStack.axis = .vertical
         vStack.spacing = 10
         vStack.alignment = .leading
@@ -193,6 +189,7 @@ private extension AccountsViewController {
         tableViewForm.addSubview(vStack)
         tableViewForm.addSubview(deviderView)
         view.addSubview(tableViewForm)
+        tableViewForm.addSubview(exploreMoreAccountsButton)
         
         view.addSubview(logoutButton)
         view.addSubview(activityView)
@@ -218,23 +215,24 @@ private extension AccountsViewController {
             tableViewForm.topAnchor.constraint(equalTo: totalSavingsLabel.bottomAnchor, constant: 20),
             tableViewForm.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
             tableViewForm.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            
+
             vStack.topAnchor.constraint(equalTo: tableViewForm.topAnchor, constant: 15),
             vStack.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor, constant: 15),
             vStack.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor, constant: -15),
-            vStack.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor),
-            
+
             tableView.leadingAnchor.constraint(equalTo: vStack.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: vStack.trailingAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 80),
-            
-            deviderView.bottomAnchor.constraint(equalTo: exploreMoreAccountsButton.topAnchor),
+
+            deviderView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
             deviderView.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor),
             deviderView.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor),
             deviderView.heightAnchor.constraint(equalToConstant: 1),
-            
+
+            exploreMoreAccountsButton.topAnchor.constraint(equalTo: deviderView.bottomAnchor, constant: 5),
             exploreMoreAccountsButton.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor, constant: 5),
             exploreMoreAccountsButton.trailingAnchor.constraint(equalTo: tableViewForm.trailingAnchor, constant: -5),
+            exploreMoreAccountsButton.bottomAnchor.constraint(equalTo: tableViewForm.bottomAnchor, constant: -5),
             exploreMoreAccountsButton.heightAnchor.constraint(equalToConstant: 40),
             
             logoutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
