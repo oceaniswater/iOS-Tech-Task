@@ -3,7 +3,7 @@ import UIKit
 final class AuthTextField: UITextField {
     
     // MARK: - Private Properties
-    private let padding: UIEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+    private let padding: UIEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
     
     // MARK: - Initializers
     init(isSecure: Bool) {
@@ -49,7 +49,8 @@ final class AuthTextField: UITextField {
         }
         
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: isSecure ? "eye.slash.fill" : "x.circle.fill"), for: .normal)
+        let image = UIImage(systemName: isSecure ? "eye.slash.fill" : "x.circle.fill")
+        button.setImage(image, for: .normal)
         var configuration = UIButton.Configuration.plain()
         configuration.imagePlacement = .trailing
         configuration.buttonSize = .mini
@@ -64,6 +65,7 @@ final class AuthTextField: UITextField {
         
         rightView = button
         rightViewMode = isSecureTextEntry ? .always : .whileEditing
+        
 
         tintColor = UIColor(resource: .accent)
         
@@ -74,6 +76,6 @@ final class AuthTextField: UITextField {
         let minHeightConstraint = heightAnchor.constraint(greaterThanOrEqualToConstant: 45)
         minHeightConstraint.priority = .required
         minHeightConstraint.isActive = true
-        
     }
 }
+
