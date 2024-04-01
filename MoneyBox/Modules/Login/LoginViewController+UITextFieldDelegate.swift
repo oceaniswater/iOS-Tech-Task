@@ -35,10 +35,11 @@ extension LoginViewController: UITextFieldDelegate {
         return true
     }
     
-    // Remove error hilight when select textfield again
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.tag == 0 {
             isEmalilValidationErrorHilighted(false)
+        } else if textField.tag == 1 {
+            textField.text = ""
         }
     }
     
