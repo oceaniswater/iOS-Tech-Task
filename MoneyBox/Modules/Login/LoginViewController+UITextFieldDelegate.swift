@@ -17,7 +17,6 @@ extension LoginViewController: UITextFieldDelegate {
         passwordTextField.returnKeyType = .done
         
         setupGestureEndEditing()
-        
     }
     
     // Change logic for return button on the keyboard
@@ -31,7 +30,6 @@ extension LoginViewController: UITextFieldDelegate {
         default:
             break
         }
-        
         return true
     }
     
