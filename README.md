@@ -1,70 +1,20 @@
 
 # Moneybox iOS Technical Challenge
 
-## The Brief
+## Overview
 
-To create a 'light' version of the Moneybox app that will allow existing users to login and check their account balance, as well as viewing their Moneybox savings. 
-- To fork this repository to your private repository and implement the solution.
+Hi! This is the 'light' version of Moneybox app targeting iOS 15. This app follows the MVVM-C (Model-View-ViewModel-Coordinator) architectural pattern, providing a maintainable, scalable, and testable codebase.
  
-### The app should have
-- A login screen to allow existing users to sign in
-- A screen to show the accounts the user holds, e.g. ISA, GIA
-- A screen to show some details of the account, including a simple button to add money to its moneybox.
-- The button will add a fixed amount of £10. It should use the `POST /oneoffpayments` endpoint provided, and the account's Moneybox amount would be updated.
+### Key Features:
+- MVVM-C Architecture: Structured using the Model-View-ViewModel-Coordinator pattern for improved organization and separation of concerns.
+- SOLID Principles: Adheres to SOLID principles, enabling clean, readable, and maintainable code. This ensures flexibility and ease of future development.
+- Programmatic UI: All user interfaces are created programmatically, avoiding the use of Interface Builder and enabling more control over the layout. Constraints are managed using NSLayoutConstraints, minimizing dependencies on third-party libraries. I personaly like using SnapKit in my UIKit projects.
+- Accessibility: Designed with accessibility in mind, the app includes additional accessibility labels and hints for a smooth experience with VoiceOver. Selected screens support the Dynamic Type accessibility feature, enhancing usability for users with special needs.
+- Design Patterns: Incorporates common design patterns such as Singleton and Delegate to facilitate efficient communication between components and ensure a coherent codebase.
+- Dark Mode Support: The app seamlessly transitions between light and dark modes, offering users a personalized and comfortable viewing experience, regardless of ambient lighting conditions.
+- Custom Views: A custom alert view is implemented to display errors and important notifications to users, enhancing the app's user feedback mechanisms and improving overall usability. The app includes a custom text field that replicates the functionality of the text field in the original Moneybox app, providing a familiar and intuitive input experience for users.
+- Unit Testing: Comprehensive unit test coverage ensures the stability and reliability of the app, providing confidence during development and maintenance.
+- UI Testing: All UI elements are equipped with accessibility identifiers, facilitating UI testing and automation.
 
-A prototype wireframe of all 3 screens is provided as a guideline. You are free to provide additional information if you wish.
 ![](wireframe.png)
 
-### What we are looking for
- - **Showcase what you can do. It can be a refined UI, or enhanced UX, or use of specific design patterns in the code, or anything that can make the project stand out.**
- - Demonstration of coding style, conventions and patterns.
- - A tidy code organisation.
- - Use of autolayout and UIKit.
- - Implementation of unit tests.
- - Any accessibility feature would be a bonus.
- - The application must run on iOS 15 or later.
- - Any 3rd party library should be integrated using Swift Package Manager.
-
-### API Usage
-The Networking methods and Models for requests and responses are ready-made in the Networking module of the project.
-
-#### Base URL & Test User
-The base URL for the moneybox sandbox environment is `https://api-test02.moneyboxapp.com/`. </br>
-You can log in using the following user:
-
-|  Username          | Password         |
-| ------------- | ------------- |
-| test+ios@moneyboxapp.com  | P455word12  |
-
-#### Authentication
-You should obtain a bearer token from the Login response, and attach it as an Authorization header for the endpoints. Helper methods in the API/Base folder should be used for that.
-(Note: The BearerToken has a sliding expiration of 5 mins).
-
-| Key  |  Value  |
-| ------------- | ------------- |
-| Authorization |  Bearer TsMWRkbrcu3NGrpf84gi2+pg0iOMVymyKklmkY0oI84= |
-
-#### API Call Hint
-
-```
-let dataProvider = DataProvider()
-dataProvider.login(request: request, completion: completion)
-```
-request: Initialize your request model </br>
-Completion: Handle your API success and failure cases
-
-## Unit Tests
-The MoneyBoxTests folder includes stubbed data to easily mock the responses needed for unit testing
-
-#### Usage Hint
-You can create a DataProviderMock class via inject DataProviderLogic protocol </br>
-You can mock response in Login.json file like this:
-```
-StubData.read(file: "Login", callback: completion)
-```
-
-### How to Submit your solution:
- - To share your Github repository with the user valerio-bettini.
- - (Optional) Provide a readme in markdown which outlines your solution.
-
-## Good luck!
