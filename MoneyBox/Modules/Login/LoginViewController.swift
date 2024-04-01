@@ -151,11 +151,6 @@ class LoginViewController: UIViewController {
         
         setupView()
         setupUITextFieldDelegate()
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-////            UIAccessibility.post(notification: .layoutChanged, argument: invalidEmailLabel)
-//            UIAccessibility.post(notification: .layoutChanged, argument: self?.invalidEmailLabel)
-//        }
     }
     
     deinit {
@@ -210,8 +205,6 @@ class LoginViewController: UIViewController {
         isEmalilValidationErrorHilighted(false)
         changeLoginButtonState(true)
     }
-    
-    
 }
 
 // MARK: - Setup View
@@ -222,7 +215,6 @@ private extension LoginViewController {
         addSubview()
         setupLayout()
         setupNavigationBar()
-        
     }
     
     func setupNavigationBar() {
@@ -250,14 +242,14 @@ private extension LoginViewController {
     func addSubview() {
         emailStack = UIStackView(arrangedSubviews: [emailTitleLabel, emailTextField, invalidEmailLabel])
         emailStack.axis = .vertical
-        emailStack.spacing = 0
+        emailStack.spacing = 5
         emailStack.alignment = .leading
         emailStack.distribution = .fillProportionally
         emailStack.translatesAutoresizingMaskIntoConstraints = false
         
         passwordStack = UIStackView(arrangedSubviews: [passwordTitleLabel, passwordTextField])
         passwordStack.axis = .vertical
-        passwordStack.spacing = 0
+        passwordStack.spacing = 5
         passwordStack.alignment = .leading
         passwordStack.distribution = .fillProportionally
         passwordStack.translatesAutoresizingMaskIntoConstraints = false
