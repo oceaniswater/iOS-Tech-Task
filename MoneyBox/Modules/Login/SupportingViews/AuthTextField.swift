@@ -68,6 +68,7 @@ final class AuthTextField: UITextField {
         
 
         tintColor = UIColor(resource: .accent)
+        autocapitalizationType = .none
         
         font = UIFont.scaledFont(font: .systemFont(ofSize: 14))
         adjustsFontForContentSizeCategory = true
