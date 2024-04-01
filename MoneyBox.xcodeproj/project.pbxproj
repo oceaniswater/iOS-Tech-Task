@@ -27,13 +27,17 @@
 		866B57162BB5D55700E8E786 /* LoginViewController+UITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57152BB5D55700E8E786 /* LoginViewController+UITextFieldDelegate.swift */; };
 		866B57192BB605F900E8E786 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B57182BB605F900E8E786 /* CustomAlertView.swift */; };
 		86E7D1E32BB6B834009FFC31 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1E22BB6B834009FFC31 /* UIViewController+Alert.swift */; };
-		86E7D1E72BB74EAC009FFC31 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1E62BB74EAC009FFC31 /* String+Extensions.swift */; };
+		86E7D1E72BB74EAC009FFC31 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1E62BB74EAC009FFC31 /* Double+Extensions.swift */; };
 		86E7D1E92BB98781009FFC31 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1E82BB98781009FFC31 /* UIFont+Extensions.swift */; };
 		86E7D1EB2BB98935009FFC31 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1EA2BB98935009FFC31 /* CustomButton.swift */; };
 		86E7D1ED2BB9B42C009FFC31 /* LoginViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1EC2BB9B42C009FFC31 /* LoginViewModel_Tests.swift */; };
 		86E7D1EF2BB9E399009FFC31 /* AccountsViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1EE2BB9E399009FFC31 /* AccountsViewModel_Tests.swift */; };
-		86E7D1F32BBA0DFD009FFC31 /* Moneybox.json in Resources */ = {isa = PBXBuildFile; fileRef = 86E7D1F22BBA0DFD009FFC31 /* Moneybox.json */; };
 		86E7D1F52BBA0E65009FFC31 /* DetailsViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E7D1F42BBA0E65009FFC31 /* DetailsViewModel_Tests.swift */; };
+		86F0C7D82BBACB6B00C1B417 /* AddMoneySuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = 86F0C7D72BBACB6B00C1B417 /* AddMoneySuccess.json */; };
+		86F0C7D92BBAD2A800C1B417 /* AddMoneySuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = 86F0C7D72BBACB6B00C1B417 /* AddMoneySuccess.json */; };
+		86F0C7DB2BBAE2B700C1B417 /* UserDefaultsManager_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F0C7DA2BBAE2B700C1B417 /* UserDefaultsManager_Tests.swift */; };
+		86F0C7DD2BBAEABD00C1B417 /* Double+Extensions_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F0C7DC2BBAEABD00C1B417 /* Double+Extensions_Tests.swift */; };
+		86F0C7E12BBAF27200C1B417 /* TokenManager_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F0C7E02BBAF27200C1B417 /* TokenManager_Tests.swift */; };
 		B228EA6B2880B30B00B35F16 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B228EA692880B30B00B35F16 /* LoginViewController.swift */; };
 		B26EF47828881E7F003BFDF2 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = B26EF47728881E7F003BFDF2 /* Networking */; };
 		B2CA46CC279350880041B3A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CA46CB279350880041B3A5 /* AppDelegate.swift */; };
@@ -75,13 +79,16 @@
 		866B57152BB5D55700E8E786 /* LoginViewController+UITextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UITextFieldDelegate.swift"; sourceTree = "<group>"; };
 		866B57182BB605F900E8E786 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		86E7D1E22BB6B834009FFC31 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
-		86E7D1E62BB74EAC009FFC31 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		86E7D1E62BB74EAC009FFC31 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		86E7D1E82BB98781009FFC31 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		86E7D1EA2BB98935009FFC31 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		86E7D1EC2BB9B42C009FFC31 /* LoginViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel_Tests.swift; sourceTree = "<group>"; };
 		86E7D1EE2BB9E399009FFC31 /* AccountsViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel_Tests.swift; sourceTree = "<group>"; };
-		86E7D1F22BBA0DFD009FFC31 /* Moneybox.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Moneybox.json; sourceTree = "<group>"; };
 		86E7D1F42BBA0E65009FFC31 /* DetailsViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel_Tests.swift; sourceTree = "<group>"; };
+		86F0C7D72BBACB6B00C1B417 /* AddMoneySuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AddMoneySuccess.json; sourceTree = "<group>"; };
+		86F0C7DA2BBAE2B700C1B417 /* UserDefaultsManager_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager_Tests.swift; sourceTree = "<group>"; };
+		86F0C7DC2BBAEABD00C1B417 /* Double+Extensions_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions_Tests.swift"; sourceTree = "<group>"; };
+		86F0C7E02BBAF27200C1B417 /* TokenManager_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager_Tests.swift; sourceTree = "<group>"; };
 		B228EA692880B30B00B35F16 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B24EED92288ED5740016C233 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		B2CA46C8279350880041B3A5 /* MoneyBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneyBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				86E7D1E22BB6B834009FFC31 /* UIViewController+Alert.swift */,
-				86E7D1E62BB74EAC009FFC31 /* String+Extensions.swift */,
+				86E7D1E62BB74EAC009FFC31 /* Double+Extensions.swift */,
 				86E7D1E82BB98781009FFC31 /* UIFont+Extensions.swift */,
 			);
 			path = Extensions;
@@ -264,6 +271,9 @@
 				86E7D1EC2BB9B42C009FFC31 /* LoginViewModel_Tests.swift */,
 				86E7D1EE2BB9E399009FFC31 /* AccountsViewModel_Tests.swift */,
 				86E7D1F42BBA0E65009FFC31 /* DetailsViewModel_Tests.swift */,
+				86F0C7DA2BBAE2B700C1B417 /* UserDefaultsManager_Tests.swift */,
+				86F0C7DC2BBAEABD00C1B417 /* Double+Extensions_Tests.swift */,
+				86F0C7E02BBAF27200C1B417 /* TokenManager_Tests.swift */,
 			);
 			path = MoneyBoxTests;
 			sourceTree = "<group>";
@@ -273,7 +283,7 @@
 			children = (
 				B2CA47692794D6D70041B3A5 /* LoginSucceed.json */,
 				B2CA47B2279604A10041B3A5 /* Accounts.json */,
-				86E7D1F22BBA0DFD009FFC31 /* Moneybox.json */,
+				86F0C7D72BBACB6B00C1B417 /* AddMoneySuccess.json */,
 			);
 			path = ResponseJsons;
 			sourceTree = "<group>";
@@ -372,6 +382,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86F0C7D92BBAD2A800C1B417 /* AddMoneySuccess.json in Resources */,
 				B2CA46D82793508A0041B3A5 /* LaunchScreen.storyboard in Resources */,
 				B2CA47712794D8E50041B3A5 /* LoginSucceed.json in Resources */,
 				B2CA46D52793508A0041B3A5 /* Assets.xcassets in Resources */,
@@ -383,7 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86E7D1F32BBA0DFD009FFC31 /* Moneybox.json in Resources */,
+				86F0C7D82BBACB6B00C1B417 /* AddMoneySuccess.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,7 +410,7 @@
 				866B57192BB605F900E8E786 /* CustomAlertView.swift in Sources */,
 				866B570F2BB4A73100E8E786 /* ProductTableViewCell.swift in Sources */,
 				86E7D1EB2BB98935009FFC31 /* CustomButton.swift in Sources */,
-				86E7D1E72BB74EAC009FFC31 /* String+Extensions.swift in Sources */,
+				86E7D1E72BB74EAC009FFC31 /* Double+Extensions.swift in Sources */,
 				B2CA46CC279350880041B3A5 /* AppDelegate.swift in Sources */,
 				866B56DD2BB1EBBF00E8E786 /* AccountsViewController.swift in Sources */,
 				866B56E12BB1EC0800E8E786 /* DetailsViewModel.swift in Sources */,
@@ -427,8 +438,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				86E7D1ED2BB9B42C009FFC31 /* LoginViewModel_Tests.swift in Sources */,
+				86F0C7DB2BBAE2B700C1B417 /* UserDefaultsManager_Tests.swift in Sources */,
 				86E7D1EF2BB9E399009FFC31 /* AccountsViewModel_Tests.swift in Sources */,
 				B2CA47672794D69A0041B3A5 /* StubData.swift in Sources */,
+				86F0C7DD2BBAEABD00C1B417 /* Double+Extensions_Tests.swift in Sources */,
+				86F0C7E12BBAF27200C1B417 /* TokenManager_Tests.swift in Sources */,
 				86E7D1F52BBA0E65009FFC31 /* DetailsViewModel_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -82,7 +82,7 @@ class AccountTableViewCell: UITableViewCell {
     // MARK: - Public methods
     func configure(with item: (account: Account, totalMoney: Double)) {
         nameLabel.text = item.account.name
-        amountLabel.text = "£\(String.fromDouble(item.totalMoney))"
+        amountLabel.text = "£\(item.totalMoney.toMoneyFormatString())"
     }
 }
 

@@ -14,6 +14,7 @@ final class LoginViewModel_Tests: XCTestCase {
     // Mock dependencies
     class MockNavigation: LoginNavigation {
         var goToAccountsScreenCalled = false
+        
         func goToAccountsScreen() {
             goToAccountsScreenCalled = true
         }
@@ -28,23 +29,17 @@ final class LoginViewModel_Tests: XCTestCase {
             }
         }
         
-        func fetchProducts(completion: @escaping ((Result<Networking.AccountResponse, any Error>) -> Void)) {
-            //
-        }
+        func fetchProducts(completion: @escaping ((Result<Networking.AccountResponse, any Error>) -> Void)) {}
         
-        func addMoney(request: Networking.OneOffPaymentRequest, completion: @escaping ((Result<Networking.OneOffPaymentResponse, any Error>) -> Void)) {
-            //
-        }
+        func addMoney(request: Networking.OneOffPaymentRequest, completion: @escaping ((Result<Networking.OneOffPaymentResponse, any Error>) -> Void)) {}
     }
     
     class MockView: LoginViewControllerDelegate {
         var isErrorShown = false
         
-        func isLoading(_ isActive: Bool) {
-        }
+        func isLoading(_ isActive: Bool) {}
         
-        func validationError() {
-        }
+        func validationError() {}
         
         func showError(message: String) {
             isErrorShown = true

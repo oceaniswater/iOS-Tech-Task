@@ -49,14 +49,11 @@ final class DetailsViewModel_Tests: XCTestCase {
             showErrorCalled = true
         }
         
-        func isLoading(_ isActive: Bool) {
-        }
+        func isLoading(_ isActive: Bool) {}
         
-        func hideSelectProductLabel(_ isHidden: Bool) {
-        }
+        func hideSelectProductLabel(_ isHidden: Bool) {}
         
-        func changeAddMoneyButtonState(_ isEnabled: Bool) {
-        }
+        func changeAddMoneyButtonState(_ isEnabled: Bool) {}
     }
     
     class MockTokenManager: TokenManagerProtocol {
@@ -64,7 +61,7 @@ final class DetailsViewModel_Tests: XCTestCase {
         
         func saveToken(_ token: String) {}
         
-        func getToken() -> String? { nil }
+        func getToken() -> String? { "GuQfJPpjUyJH10Og+hS9c0ttz4q2ZoOnEQBSBP2eAEs=" }
         
         func deleteToken() {
             deleteTokenCalled = true
@@ -79,7 +76,6 @@ final class DetailsViewModel_Tests: XCTestCase {
     var account: Account!
     
     override func setUpWithError() throws {
-        // Initialize mock objects and view model
         mockNavigation = MockNavigation()
         mockDataProvider = MockDataProvider()
         mockView = MockView()
@@ -92,7 +88,6 @@ final class DetailsViewModel_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        // Clean up
         mockNavigation = nil
         mockDataProvider = nil
         mockView = nil
@@ -139,7 +134,6 @@ final class DetailsViewModel_Tests: XCTestCase {
             let productAccountId = product.wrapperID
             XCTAssertEqual(accountId, productAccountId)
         }
-        
     }
     
     func test_DetailsViewModel_getFilteredData_failure() throws {
@@ -199,7 +193,7 @@ final class DetailsViewModel_Tests: XCTestCase {
         XCTAssertNotNil(viewModel.selectedProduct)
     }
     
-    func test_DetailsViewModel_addMoney() throws {
+    func test_DetailsViewModel_addMoney_success() throws {
         let account = createAccount(id: "e7bdfeb4-23c7-44d6-88f5-04dc0c7ab99d", name: "Lifetime ISA")
         
         let viewModel = DetailsViewModel(dataProvider: mockDataProvider, tokenManager: mockTokenManager, account: account)
@@ -207,7 +201,7 @@ final class DetailsViewModel_Tests: XCTestCase {
         viewModel.view = mockView
         
         // Stub success response
-        StubData.read(file: "Moneybox") { [weak self] (result: Result<OneOffPaymentResponse, Error>) in
+        StubData.read(file: "AddMoneySuccess") { [weak self] (result: Result<OneOffPaymentResponse, Error>) in
             guard let self = self else { return }
             switch result {
             case .success(let response):
@@ -217,23 +211,84 @@ final class DetailsViewModel_Tests: XCTestCase {
             }
         }
         
+        StubData.read(file: "Accounts") { [weak self] (result: Result<AccountResponse, Error>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.mockDataProvider.productsResult = .success(response)
+            case .failure(let error):
+                XCTFail("Error reading stub data: \(error.localizedDescription)")
+            }
+        }
+        
+        viewModel.getFilteredData()
+        
         viewModel.addMoney()
         
         XCTAssertTrue(mockView.productsUpdatedCalled)
     }
-//    
-//    func test_DetailsViewModel_addMoney_Failure() throws {
-//        // Stub failure response
-//        let error = NSError(domain: "Test error", code: 500, userInfo: nil)
-//        mockDataProvider.productsResult = .failure(error)
-//        viewModel.selectedProduct = ProductResponse()
-//        
-//        viewModel.addMoney()
-//        
-//        XCTAssertTrue(mockView.showErrorCalled)
-//        XCTAssertTrue(mockTokenManager.deleteTokenCalled)
-//        XCTAssertTrue(mockView.isLoadingCalled)
-//    }
+    
+    func test_DetailsViewModel_addMoney_failure() throws {
+        let account = createAccount(id: "e7bdfeb4-23c7-44d6-88f5-04dc0c7ab99d", name: "Lifetime ISA")
+        
+        let viewModel = DetailsViewModel(dataProvider: mockDataProvider, tokenManager: mockTokenManager, account: account)
+        viewModel.navigation = mockNavigation
+        viewModel.view = mockView
+        
+        // Stub success response
+        let error = NSError(domain: "", code: 500, userInfo: nil)
+        mockDataProvider.moneyboxResult = .failure(error)
+        StubData.read(file: "Accounts") { [weak self] (result: Result<AccountResponse, Error>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.mockDataProvider.productsResult = .success(response)
+            case .failure(let error):
+                XCTFail("Error reading stub data: \(error.localizedDescription)")
+            }
+        }
+        
+        viewModel.getFilteredData()
+        
+        viewModel.addMoney()
+        
+        XCTAssertTrue(mockView.showErrorCalled)
+    }
+    
+    func test_AccountsViewModel_numberOfRows_productsCount() throws {
+        var expectedNumber: Int!
+        
+        StubData.read(file: "Accounts") { [weak self] (result: Result<AccountResponse, Error>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.mockDataProvider.productsResult = .success(response)
+            case .failure(let error):
+                XCTFail("Error reading stub data: \(error.localizedDescription)")
+            }
+        }
+        viewModel.getFilteredData()
+        
+        expectedNumber = viewModel.products.count
+        
+        let actualNumber = viewModel.numberOfRows(in: 1)
+        
+        XCTAssertEqual(expectedNumber, actualNumber)
+    }
+    
+    func test_AccountsViewModel_numberOfRows_zero() throws {
+        let expectedNumber = 0
+        
+        let actualNumber = viewModel.numberOfRows(in: 1)
+        
+        XCTAssertEqual(expectedNumber, actualNumber)
+    }
+    
+    func test_AccountsViewModel_numberOfSections_one() throws {
+        let number = viewModel.numberOfSections()
+        
+        XCTAssertEqual(number, 1)
+    }
 }
 
 func createAccount(id: String, name: String) -> Account {

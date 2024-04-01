@@ -274,8 +274,8 @@ extension AccountsViewController: AccountsViewControllerDelegate {
     
     func totalsAreRecieved(totalPlan: Double?, totalSaved: Double) {
         DispatchQueue.main.async { [weak self] in
-            self?.totalPlanLabel.text    = "Total Plan Value: £\(String.fromDouble(totalPlan ?? 0.0))"
-            self?.totalSavingsLabel.text = "You already saved: £\(String.fromDouble(totalSaved))"
+            self?.totalPlanLabel.text    = "Total Plan Value: £\((totalPlan ?? 0.0).toMoneyFormatString())"
+            self?.totalSavingsLabel.text = "You already saved: £\(totalSaved.toMoneyFormatString())"
         }
     }
 }

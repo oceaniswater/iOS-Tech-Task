@@ -104,8 +104,8 @@ class ProductTableViewCell: UITableViewCell {
     // MARK: - Public methods
     func configure(with product: ProductResponse) {
         nameLabel.text          = product.product?.name
-        planValueLabel.text     = "Your plan: \(String.fromDouble(product.planValue ?? 0.0))"
-        moneyboxLabel.text      = "You saved: \(String.fromDouble(product.moneybox ?? 0.0))"
+        planValueLabel.text     = "Your plan: \((product.planValue ?? 0.0).toMoneyFormatString())"
+        moneyboxLabel.text      = "You saved: \((product.moneybox ?? 0.0).toMoneyFormatString())"
     }
 }
 

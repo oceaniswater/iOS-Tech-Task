@@ -13,13 +13,9 @@ final class AccountsViewModel_Tests: XCTestCase {
     
     // Mock dependencies
     class MockNavigation: AccountsNavigation {
-        func goToDetailsScreen(account: Account) {
-            //
-        }
+        func goToDetailsScreen(account: Account) {}
         
-        func goToRootScreen() {
-            //
-        }
+        func goToRootScreen() {}
     }
     
     class MockDataProvider: DataProviderLogic {
@@ -31,13 +27,9 @@ final class AccountsViewModel_Tests: XCTestCase {
             }
         }
         
-        func login(request: Networking.LoginRequest, completion: @escaping ((Result<Networking.LoginResponse, any Error>) -> Void)) {
-            //
-        }
+        func login(request: Networking.LoginRequest, completion: @escaping ((Result<Networking.LoginResponse, any Error>) -> Void)) {}
         
-        func addMoney(request: Networking.OneOffPaymentRequest, completion: @escaping ((Result<Networking.OneOffPaymentResponse, any Error>) -> Void)) {
-            //
-        }
+        func addMoney(request: Networking.OneOffPaymentRequest, completion: @escaping ((Result<Networking.OneOffPaymentResponse, any Error>) -> Void)) {}
     }
     
     class MockView: AccountsViewControllerDelegate {
@@ -53,9 +45,7 @@ final class AccountsViewModel_Tests: XCTestCase {
             accountsAreRecievedCalled = true
         }
         
-        func isLoading(_ isActive: Bool) {
-            //
-        }
+        func isLoading(_ isActive: Bool) {}
         
         func showError(message: String, dismissHandler: (() -> Void)?) {
             showErrorCalled = true
@@ -65,13 +55,9 @@ final class AccountsViewModel_Tests: XCTestCase {
     class MockTokenManager: TokenManagerProtocol {
         var deleteTokenCalled = false
         
-        func saveToken(_ token: String) {
-            //
-        }
+        func saveToken(_ token: String) {}
         
-        func getToken() -> String? {
-            return nil
-        }
+        func getToken() -> String? { nil }
         
         func deleteToken() {
             deleteTokenCalled = true
@@ -85,7 +71,6 @@ final class AccountsViewModel_Tests: XCTestCase {
     var mockTokenManager: MockTokenManager!
     
     override func setUpWithError() throws {
-        // Initialize mock objects and view model
         mockNavigation = MockNavigation()
         mockDataProvider = MockDataProvider()
         mockView = MockView()
@@ -97,7 +82,6 @@ final class AccountsViewModel_Tests: XCTestCase {
     }
     
     override func tearDownWithError() throws {
-        // Clean up
         mockNavigation = nil
         mockDataProvider = nil
         mockView = nil
@@ -109,8 +93,8 @@ final class AccountsViewModel_Tests: XCTestCase {
     }
     
     func test_AccountsViewModel_getUser_success() throws {
-        let mockFirstName = "Mark"
-        let mockLastName = "Golubev"
+        let mockFirstName = "Elvis"
+        let mockLastName = "Presley"
         let user = User(firstName: mockFirstName, lastName: mockLastName)
         let viewModel = AccountsViewModel(dataProvider: mockDataProvider, tokenManager: mockTokenManager, user: user)
         
