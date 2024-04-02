@@ -16,7 +16,7 @@ Hi! This is the 'light' version of Moneybox app targeting iOS 15. This app follo
 - Unit Testing: Comprehensive unit test coverage ensures the stability and reliability of the app, providing confidence during development and maintenance.
 - UI Testing: All UI elements are equipped with accessibility identifiers, facilitating UI testing and automation.
 
-PS: I left refresh a button on the Account screen for your convinience. You would be able to check how the app works with expired/wrong token or logout and go to the Login screen.
+PS: Tap on add new user button on Login screen to automaticly fill textfields with test credential. I left refresh a button on the Account screen for your convinience. You would be able to check how the app works with expired/wrong token or logout and go to the Login screen.
 
 Light appearance
 ![](https://github.com/oceaniswater/iOS-Tech-Task/blob/master/Media/1.png)
