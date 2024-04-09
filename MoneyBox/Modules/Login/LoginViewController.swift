@@ -321,6 +321,7 @@ extension LoginViewController: LoginViewControllerDelegate {
                 self?.activityView.startAnimating()
             } else {
                 self?.activityView.stopAnimating()
+                self?.loginButton.setTitleColor(K.Design.primaryTextColor, for: .normal)
             }
         }
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		862ACA1C2BC2F476000D6C1C /* CustomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862ACA1B2BC2F476000D6C1C /* CustomTableView.swift */; };
 		866B56DD2BB1EBBF00E8E786 /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56DC2BB1EBBF00E8E786 /* AccountsViewController.swift */; };
 		866B56DF2BB1EBED00E8E786 /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56DE2BB1EBED00E8E786 /* AccountsViewModel.swift */; };
 		866B56E12BB1EC0800E8E786 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866B56E02BB1EC0800E8E786 /* DetailsViewModel.swift */; };
@@ -63,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		862ACA1B2BC2F476000D6C1C /* CustomTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableView.swift; sourceTree = "<group>"; };
 		866B56DC2BB1EBBF00E8E786 /* AccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
 		866B56DE2BB1EBED00E8E786 /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		866B56E02BB1EC0800E8E786 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				866B56FB2BB344D700E8E786 /* AccountTableViewCell.swift */,
+				862ACA1B2BC2F476000D6C1C /* CustomTableView.swift */,
 			);
 			path = SupportingViews;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				862ACA1C2BC2F476000D6C1C /* CustomTableView.swift in Sources */,
 				866B57022BB35DD800E8E786 /* TokenManager.swift in Sources */,
 				866B57142BB5C1CD00E8E786 /* AuthTextField.swift in Sources */,
 				866B57192BB605F900E8E786 /* CustomAlertView.swift in Sources */,

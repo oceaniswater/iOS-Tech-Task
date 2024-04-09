@@ -77,8 +77,8 @@ class AccountsViewController: UIViewController {
         return view
     }()
     
-    let tableView: UITableView = {
-        let tableView = UITableView()
+    let tableView: CustomTableView = {
+        let tableView = CustomTableView()
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isScrollEnabled = false
@@ -150,6 +150,7 @@ class AccountsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.getData()
     }
 }
@@ -222,7 +223,6 @@ private extension AccountsViewController {
 
             tableView.leadingAnchor.constraint(equalTo: vStack.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: vStack.trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 80),
 
             deviderView.topAnchor.constraint(equalTo: tableView.bottomAnchor),
             deviderView.leadingAnchor.constraint(equalTo: tableViewForm.leadingAnchor),
@@ -253,27 +253,21 @@ extension AccountsViewController: AccountsViewControllerDelegate {
     }
     
     func accountsAreRecieved() {
-        DispatchQueue.main.async { [weak self] in
-            self?.reloadTableView()
-            self?.tableViewForm.isHidden = false
-        }
+        reloadTableView()
+        tableViewForm.isHidden = false
     }
     
     func isLoading(_ isActive: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.activityView.isHidden = isActive
-            if isActive {
-                self?.activityView.startAnimating()
-            } else {
-                self?.activityView.stopAnimating()
-            }
+        activityView.isHidden = isActive
+        if isActive {
+            activityView.startAnimating()
+        } else {
+            activityView.stopAnimating()
         }
     }
     
     func totalsAreRecieved(totalPlan: Double?, totalSaved: Double) {
-        DispatchQueue.main.async { [weak self] in
-            self?.totalPlanLabel.text    = "Total Plan Value: £\((totalPlan ?? 0.0).toMoneyFormatString())"
-            self?.totalSavingsLabel.text = "You already saved: £\(totalSaved.toMoneyFormatString())"
-        }
+        totalPlanLabel.text    = "Total Plan Value: £\((totalPlan ?? 0.0).toMoneyFormatString())"
+        totalSavingsLabel.text = "You already saved: £\(totalSaved.toMoneyFormatString())"
     }
 }

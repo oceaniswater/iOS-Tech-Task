@@ -186,27 +186,23 @@ extension DetailsViewController: DetailsViewControllerDelegate {
     }
     
     func isLoading(_ isActive: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.activityView.isHidden = isActive
-            if isActive {
-                self?.activityView.startAnimating()
-            } else {
-                self?.activityView.stopAnimating()
-            }
+        activityView.isHidden = isActive
+        if isActive {
+            activityView.startAnimating()
+        } else {
+            activityView.stopAnimating()
         }
     }
     
     func changeAddMoneyButtonState(_ isEnabled: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.addMoneyButton.isEnabled = isEnabled
-            self?.addMoneyButton.layer.opacity = isEnabled ? 1 : 0.5
-        }
+        addMoneyButton.isEnabled = isEnabled
+        addMoneyButton.layer.opacity = isEnabled ? 1 : 0.5
+        
     }
     
     func hideSelectProductLabel(_ isHidden: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.selectProductLabel.isHidden = isHidden
-        }
+        selectProductLabel.isHidden = isHidden
+        
     }
     
     func productsUpdated() {
